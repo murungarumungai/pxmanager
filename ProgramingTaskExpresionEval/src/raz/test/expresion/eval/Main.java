@@ -75,5 +75,6 @@ public class Main {
         //3. o sa am 'trim, abc defg'
 
         System.out.println("Parsed expresion<<"+parsedExpresion+">>");
+        ExpresionManipulator.splitStringByComma(parsedExpresion);
     }
 }

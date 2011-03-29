@@ -39,4 +39,26 @@ public class ExpresionManipulator {
         result = expresion.substring(beginIndex+1, endIndex);
         return result;
     }
+
+    public static void splitStringByComma(String expresion){
+        String[] result = expresion.split(",");
+        if(null!=result){
+            for(String oneStr:result){
+                System.out.println(">>"+oneStr);
+            }
+        } else {
+            System.out.println("Split result was null");
+        }
+    }
+
+
+    /**
+     * Am nevoie de o metoda care primeste o functie si parametri si:
+     * determina ce functie este:
+     * - trim
+     * - concat
+     * - substr
+     * si o executa, eventual se poate implementa cu un Command Pattern pentru ca seamana a command patern
+     * adica pregateste comanda si o executa
+     */
 }
