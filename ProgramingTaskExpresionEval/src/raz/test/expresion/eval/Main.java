@@ -4,6 +4,9 @@
  */
 package raz.test.expresion.eval;
 
+import raz.test.expresion.util.Assert;
+import raz.test.expresion.util.ExpresionManipulator;
+
 /**
  *
  * @author razvan
@@ -16,7 +19,9 @@ public class Main {
     public static void main(String[] args) {
         if (null != args) {
             System.out.println("Argument size:" + args.length);
-            System.out.println(":" + stringArrayToString(args)+":");
+            String expresion = stringArrayToString(args);
+            System.out.println(":" + expresion + ":");
+            parseExpresion(expresion);
         } else {
             System.out.println("Argument was null");
         }
@@ -42,7 +47,7 @@ public class Main {
                  * dar nu adauga spatiu si dupa ultimul.
                  * Indexul Ultimului element este: input.length-1
                  */
-                if (i < input.length-1) {
+                if (i < input.length - 1) {
                     result = result + space;
                 }
             }
@@ -50,5 +55,25 @@ public class Main {
         return result;
     }
 
-    ;
+    /**
+     * Am novie de o functie care parseaza Stringul expresie si il sparge in
+     * "atomi lexicali" dupa virgula ","
+     * @param expresion the expresion to be interpreted
+     *
+     */
+    public static void parseExpresion(String expresion) {
+        String parsedExpresion = null;
+        //Primul pas, trebe sa validez ca expresia nu este nulla
+        Assert.assertNotNull(expresion, "expresion can not be null");
+        //si ca incepe cu eval
+        Assert.startsWithEval(expresion, "expresion does not start with 'eval'");
+        //incep parsarea
+        //1.substrag primul key-word eval
+        parsedExpresion = ExpresionManipulator.removeEvalKeyWord(expresion);
+        //2.si o sa am '(trim, param)' - inlatur paranteleze ()
+        parsedExpresion = ExpresionManipulator.removeParenthesis(parsedExpresion);
+        //3. o sa am 'trim, abc defg'
+
+        System.out.println("Parsed expresion<<"+parsedExpresion+">>");
+    }
 }
