@@ -50,5 +50,37 @@ public class SubstrCommandTest {
         assertEquals("comparing",expectedResult, result);
         
     }
+    @Test
+    public void testExecute1() {
+        System.out.println("Testing SubstrCommand");
+        String expectedResult = "c";
+        SubstrCommand instance = new SubstrCommand("abc", 3, 1);
+        instance.execute();
+        String result = instance.getResult();
+        assertEquals("comparing",expectedResult, result);
+
+    }
+
+    @Test
+    public void testExecute2() {
+        System.out.println("Testing SubstrCommand");
+        String expectedResult = "abc";
+        SubstrCommand instance = new SubstrCommand("abc", 1, 3);
+        instance.execute();
+        String result = instance.getResult();
+        assertEquals("comparing",expectedResult, result);
+
+    }
+
+     @Test
+    public void testExecute3() {
+        System.out.println("Testing SubstrCommand");
+        String expectedResult = "van";
+        SubstrCommand instance = new SubstrCommand("razvan", 4, 3);
+        instance.execute();
+        String result = instance.getResult();
+        assertEquals("comparing",expectedResult, result);
+
+    }
 
 }
