@@ -4,6 +4,8 @@
  */
 package raz.test.expresion.util;
 
+import raz.test.command.CommandInvoker;
+
 /**
  *
  * @author razvang
@@ -46,6 +48,8 @@ public class ExpresionManipulator {
             for(String oneStr:result){
                 System.out.println(">>"+oneStr);
             }
+            CommandInvoker c = new CommandInvoker(result);
+            System.out.println("Final Result:"+c.executeTrimCommand());
         } else {
             System.out.println("Split result was null");
         }

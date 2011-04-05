@@ -10,9 +10,12 @@ package raz.test.expresion.util;
  */
 public class Assert {
 
-    public static String EVAL = "eval";
-    public static String ROUND_PARENTHESIS_BEGIN = "(";
-    public static String ROUND_PARENTHESIS_END = ")";
+    public static final String EVAL = "eval";
+    public static final String ROUND_PARENTHESIS_BEGIN = "(";
+    public static final String ROUND_PARENTHESIS_END = ")";
+    public static final String TRIM = "trim";
+    public static final String CONCAT = "concat";
+    public static final String SUBSTR = "substr";
 
     public static void assertNotNull(Object subject, String message) {
         if (null == subject) {
