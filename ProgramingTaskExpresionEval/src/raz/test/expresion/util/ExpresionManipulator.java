@@ -14,11 +14,12 @@ public class ExpresionManipulator {
 
     /**
      * This method removes the <b>eval</b> key-word from the string
-     * @return returns the String without eval
+     * @return returns the String without <b>eval</b>
      */
     public static String removeEvalKeyWord(String expresion) {
         String result = null;
         result = expresion.substring(Assert.EVAL.length(), expresion.length());
+        System.out.println("1.removeEvalKeyWord"+result);
         return result;
     }
 
@@ -39,20 +40,23 @@ public class ExpresionManipulator {
             throw new IllegalStateException(") - was not found at the end of the Expresion");
         }
         result = expresion.substring(beginIndex+1, endIndex);
+        System.out.println("2.removeParenthesis"+result);
         return result;
     }
-
-    public static void splitStringByComma(String expresion){
+    /**
+     * 
+     * This method splits the expresion into a String[]
+     */
+    public static String[] splitStringByComma(String expresion){
         String[] result = expresion.split(",");
         if(null!=result){
             for(String oneStr:result){
                 System.out.println(">>"+oneStr);
             }
-            CommandInvoker c = new CommandInvoker(result);
-            System.out.println("Final Result:"+c.executeTrimCommand());
         } else {
             System.out.println("Split result was null");
         }
+        return result;
     }
 
 

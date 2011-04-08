@@ -4,6 +4,7 @@
  */
 package raz.test.expresion.eval;
 
+import raz.test.command.CommandInvoker;
 import raz.test.expresion.util.Assert;
 import raz.test.expresion.util.ExpresionManipulator;
 
@@ -19,9 +20,10 @@ public class Main {
     public static void main(String[] args) {
         if (null != args) {
             System.out.println("Argument size:" + args.length);
-            String expresion = stringArrayToString(args);
-            System.out.println(":" + expresion + ":");
-            parseExpresion(expresion);
+            String inputExpresion = stringArrayToString(args);
+            System.out.println("Input:" + inputExpresion + ":");
+            String output = executeCommand(inputExpresion);
+            System.out.println("Output:"+output+":");
         } else {
             System.out.println("Argument was null");
         }
@@ -61,7 +63,7 @@ public class Main {
      * @param expresion the expresion to be interpreted
      *
      */
-    public static void parseExpresion(String expresion) {
+    public static String parseExpresion(String expresion) {
         String parsedExpresion = null;
         //Primul pas, trebe sa validez ca expresia nu este nulla
         Assert.assertNotNull(expresion, "expresion can not be null");
@@ -71,10 +73,19 @@ public class Main {
         //1.substrag primul key-word eval
         parsedExpresion = ExpresionManipulator.removeEvalKeyWord(expresion);
         //2.si o sa am '(trim, param)' - inlatur paranteleze ()
-        parsedExpresion = ExpresionManipulator.removeParenthesis(parsedExpresion);
+        //parsedExpresion = ExpresionManipulator.removeParenthesis(parsedExpresion);
         //3. o sa am 'trim, abc defg'
-
         System.out.println("Parsed expresion<<"+parsedExpresion+">>");
-        ExpresionManipulator.splitStringByComma(parsedExpresion);
+        String[] expresionArray = ExpresionManipulator.splitStringByComma(parsedExpresion);
+        //4. Executa fiecare expresie. Nu executa expresia ci doar intoarce un commandInvoker?
+        CommandInvoker c = new CommandInvoker(expresionArray);
+        //System.out.println("Final Result:"+c.executeCommand());
+        return c.executeCommand();
     }
+
+    public static String executeCommand(String expresion){
+        String result = null;
+        result = parseExpresion(expresion);
+        return result;
+    } 
 }
