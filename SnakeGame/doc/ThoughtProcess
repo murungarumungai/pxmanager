@@ -3,4 +3,4 @@ Scop: sa scriu un SnakeGame folosind TDD - TestDrivenDevelopment(Design)
 Cum dracu sa incep? Cu ce sa incep? Care este primul test care trebuie sa-l scriu?
 
 1. Context of the problem. Starting from the context will be a Top-Down approach, not a Bottom-Up.
-2. Totul incepe cu 'hartia' cu schita.
+2. Totul incepe cu 'hartia', cu schita.

@@ -4,25 +4,36 @@
  */
 package snakegame;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author razvan
  */
 public class Snake {
 
-    private byte[][] matrix = null;
+    private List<SnakeCell> cellsList = null;
 
     /**
-     * size - matricea jocului de snake va fi patratica
+     * Default Constructor
+     * it creates an ArrayList and adds a single SnakeCell, the snake head
+     * @param x
+     * @param y
      */
-    public Snake(int size) {
-        matrix = new byte[size][size];
+    public Snake(byte x, byte y) {
+        cellsList = new ArrayList<SnakeCell>();
+        SnakeCell head = new SnakeCell();
+        head.setX(x);
+        head.setY(y);
+        cellsList.add(head);
     }
 
-    /**
-     * intoarce o referinta la matrix
-     */
-    public byte[][] getMatrix() {
-        return matrix;
+    public List<SnakeCell> getList() {
+        return this.cellsList;
+    }
+
+    public void add(SnakeCell cell) {
+        this.cellsList.add(cell);
     }
 }
