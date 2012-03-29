@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.eclipse.ui.articles.views.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="RCP Perspective"
+            class="org.eclipse.ui.articles.views.Perspective"
+            id="org.eclipse.ui.articles.views.perspective">
+      </perspective>
+   </extension>
+   <extension point="org.eclipse.ui.perspectives">
+   <perspective
+         name="Test"
+         class="org.eclipse.ui.articles.perspective.TestPerspective"
+         id="org.eclipse.ui.articles.perspective.Test">
+   </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.eclipse.ui.articles.views.LabelView"
+            icon="icons/alt_about.gif"
+            id="org.eclipse.ui.articles.views.labelview"
+            name="Label View"
+            restorable="true">
+      </view>
+      <category
+            id="org.eclipse.ui.article"
+            name="Article">
+      </category>
+      <view
+            category="org.eclipse.ui.article"
+            class="org.eclipse.ui.articles.views.WordView"
+            id="org.eclipse.ui.articles.views.wordview"
+            name="Word View"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <view
+               id="org.eclipse.ui.articles.views.wordview"
+               minimized="false"
+               ratio="0.95f"
+               relationship="top"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
+   </extension>
+  <!-- <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <view
+               id="org.eclipse.ui.articles.views.labelview"
+               minimized="false"
+               ratio="0.95f"
+               relationship="top"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
+   </extension> -->
+
+</plugin>
