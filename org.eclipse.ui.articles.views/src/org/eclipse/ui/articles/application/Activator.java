@@ -1,4 +1,4 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.application;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

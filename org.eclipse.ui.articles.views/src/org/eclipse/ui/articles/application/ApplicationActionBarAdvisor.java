@@ -1,4 +1,4 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.application;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IWorkbenchWindow;

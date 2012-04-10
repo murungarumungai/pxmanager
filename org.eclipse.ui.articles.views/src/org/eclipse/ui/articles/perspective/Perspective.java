@@ -1,4 +1,4 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.perspective;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
