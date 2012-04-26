@@ -3,6 +3,7 @@ package org.eclipse.ui.articles.views;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
+import org.eclipse.ui.articles.views.data.Word;
 import org.eclipse.ui.part.ViewPart;
 
 public class ListenerView extends ViewPart 

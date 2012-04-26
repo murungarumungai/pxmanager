@@ -1,7 +1,9 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.views.data;
 
 import java.io.*;
 import java.util.*;
+
+import org.eclipse.ui.articles.views.Listener;
 
 public class WordFile {
 

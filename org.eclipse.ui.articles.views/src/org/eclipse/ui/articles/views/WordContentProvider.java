@@ -2,6 +2,8 @@ package org.eclipse.ui.articles.views;
 
 import java.util.List;
 import org.eclipse.jface.viewers.*;
+import org.eclipse.ui.articles.views.data.Word;
+import org.eclipse.ui.articles.views.data.WordFile;
 
 public class WordContentProvider implements IStructuredContentProvider,
 		Listener {

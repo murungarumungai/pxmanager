@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.articles.views.data.WordFile;
 import org.eclipse.ui.part.ViewPart;
 
 public class WordView extends ViewPart {
@@ -26,7 +27,7 @@ public class WordView extends ViewPart {
 	}
 
 	/*
-	 * The createPartControl method is called to create an SWT Control for the
+	 * The createPartControl method is called to create a SWT Control for the
 	 * WordFile model In the Word view the model is a simple list of words, so a
 	 * ListViewer is used for the presentation.
 	 */

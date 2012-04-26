@@ -1,7 +1,8 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.views.data;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IActionFilter;
+import org.eclipse.ui.articles.views.WordActionFilter;
 
 public class Word implements IAdaptable {
 

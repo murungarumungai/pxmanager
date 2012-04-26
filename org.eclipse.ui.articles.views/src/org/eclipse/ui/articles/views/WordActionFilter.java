@@ -1,6 +1,7 @@
 package org.eclipse.ui.articles.views;
 
 import org.eclipse.ui.IActionFilter;
+import org.eclipse.ui.articles.views.data.Word;
 
 public class WordActionFilter implements IActionFilter {
 
