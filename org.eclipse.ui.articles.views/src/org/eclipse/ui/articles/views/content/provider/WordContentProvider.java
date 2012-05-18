@@ -1,7 +1,8 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.views.content.provider;
 
 import java.util.List;
 import org.eclipse.jface.viewers.*;
+import org.eclipse.ui.articles.views.Listener;
 import org.eclipse.ui.articles.views.data.Word;
 import org.eclipse.ui.articles.views.data.WordFile;
 

@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.articles.views.content.provider.WordContentProvider;
 import org.eclipse.ui.articles.views.data.WordFile;
 import org.eclipse.ui.part.ViewPart;
 

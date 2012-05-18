@@ -8,7 +8,7 @@ import org.eclipse.ui.articles.views.Listener;
 public class WordFile {
 
 	private File file;
-	private ArrayList list = new ArrayList();
+	private List<Word> wordList = new ArrayList<Word>();
 	private Listener listener;
 
 	
@@ -30,21 +30,21 @@ public class WordFile {
 	}
 
 	public void add(Word word) {
-		list.add(word);
+		wordList.add(word);
 		writeFile();
 		if (listener != null)
 			listener.added(word);
 	}
 
 	public void remove(Word word) {
-		list.remove(word);
+		wordList.remove(word);
 		writeFile();
 		if (listener != null)
 			listener.removed(word);
 	}
 
 	public Word find(String str) {
-		Iterator iter = list.iterator();
+		Iterator iter = wordList.iterator();
 		while (iter.hasNext()) {
 			Word word = (Word) iter.next();
 			if (str.equals(word.toString()))
@@ -53,16 +53,16 @@ public class WordFile {
 		return null;
 	}
 
-	public List elements() {
-		return list;
+	public List<Word> elements() {
+		return wordList;
 	}
 
 	private void writeFile() {
 		try {
 			OutputStream os = new FileOutputStream(file);
 			DataOutputStream data = new DataOutputStream(os);
-			data.writeInt(list.size());
-			Iterator iter = list.iterator();
+			data.writeInt(wordList.size());
+			Iterator iter = wordList.iterator();
 			while (iter.hasNext()) {
 				Word word = (Word) iter.next();
 				data.writeUTF(word.toString());
@@ -80,7 +80,7 @@ public class WordFile {
 			int size = data.readInt();
 			for (int nX = 0; nX < size; nX++) {
 				String str = data.readUTF();
-				list.add(new Word(str));
+				wordList.add(new Word(str));
 			}
 			data.close();
 		} catch (Exception e) {
