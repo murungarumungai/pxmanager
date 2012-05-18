@@ -4,6 +4,9 @@ package org.eclipse.ui.articles.views;
 
 import java.io.File;
 
+import java.net.URISyntaxException;
+import  java.net.URL;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
@@ -13,6 +16,14 @@ import org.eclipse.ui.articles.views.content.provider.WordContentProvider;
 import org.eclipse.ui.articles.views.data.WordFile;
 import org.eclipse.ui.part.ViewPart;
 
+/*
+ * After the view is instantiated, the IViewPart.init method is called with an
+ * IViewSite (). The site is the primary interface between the view part and the
+ * outside world. Given the site, you can access the view menu, toolbar, status
+ * line, containing page, containing window, shell, etc. In the code above we
+ * simply call the superclass, ViewPart, where the site is stored in an instance
+ * variable. It can be retrieved at any time by calling getViewSite().
+ * */
 public class WordView extends ViewPart {
 
 	WordFile input;
@@ -24,17 +35,25 @@ public class WordView extends ViewPart {
 
 	public WordView() {
 		super();
-		input = new WordFile(new File("list.lst"));
+		File f = null; 
+		URL url = WordFile.readFile("list.lst");
+		f = new File(url.getFile());
+		input = new WordFile(f);
 	}
 
 	/*
 	 * The createPartControl method is called to create a SWT Control for the
-	 * WordFile model In the Word view the model is a simple list of words, so a
-	 * ListViewer is used for the presentation.
+	 * WordFile model. In the Word view the model is a simple list of words, so
+	 * a ListViewer is used for the presentation.
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		// Create viewer.
+		/*
+		 * A viewer is a wrapper for a SWT control, adding a model based
+		 * interface to it. (the Model Based interface is
+		 * IStructuredContentProvider)
+		 */
 		viewer = new ListViewer(parent);
 		/*
 		 * A content provider is an adapter for a domain specific model,
@@ -49,6 +68,10 @@ public class WordView extends ViewPart {
 		 * for each object which is supplied by the content provider.
 		 */
 		viewer.setLabelProvider(new LabelProvider());
+		/*
+		 * And finally, we set the input for the ListViewer. The input is just
+		 * the WordFile created in the WordView constructor.
+		 */
 		viewer.setInput(input);
 
 		/*
@@ -66,33 +89,33 @@ public class WordView extends ViewPart {
 		hookGlobalActions();
 
 		// Restore state from the previous session.
-		//restoreState();
+		// restoreState();
 
 	}
 
 	private void hookGlobalActions() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void createContextMenu() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void createToolbar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void createMenu() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void createActions() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -1,8 +1,12 @@
 package org.eclipse.ui.articles.views.data;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.articles.views.Listener;
 
 public class WordFile {
@@ -10,8 +14,6 @@ public class WordFile {
 	private File file;
 	private List<Word> wordList = new ArrayList<Word>();
 	private Listener listener;
-
-	
 
 	/**
 	 * Constructor for FileList
@@ -87,4 +89,12 @@ public class WordFile {
 			e.printStackTrace();
 		}
 	}
+
+	public static URL readFile(String path) {
+		URL fullPathString = FileLocator.find(Platform.getBundle("org.eclipse.ui.articles.views"), new Path(
+				path), null);
+		return fullPathString;
+
+	}
+
 }
