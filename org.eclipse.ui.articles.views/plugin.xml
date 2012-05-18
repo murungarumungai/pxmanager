@@ -15,7 +15,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
-            class="org.eclipse.ui.articles.perspective.Perspective"
+            class="org.eclipse.ui.articles.perspective.MainPerspective"
             id="org.eclipse.ui.articles.views.perspective">
       </perspective>
    </extension>

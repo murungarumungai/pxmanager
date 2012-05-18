@@ -3,7 +3,7 @@ package org.eclipse.ui.articles.perspective;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-public class Perspective implements IPerspectiveFactory {
+public class MainPerspective implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout layout) {
 		/*
