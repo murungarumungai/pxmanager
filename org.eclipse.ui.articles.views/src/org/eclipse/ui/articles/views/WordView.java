@@ -3,6 +3,7 @@ package org.eclipse.ui.articles.views;
 //http://www.eclipse.org/articles/viewArticle/ViewArticle2.html
 
 import java.io.File;
+import java.io.IOException;
 
 import java.net.URISyntaxException;
 import  java.net.URL;
@@ -15,6 +16,8 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.articles.views.content.provider.WordContentProvider;
 import org.eclipse.ui.articles.views.data.WordFile;
 import org.eclipse.ui.part.ViewPart;
+
+
 
 /*
  * After the view is instantiated, the IViewPart.init method is called with an
@@ -35,10 +38,13 @@ public class WordView extends ViewPart {
 
 	public WordView() {
 		super();
-		File f = null; 
-		URL url = WordFile.readFile("list.lst");
-		f = new File(url.getFile());
-		input = new WordFile(f);
+		
+		
+		try {
+			input = new WordFile("list.lst");
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
 	}
 
 	/*

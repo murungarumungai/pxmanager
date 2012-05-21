@@ -17,9 +17,11 @@ public class WordFile {
 
 	/**
 	 * Constructor for FileList
+	 * @throws IOException 
 	 */
-	public WordFile(File file) {
-		this.file = file;
+	public WordFile(String path) throws IOException {
+		URL fileURL = readFile(path);
+		this.file = new File(fileURL.getPath());
 		if (file.exists()) {
 			readFile();
 		} else {
@@ -80,20 +82,26 @@ public class WordFile {
 			InputStream is = new FileInputStream(file);
 			DataInputStream data = new DataInputStream(is);
 			int size = data.readInt();
-			for (int nX = 0; nX < size; nX++) {
-				String str = data.readUTF();
-				wordList.add(new Word(str));
+			BufferedReader br = new BufferedReader(new InputStreamReader(data));
+			String oneLine = null;
+			while( (oneLine = br.readLine()) != null) {
+				 
+				wordList.add(new Word(oneLine));
 			}
 			data.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	public static URL readFile(String path) {
+	
+	/**
+	 * Read a file path inside an eclipse plugin
+	 * */
+	public static URL readFile(String path) throws IOException {
 		URL fullPathString = FileLocator.find(Platform.getBundle("org.eclipse.ui.articles.views"), new Path(
 				path), null);
-		return fullPathString;
+		return FileLocator.resolve(fullPathString);
+		
 
 	}
 
