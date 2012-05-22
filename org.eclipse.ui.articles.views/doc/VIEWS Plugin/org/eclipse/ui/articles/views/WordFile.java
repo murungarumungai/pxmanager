@@ -1,76 +1,71 @@
-package org.eclipse.ui.articles.views.data;
+package org.eclipse.ui.articles.views;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.articles.views.Listener;
-
-import raz.test.utils.Utils;
 
 public class WordFile {
 
 	private File file;
-	private List<Word> wordList = new ArrayList<Word>();
+	private ArrayList list = new ArrayList();
 	private Listener listener;
-
+	
+	public interface Listener {
+		public void added(Word w);
+		public void removed(Word w);
+	}
+	
 	/**
 	 * Constructor for FileList
-	 * @throws IOException 
 	 */
-	public WordFile(String path) throws IOException {
-		URL fileURL = Utils.readFile(path);
-		this.file = new File(fileURL.getPath());
+	public WordFile(File file) {
+		this.file = file;
 		if (file.exists()) {
 			readFile();
 		} else {
 			writeFile();
 		}
 	}
-
+	
 	public void setListener(Listener l) {
 		listener = l;
 	}
-
+	
 	public void add(Word word) {
-		wordList.add(word);
+		list.add(word);
 		writeFile();
 		if (listener != null)
 			listener.added(word);
 	}
-
+	
 	public void remove(Word word) {
-		wordList.remove(word);
+		list.remove(word);
 		writeFile();
 		if (listener != null)
 			listener.removed(word);
 	}
-
+	
 	public Word find(String str) {
-		Iterator iter = wordList.iterator();
+		Iterator iter = list.iterator();
 		while (iter.hasNext()) {
-			Word word = (Word) iter.next();
+			Word word = (Word)iter.next();
 			if (str.equals(word.toString()))
 				return word;
 		}
 		return null;
 	}
-
-	public List<Word> elements() {
-		return wordList;
+	
+	public List elements() {
+		return list;
 	}
-
+	
 	private void writeFile() {
 		try {
 			OutputStream os = new FileOutputStream(file);
 			DataOutputStream data = new DataOutputStream(os);
-			data.writeInt(wordList.size());
-			Iterator iter = wordList.iterator();
+			data.writeInt(list.size());
+			Iterator iter = list.iterator();
 			while (iter.hasNext()) {
-				Word word = (Word) iter.next();
+				Word word = (Word)iter.next();
 				data.writeUTF(word.toString());
 			}
 			data.close();
@@ -78,24 +73,20 @@ public class WordFile {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void readFile() {
 		try {
 			InputStream is = new FileInputStream(file);
 			DataInputStream data = new DataInputStream(is);
 			int size = data.readInt();
-			BufferedReader br = new BufferedReader(new InputStreamReader(data));
-			String oneLine = null;
-			while( (oneLine = br.readLine()) != null) {
-				 
-				wordList.add(new Word(oneLine));
+			for (int nX = 0; nX < size; nX ++) {
+				String str = data.readUTF();
+				list.add(new Word(str));
 			}
 			data.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-
-
 }
+
