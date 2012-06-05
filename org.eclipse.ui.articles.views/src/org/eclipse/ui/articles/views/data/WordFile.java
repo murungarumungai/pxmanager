@@ -35,16 +35,24 @@ public class WordFile {
 		listener = l;
 	}
 
+	/**
+	 * Adds a word to the list of words,
+	 * and writes/persists the list of words into the file
+	 * **/
 	public void add(Word word) {
 		wordList.add(word);
-		writeFile();
+		//writeFile();
 		if (listener != null)
 			listener.added(word);
 	}
 
+	/**
+	 * Removes a word from the list of words, 
+	 * and writes/persists the change(removal) to the file
+	 * **/
 	public void remove(Word word) {
 		wordList.remove(word);
-		writeFile();
+		//writeFile();
 		if (listener != null)
 			listener.removed(word);
 	}

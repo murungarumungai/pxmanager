@@ -50,8 +50,11 @@ import raz.test.utils.Utils;
  * */
 public class WordView extends ViewPart {
 
-	WordFile input;
-	ListViewer viewer;
+	WordFile input;// The DataModel, a simple List of words
+
+	ListViewer viewer;// ListViewer, the View to represent the Model
+
+	// The Actions
 	Action addItemAction;
 	Action deleteItemAction;
 	Action selectAllAction;
@@ -82,7 +85,7 @@ public class WordView extends ViewPart {
 		 */
 		viewer = new ListViewer(parent);
 		/*
-		 * A content provider is an adapter for a domain specific model,
+		 * A content provider is an adapter for a Domain Specific Model,
 		 * wrapping it in an abstract interface which the viewer invokes to get
 		 * the model root and its children. If the model (the WordFile) changes,
 		 * the content provider will also refresh the state of the ListViewer to
@@ -105,22 +108,24 @@ public class WordView extends ViewPart {
 		 * the creation of a menu, toolbar, context menu, and global actions --
 		 * each view has a local menu and toolbar which appear in the view title
 		 * area. The view may define a context menu (pop-up menu) for each
-		 * control it creates, or hook a global action in the parent window. A
-		 * global action refers to those actions in the window menu and toolbar
-		 * which are always visible, but delegate their implementation to the
-		 * active part. For instance, the Cut, Copy and Paste actions are always
-		 * visible in the Edit menu. If invoked, their implementation is
-		 * delegated to the active part.
+		 * control it creates, or hook a global action in the parent window.
 		 */
 		// Create menu and toolbars.
 		createActions();
 		createMenu();
 		createToolbar();
 		createContextMenu();
+		/*
+		 * A global action refers to those actions in the window menu and
+		 * toolbar which are always visible, but delegate their implementation
+		 * to the active part. For instance, the Cut, Copy and Paste actions are
+		 * always visible in the Edit menu. If invoked, their implementation is
+		 * delegated to the active part.
+		 */
 		hookGlobalActions();
 
 		// Restore state from the previous session.
-		 restoreState();
+		restoreState();
 
 	}
 
@@ -129,19 +134,19 @@ public class WordView extends ViewPart {
 		viewer.getControl().setFocus();
 
 	}
-	
+
 	/**
 	 * Create the Actions
 	 */
 	private void createActions() {
-		//Add----
+		// Add----
 		addItemAction = new Action("Add...") {
 			public void run() {
 				addItem();
 			}
 		};
 		addItemAction.setImageDescriptor(Utils.getImageDescriptor("add.gif"));
-		//Delete-----
+		// Delete-----
 		deleteItemAction = new Action("Delete") {
 			public void run() {
 				deleteItem();
@@ -149,7 +154,7 @@ public class WordView extends ViewPart {
 		};
 		deleteItemAction.setImageDescriptor(Utils
 				.getImageDescriptor("delete.gif"));
-		//Select All---
+		// Select All---
 		selectAllAction = new Action("Select All") {
 			public void run() {
 				selectAll();
@@ -157,14 +162,21 @@ public class WordView extends ViewPart {
 		};
 
 		// Add selection listener.
+		/*
+		 * In general, the enablement state of a menu or tool item should
+		 * reflect the view selection. If a selection occurs in the Word view,
+		 * the enablement state of each action will be updated in the
+		 * updateActionEnablement method
+		 */
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				updateActionEnablement();
 			}
 		});
 
 	}
-	
+
 	/**
 	 * Create menu.
 	 */
@@ -172,7 +184,7 @@ public class WordView extends ViewPart {
 		IMenuManager mgr = getViewSite().getActionBars().getMenuManager();
 		mgr.add(selectAllAction);
 	}
-	
+
 	/**
 	 * Create toolbar.
 	 */
@@ -181,7 +193,7 @@ public class WordView extends ViewPart {
 		mgr.add(addItemAction);
 		mgr.add(deleteItemAction);
 	}
-	
+
 	/**
 	 * Create context menu.
 	 */
@@ -194,15 +206,19 @@ public class WordView extends ViewPart {
 				fillContextMenu(mgr);
 			}
 		});
-		
+
 		// Create menu.
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		
+
 		// Register menu for extension.
+		/*
+		 * After creating the MenuManager, we can create the menu, and then
+		 * register the menu manager with the site.
+		 */
 		getSite().registerContextMenu(menuMgr, viewer);
 	}
-	
+
 	private void fillContextMenu(IMenuManager mgr) {
 		mgr.add(addItemAction);
 		mgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -216,20 +232,19 @@ public class WordView extends ViewPart {
 	 */
 	private void hookGlobalActions() {
 		IActionBars bars = getViewSite().getActionBars();
-		bars.setGlobalActionHandler(IWorkbenchActionConstants.SELECT_ALL, selectAllAction);
-		bars.setGlobalActionHandler(IWorkbenchActionConstants.DELETE, deleteItemAction);
+		bars.setGlobalActionHandler(IWorkbenchActionConstants.SELECT_ALL,
+				selectAllAction);
+		bars.setGlobalActionHandler(IWorkbenchActionConstants.DELETE,
+				deleteItemAction);
 		viewer.getControl().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent event) {
-				if (event.character == SWT.DEL && 
-					event.stateMask == 0 && 
-					deleteItemAction.isEnabled()) 
-				{
+				if (event.character == SWT.DEL && event.stateMask == 0
+						&& deleteItemAction.isEnabled()) {
 					deleteItemAction.run();
 				}
 			}
 		});
 	}
-
 
 	private void updateActionEnablement() {
 		IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
@@ -279,8 +294,8 @@ public class WordView extends ViewPart {
 			return null;
 		return dlg.getValue();
 	}
-	
-	//------------------------
+
+	// ------------------------
 	/**
 	 * Restores the viewer state from the memento.
 	 */
@@ -289,20 +304,20 @@ public class WordView extends ViewPart {
 			return;
 		memento = memento.getChild("selection");
 		if (memento != null) {
-			IMemento descriptors [] = memento.getChildren("descriptor");
+			IMemento descriptors[] = memento.getChildren("descriptor");
 			if (descriptors.length > 0) {
 				ArrayList objList = new ArrayList(descriptors.length);
-				for (int nX = 0; nX < descriptors.length; nX ++) {
+				for (int nX = 0; nX < descriptors.length; nX++) {
 					String id = descriptors[nX].getID();
 					Word word = input.find(id);
 					if (word != null)
-						objList.add(word);		
+						objList.add(word);
 				}
 				viewer.setSelection(new StructuredSelection(objList));
 			}
 		}
 		memento = null;
 		updateActionEnablement();
-	}	
+	}
 
 }

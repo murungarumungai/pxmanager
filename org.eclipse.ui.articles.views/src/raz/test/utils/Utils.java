@@ -16,6 +16,7 @@ public class Utils {
 	
 	/**
 	 * Returns the image descriptor with the given relative path.
+	 * An image descriptor for a file stored in the plugin directory.
 	 */
 	public static ImageDescriptor getImageDescriptor(String relativePath) {
 		String iconPath = "icons/";

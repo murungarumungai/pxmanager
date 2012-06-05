@@ -74,4 +74,40 @@
       </perspectiveExtension>
    </extension> -->
 
+<!-- An action can be added to a context menu by defining an extension for the org.eclipse.ui.popupMenus extension point in the workbench plug-in. 
+For instance, the following XML can be used to add the "Word Action" to the context menu for Word objects.
+-->
+	<extension 
+		point="org.eclipse.ui.popupMenus">
+     <objectContribution
+                id="org.eclipse.ui.articles.pm1"
+             objectClass="org.eclipse.ui.articles.views.data.Word">
+                <action 
+                        id="org.eclipse.ui.articles.a1"
+                        label="Word Action" 
+                        menubarPath="additions" 
+                        class="org.eclipse.ui.articles.views.actiondelegate.WordActionDelegate"/>
+        </objectContribution>
+	</extension>
+	<!-- In some situations the objectClass and nameFilter attributes are not enough to describe the intended target object. 
+	  Within an objectContribution, a plug-in developer may define filter sub elements. 
+	  Each filter describes one attribute of the target object using a name value pair.  
+	  For instance, the following XML can be used to target an action at any Word object with name = "Blue".  
+	  Notice how the filter sub element () is used to define an attribute value pair.
+	-->
+	<extension 
+		point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                id="org.eclipse.ui.articles.pm2"
+                objectClass="org.eclipse.ui.articles.views.data.Word">
+             <filter name="name" value="Blue"/>
+                <action 
+                        id="org.eclipse.ui.articles.a2"
+                        label="Blue Action" 
+                        menubarPath="additions" 
+                        class="org.eclipse.ui.articles.views.actiondelegate.BlueActionDelegate"/>
+        </objectContribution>
+	</extension>
+	
+
 </plugin>
