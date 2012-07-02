@@ -35,6 +35,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.articles.views.action.ActionAdd;
+import org.eclipse.ui.articles.views.action.ActionDelete;
+import org.eclipse.ui.articles.views.action.ActionSelectAll;
 import org.eclipse.ui.articles.views.content.provider.WordContentProvider;
 import org.eclipse.ui.articles.views.data.WordFile;
 import org.eclipse.ui.part.ViewPart;
@@ -68,6 +71,15 @@ public class WordView extends ViewPart {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	// Am nevoie sa accesez asta in Actions
+	public WordFile getViewDataModel() {
+		return input;
+	}
+
+	public ListViewer getViewViewer() {
+		return viewer;
 	}
 
 	/*
@@ -124,6 +136,19 @@ public class WordView extends ViewPart {
 		 */
 		hookGlobalActions();
 
+		/*
+		 * The Listener view is ready to receive selection events. However, we
+		 * have a problem: the Word view doesn't publish any selection events.
+		 * To reconcile our problem we add one line of code to the Word view,
+		 * Within the createPartControl method, a selection provider is passed
+		 * to the site. Fortunately, the viewer itself is an ISelectionProvider,
+		 * so it is very easy to define the selection provider for the view.
+		 * When the Word view is active (as indicated by shading in the title
+		 * bar) the platform will redirect any selection events fired from
+		 * viewer to selection listeners within the page.
+		 */
+		getSite().setSelectionProvider(viewer);
+
 		// Restore state from the previous session.
 		restoreState();
 
@@ -140,33 +165,25 @@ public class WordView extends ViewPart {
 	 */
 	private void createActions() {
 		// Add----
-		addItemAction = new Action("Add...") {
-			public void run() {
-				addItem();
-			}
-		};
-		addItemAction.setImageDescriptor(Utils.getImageDescriptor("add.gif"));
+		addItemAction = new ActionAdd("Add...", this);
+
 		// Delete-----
-		deleteItemAction = new Action("Delete") {
-			public void run() {
-				deleteItem();
-			}
-		};
-		deleteItemAction.setImageDescriptor(Utils
-				.getImageDescriptor("delete.gif"));
+		deleteItemAction = new ActionDelete("Delete", this);
+
 		// Select All---
-		selectAllAction = new Action("Select All") {
-			public void run() {
-				selectAll();
-			}
-		};
+		selectAllAction = new ActionSelectAll("Select All", this);
 
 		// Add selection listener.
 		/*
 		 * In general, the enablement state of a menu or tool item should
 		 * reflect the view selection. If a selection occurs in the Word view,
 		 * the enablement state of each action will be updated in the
-		 * updateActionEnablement method
+		 * updateActionEnablement method. The approach taken for action
+		 * enablement in the Word view is just one way to go. It is also
+		 * possible to imagine an implementation where each action is a
+		 * selection listener, and will enable itself to reflect the selection.
+		 * This approach would make the actions reusable beyond the context of
+		 * the original view.
 		 */
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -231,11 +248,34 @@ public class WordView extends ViewPart {
 	 * Hook global actions
 	 */
 	private void hookGlobalActions() {
+		/*
+		 * the Word view retrieves the action bars from the workbench part site
+		 * and then calls setGlobalActionHandler for each action
+		 */
 		IActionBars bars = getViewSite().getActionBars();
 		bars.setGlobalActionHandler(IWorkbenchActionConstants.SELECT_ALL,
 				selectAllAction);
 		bars.setGlobalActionHandler(IWorkbenchActionConstants.DELETE,
 				deleteItemAction);
+		/*
+		 * we add a key listener to the viewer control. If the "delete" key is
+		 * pressed, the Delete action should run. In the case of every other
+		 * action except Delete, the accelerator is defined and implemented by
+		 * the workbench, so there is no need for a key listener. In the case of
+		 * Delete, however, a key listener must be defined in the part. This
+		 * extra work is required because the platform cannot define an
+		 * accelerator containing the delete key. In doing so, it would break
+		 * any text editors where the "delete" key has two different behaviors:
+		 * delete the selection, and delete the next character. Registration of
+		 * the global action handlers is complete. If the Select All or Delete
+		 * action in the window is invoked, and the Word view is active, the
+		 * corresponding handler within the Word view will be invoked. The
+		 * approach taken here can be used for other actions, and you are
+		 * encouraged to do so. For instance, most editors provide a handler for
+		 * all of the global actions. The Navigator implements the Delete and
+		 * Bookmark actions. The Tasks view implements the Delete and Select All
+		 * actions.
+		 */
 		viewer.getControl().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent event) {
 				if (event.character == SWT.DEL && event.stateMask == 0
@@ -246,56 +286,11 @@ public class WordView extends ViewPart {
 		});
 	}
 
-	private void updateActionEnablement() {
+	public void updateActionEnablement() {
 		IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
 		deleteItemAction.setEnabled(sel.size() > 0);
 	}
 
-	// -----------------
-	/**
-	 * Add item to list.
-	 */
-	private void addItem() {
-		String name = promptForValue("Enter name:", null);
-		if (name != null) {
-			Word word = new Word(name);
-			input.add(word);
-			viewer.setSelection(new StructuredSelection(word));
-		}
-	}
-
-	/**
-	 * Remove item from list.
-	 */
-	private void deleteItem() {
-		IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
-		Iterator iter = sel.iterator();
-		while (iter.hasNext()) {
-			Word word = (Word) iter.next();
-			input.remove(word);
-		}
-	}
-
-	/**
-	 * Select all items.
-	 */
-	private void selectAll() {
-		viewer.getList().selectAll();
-		updateActionEnablement();
-	}
-
-	/**
-	 * Ask user for value.
-	 */
-	private String promptForValue(String text, String oldValue) {
-		InputDialog dlg = new InputDialog(getSite().getShell(), "List View",
-				text, oldValue, null);
-		if (dlg.open() != Window.OK)
-			return null;
-		return dlg.getValue();
-	}
-
-	// ------------------------
 	/**
 	 * Restores the viewer state from the memento.
 	 */

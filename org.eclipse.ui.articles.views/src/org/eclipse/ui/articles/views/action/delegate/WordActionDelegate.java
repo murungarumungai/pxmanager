@@ -1,15 +1,15 @@
-package org.eclipse.ui.articles.views.actiondelegate;
+package org.eclipse.ui.articles.views.action.delegate;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.*;
 
-public class BlueActionDelegate implements IViewActionDelegate {
+public class WordActionDelegate implements IViewActionDelegate {
 
 	/**
-	 * Constructor for BlueActionDelegate
+	 * Constructor for WordActionDelegate
 	 */
-	public BlueActionDelegate() {
+	public WordActionDelegate() {
 		super();
 	}
 
@@ -23,7 +23,7 @@ public class BlueActionDelegate implements IViewActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		System.out.println("Blue Action Called");
+		System.out.println("Word Action Called");
 	}
 
 	/**

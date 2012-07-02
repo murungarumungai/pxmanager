@@ -46,6 +46,13 @@
             name="Word View"
             restorable="true">
       </view>
+      <view
+            category="org.eclipse.ui.article"
+            class="org.eclipse.ui.articles.views.ListenerView"
+            id="org.eclipse.ui.articles.views.ListenerView"
+            name="WordListenerView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -86,7 +93,7 @@ For instance, the following XML can be used to add the "Word Action" to the cont
                         id="org.eclipse.ui.articles.a1"
                         label="Word Action" 
                         menubarPath="additions" 
-                        class="org.eclipse.ui.articles.views.actiondelegate.WordActionDelegate"/>
+                        class="org.eclipse.ui.articles.views.action.delegate.WordActionDelegate"/>
         </objectContribution>
 	</extension>
 	<!-- In some situations the objectClass and nameFilter attributes are not enough to describe the intended target object. 
@@ -105,7 +112,7 @@ For instance, the following XML can be used to add the "Word Action" to the cont
                         id="org.eclipse.ui.articles.a2"
                         label="Blue Action" 
                         menubarPath="additions" 
-                        class="org.eclipse.ui.articles.views.actiondelegate.BlueActionDelegate"/>
+                        class="org.eclipse.ui.articles.views.action.delegate.BlueActionDelegate"/>
         </objectContribution>
 	</extension>
 	

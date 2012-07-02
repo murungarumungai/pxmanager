@@ -1,4 +1,4 @@
-package org.eclipse.ui.articles.views;
+package org.eclipse.ui.articles.views.action.filter;
 
 import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.articles.views.data.Word;
