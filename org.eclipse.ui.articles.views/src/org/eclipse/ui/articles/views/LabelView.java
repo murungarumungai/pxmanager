@@ -1,11 +1,17 @@
 package org.eclipse.ui.articles.views;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
 public class LabelView extends ViewPart {
 	private Label label;
+	
+	private  Composite latestFoldersComposite;
 
 	public LabelView() {
 		super();
@@ -33,6 +39,19 @@ public class LabelView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		label = new Label(parent, 0);
 		label.setText("Hello World");
+		
+		createComposite(parent);
+		
+	}
+	
+	private  void createComposite(Composite parent){
+		//Create a Composite for the Latest Folder List
+        latestFoldersComposite = new Composite(parent, SWT.NONE);
+        latestFoldersComposite.setLayout(new GridLayout(1, false));
+        
+        ListViewer latestFoldersTableViewer = new ListViewer(latestFoldersComposite);
+        
+        latestFoldersTableViewer.setContentProvider(new ArrayContentProvider());
 	}
 
 	@Override
