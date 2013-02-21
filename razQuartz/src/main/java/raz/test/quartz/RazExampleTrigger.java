@@ -47,8 +47,11 @@ public class RazExampleTrigger {
 		Scheduler sched = sf.getScheduler();
 
 		// build job
-		JobDetail job = newJob(RazExampleJob.class).withIdentity("job1","group1").build();
+		JobDetail job = newJob(RazExampleJob.class)
+				.withIdentity("job1","group1")
+				.build();
 
+		logger.debug("JobDetail created:"+job.getKey()+" hashCode:"+job.hashCode());
 		
 
 		// Build Trigger
@@ -67,7 +70,7 @@ public class RazExampleTrigger {
 
 		// schedule it to run!
 		Date ft = sched.scheduleJob(job, trigger);
-		logger.info(job.getKey() + " will run at: " + ft + " and repeat: "
+		logger.info("TriggerKey:"+trigger.getKey()+"TriggerHash:"+trigger.hashCode()+" JobKey:"+job.getKey() + " will run at: " + ft + " and repeat: "
 				+ trigger.getRepeatCount() + " times, every "
 				+ trigger.getRepeatInterval() / 1000 + " seconds");
 		
@@ -78,6 +81,28 @@ public class RazExampleTrigger {
         // will run until the scheduler has been started
         sched.start();
         logger.info("------- Started Scheduler -----------------");
+        
+        //wait 50 seconds to fire the job 5 times, each 10 seconds
+        Thread.sleep(50L * 1000L);
+        
+        logger.info("-----Resheduling  ----");
+        trigger = newTrigger()
+        		.withIdentity("trigger1", "group1")
+        		.startNow()
+        		.withSchedule(simpleSchedule()
+        				.withIntervalInSeconds(2)
+        				.withRepeatCount(5)
+        				)
+        		.build();
+        ft = sched.rescheduleJob(trigger.getKey(), trigger);
+        
+        logger.info("TriggerKey:"+trigger.getKey()+"TriggerHash:"+trigger.hashCode()+" JobKey:"+job.getKey() + " will run at: " + ft + " and repeat: "
+				+ trigger.getRepeatCount() + " times, every "
+				+ trigger.getRepeatInterval() / 1000 + " seconds");
+
+        
+        
+        				
 		
 
 		logger.info("------- Waiting five minutes... ------------");

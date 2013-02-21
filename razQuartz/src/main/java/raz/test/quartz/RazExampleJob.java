@@ -34,7 +34,7 @@ public class RazExampleJob implements Job{
         // date and time that it is running
         JobKey jobKey = context.getJobDetail().getKey();
         logger.info(">> " + jobKey + " executing at " + new Date());
-		//System.out.println(">> " + jobKey + " executing at " + new Date());
+		
 		
 	}
 

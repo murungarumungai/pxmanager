@@ -9,7 +9,7 @@ public class Log4jUtils {
 	 */
 	public static void configureBasicLogging() {
 		try {
-			//BasicConfigurator.configure();
+			BasicConfigurator.configure();
 		} catch (Exception e) {
 		}
 	}
