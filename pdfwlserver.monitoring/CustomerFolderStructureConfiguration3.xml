@@ -1,0 +1,87 @@
+
+<customerBaseDir name="derstandard">
+    <subDir name="incoming">
+        <fileCondition exists="true">
+            <!-- Status for: file exists in this folder within checkInterval-->
+			<!--We do not check only until [Due-Date Delivery], even though the [Due-Date Delivery] timePoint has been missed, 
+			we still try to "recover" and produce this mutation up until Next[Earliest Data Delivery]-->
+			<!-- Within the CheckInterval means: Next[Earliest Data delivery] >{isBefore} now(){the moment in which the check is done} >{is after} [Earliest Data delivery] -->
+            <status>
+                <text>not yet processed</text>
+            </status>
+        </fileCondition>		      
+        <fileCondition exists="false"  IsWithinTimePoint="true">
+            <!--Status for: file does not exist in this folder within timepoint. 
+			WithinTimePoint means: [Due-Date Delivery] >{is before} now(){the moment in which the check is done} >{is after} [Earliest Data Delivery]-->
+            <status>		
+                <text>waiting</text>
+            </status>
+        </fileCondition>
+        <fileCondition exists="false" IsWithinTimePoint="false">
+            <!--Status for:file does not exist in folder and timepoint has expired, but we're still within CheckInterval-->
+            <!-- Next[Earliest Data delivery] >{is before} now(){the moment when the check is done} >{is after} [Due-Date Delivery] -->
+            <status>		
+                <text>No data received in time</text>
+                <todo>Call customer</todo>
+            </status>
+        </fileCondition>
+    </subDir>
+    <subDir name="import">
+        <fileCondition exists="true">
+            <!-- Status for: file exists in folder within CheckInterval. 
+			Only if the latest file in this folder is within the check interval display this status
+            For importing IsWithinCheckInterval means:
+			Next[Earliest Data delivery] >{is before} now(){the moment in which the check is done} >{is after} [Earliest Data Delivery] 
+			-->
+            <status>		
+                <text>importing right now</text>
+            </status>
+        <!--
+		Else, if we have the latest file but it is older than the CheckInterval, for example
+		[Next Earliest Data Delivery]17.00 [Data processed]04.30 AM [Due-Data Data delivery]02.30 AM [Earliest Data delivery]01.00 AM 
+		and the latest file in import folder is from 00.59 AM, the latest file is before(older than) Earliest Data Delivery,
+		do not display any status, it might be that this file was left over from the previous mutation producing process 
+		-->
+        </fileCondition>
+	<!-- For import folder we do not handle the case when File Doesn't Exist. -->
+    </subDir>
+    <subDir name="success">
+        <fileCondition exists="true">
+		<!--Status for: file exists in success folder within the checkInterval-->
+		<!--For success folder, IsWithinCheckInterval means:
+		[Next Earliest Data Delivery] >{is before} now(){the moment in which the check is done} >{is after} [Earliest Data delivery] -->
+            <status>
+                <text>successfully imported</text>
+            </status>
+        </fileCondition>
+    <!-- For success folder we do not not check and do not return any status in case that the file Doesn't exist-->
+    </subDir>
+    <subDir name="error">
+        <fileCondition exists="true">
+        <!-- Display the status only if the latestFile.date found in errorDir is within CheckInterval. 
+		That means an error happened during the producing process of this mutation.
+		We do not check only until [Data processed], even though the [Data processed] timePoint has been missed, 
+		we still try to "recover" and produce this mutation up until Next[Earliest Data Delivery]
+		[Next Earliest Data Delivery] >{is Before} now(){the moment in which the check is done} >{is after} [Earliest Data Delivery]
+		-->
+            <status>
+                <text>not successfully imported</text>
+            </status>
+		<!-- Aside from general status, we must parse the latestFile.zip.txt files and search for following errorStrings 
+		and if we find them, we return a more specific status-->
+            <errorSpecialHandling id="1">
+                <errorString>ApaError </errorString>
+                <errorString>ApaOrCustomerError</errorString>
+                <status>
+                    <text>not successfully imported (cause Error on APA-IT Systems!)</text>
+                    <todo>Reimport file into directory</todo>
+                </status>
+            </errorSpecialHandling>
+        </fileCondition>
+		<!-- else if we the latestFile.date is older than [Earliest Data Delivery], 
+		it means that it might be a left over from the prvious mutation producing process, so don't display the error status
+		-->
+    </subDir>
+</customerBaseDir>
+
+

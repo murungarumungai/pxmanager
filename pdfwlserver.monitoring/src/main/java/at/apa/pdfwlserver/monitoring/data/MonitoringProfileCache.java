@@ -22,9 +22,13 @@ public class MonitoringProfileCache {
 		 * and re-instantiate it with the new profile 
 		 * */
 		//If both profiles equal => profile was NOT updated
-		profileWasUpdated = !instance.equals(newInstance);
-		if(profileWasUpdated || instance==null){//only if profile was updated set the instance
+		if( instance==null){//if instance is null, set it
 			instance = newInstance;
+		} else {
+			profileWasUpdated = !instance.equals(newInstance);
+			if(profileWasUpdated){//only if profile was updated set the instance
+				instance = newInstance;
+			}
 		}
 	}
 	

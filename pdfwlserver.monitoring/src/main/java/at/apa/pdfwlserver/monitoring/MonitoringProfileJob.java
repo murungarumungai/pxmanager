@@ -1,10 +1,14 @@
 package at.apa.pdfwlserver.monitoring;
 
+import java.util.Date;
 import java.util.List;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.apa.pdfwlserver.monitoring.data.MutationResult;
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
@@ -24,12 +28,16 @@ import at.apa.pdfwlserver.monitoring.data.SubDirResult;
  * */
 
 public class MonitoringProfileJob implements Job {
+	
+	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileJob.class);
 
 	List<SubDirChecker> subDirectoriesToBeChecked = null;
 
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
-		check();
+		JobKey jobKey = context.getJobDetail().getKey();
+		logger.info("JobKey >"+jobKey + " executing at " + new Date());
+		//check();
 
 	}
 
