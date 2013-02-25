@@ -25,8 +25,6 @@ public class MonitoringProfileLoaderJob implements Job {
 	private static Logger logger = LoggerFactory
 			.getLogger(MonitoringProfileLoaderJob.class);
 
-	public static String PROFILE_READER = "PROFILE_READER";
-
 	private static MonitoringProfileReader monitoringProfileReader;
 
 	public void execute(JobExecutionContext context)
@@ -112,6 +110,8 @@ public class MonitoringProfileLoaderJob implements Job {
 				try {
 					MonitoringProfileCache.getInstance().wait();
 				} catch (InterruptedException e) {
+					//we have been interrupted
+					return;
 				}
 			}
 			long stop = System.currentTimeMillis();
@@ -152,11 +152,8 @@ public class MonitoringProfileLoaderJob implements Job {
 	 * monitoringProfileReader; }
 	 */
 
-	/**
-	 * this is used in UnitTests
-	 * */
-	public static void setMonitoringProfileReader(
-			MonitoringProfileReader profileReader) {
+	
+	public static void setMonitoringProfileReader(MonitoringProfileReader profileReader) {
 		MonitoringProfileLoaderJob.monitoringProfileReader = profileReader;
 	}
 

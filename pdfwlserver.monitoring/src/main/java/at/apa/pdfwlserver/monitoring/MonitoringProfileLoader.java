@@ -45,7 +45,7 @@ public class MonitoringProfileLoader {
 	/**
 	 * launches the trigger that will fire 
 	 * MonitoringLoadingJob which will periodically read the
-	 * .csv,.xml files and re-instancitate a MonitoringProfileJob
+	 * .csv,.xml files and re-instantiate a MonitoringProfileJob
 	 * */
 	public void launchMonitoringLoadingJob() throws SchedulerException {
 		
