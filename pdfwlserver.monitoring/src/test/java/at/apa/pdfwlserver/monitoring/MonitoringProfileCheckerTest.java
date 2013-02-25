@@ -32,18 +32,18 @@ import at.apa.pdfwlserver.monitoring.xml.CustomerDirStructureMarshalerTest;
  *
  * @author razvan
  */
-public class MonitoringCheckerTest {
+public class MonitoringProfileCheckerTest {
 	
 	static MonitoringProfile monitoringProfile;
 	
     
-    public MonitoringCheckerTest() {
+    public MonitoringProfileCheckerTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
     	
-    	URL xmlFilePathURL = MonitoringCheckerTest.class.getResource("xml/CustomerFolderStructureConfiguration3.xml");
+    	URL xmlFilePathURL = MonitoringProfileCheckerTest.class.getResource("xml/CustomerFolderStructureConfiguration3.xml");
     	File xmlFilePath = new File(xmlFilePathURL.getFile());
     	
     	
@@ -78,8 +78,8 @@ public class MonitoringCheckerTest {
     @Ignore
     public void testGetInstance() {
         System.out.println("getInstance");
-        MonitoringChecker expResult = null;
-        MonitoringChecker result = MonitoringChecker.getInstance();
+        MonitoringProfileChecker expResult = null;
+        MonitoringProfileChecker result = MonitoringProfileChecker.getInstance();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -91,7 +91,7 @@ public class MonitoringCheckerTest {
     @Ignore
     public void testGetJobKey() {
         System.out.println("getJobKey");
-        MonitoringChecker instance = null;
+        MonitoringProfileChecker instance = null;
         JobKey expResult = null;
         JobKey result = instance.getJobKey();
         assertEquals(expResult, result);
@@ -105,7 +105,7 @@ public class MonitoringCheckerTest {
     @Ignore
     public void testGetRegularChecksTrigger() {
         System.out.println("getRegularChecksTrigger");
-        MonitoringChecker instance = null;
+        MonitoringProfileChecker instance = null;
         SimpleTrigger expResult = null;
         SimpleTrigger result = instance.getRegularChecksTrigger();
         assertEquals(expResult, result);
@@ -119,7 +119,7 @@ public class MonitoringCheckerTest {
     @Ignore
     public void testGetScheduler() {
         System.out.println("getScheduler");
-        MonitoringChecker instance = null;
+        MonitoringProfileChecker instance = null;
         Scheduler expResult = null;
         Scheduler result = instance.getScheduler();
         assertEquals(expResult, result);
@@ -133,7 +133,7 @@ public class MonitoringCheckerTest {
     @Test
     public void testLaunchCheckJob() throws Exception {
     	//Date firstTime =
-        MonitoringChecker.getInstance().launchCheckJob();
+        MonitoringProfileChecker.getInstance().launchCheckJob();
         //assertNotNull(firstTime);
         
         //Thread.sleep(10*1000L);
@@ -144,9 +144,9 @@ public class MonitoringCheckerTest {
      */
     @Ignore
     public void testCleanUp() throws Exception {
-    	MonitoringChecker.getInstance().launchCheckJob();
+    	MonitoringProfileChecker.getInstance().launchCheckJob();
     	Thread.sleep(10*1000L);
     	//sleep 10 sec. so that scheduler executes some jobes
-    	MonitoringChecker.getInstance().cleanUp();
+    	MonitoringProfileChecker.getInstance().cleanUp();
     }
 }

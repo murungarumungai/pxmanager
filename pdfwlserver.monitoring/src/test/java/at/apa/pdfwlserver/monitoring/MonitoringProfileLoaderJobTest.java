@@ -23,11 +23,11 @@ import org.quartz.JobExecutionContext;
  *
  * @author razvan
  */
-public class MonitoringLoaderJobTest {
+public class MonitoringProfileLoaderJobTest {
 	
 	MonitoringProfileReader reader;
     
-    public MonitoringLoaderJobTest() {
+    public MonitoringProfileLoaderJobTest() {
     }
     
     @BeforeClass
@@ -40,7 +40,7 @@ public class MonitoringLoaderJobTest {
     
     @Before
     public void setUp() {
-    	URL xmlFilePathURL = MonitoringCheckerTest.class.getResource("xml/CustomerFolderStructureConfiguration3.xml");
+    	URL xmlFilePathURL = MonitoringProfileCheckerTest.class.getResource("xml/CustomerFolderStructureConfiguration3.xml");
     	File xmlFilePath = new File(xmlFilePathURL.getFile());
     	
     	
@@ -63,7 +63,7 @@ public class MonitoringLoaderJobTest {
     public void testExecute() throws Exception {
         System.out.println("execute");
         JobExecutionContext context = null;
-        MonitoringLoaderJob instance = new MonitoringLoaderJob();
+        MonitoringProfileLoaderJob instance = new MonitoringProfileLoaderJob();
         instance.setMonitoringProfileReader(reader);
         instance.execute(context);
         
@@ -73,7 +73,7 @@ public class MonitoringLoaderJobTest {
     public void testExecuteMonitoringProfileExists() throws Exception {
         System.out.println("execute");
         JobExecutionContext context = null;
-        MonitoringLoaderJob instance = new MonitoringLoaderJob();
+        MonitoringProfileLoaderJob instance = new MonitoringProfileLoaderJob();
         instance.setMonitoringProfileReader(reader);
         
         //Before we execute set a MonitoringProfile

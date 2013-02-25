@@ -20,9 +20,9 @@ import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 
 @DisallowConcurrentExecution
-public class MonitoringLoaderJob implements Job {
+public class MonitoringProfileLoaderJob implements Job {
 	
-	private static Logger logger = LoggerFactory.getLogger(MonitoringLoaderJob.class);
+	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileLoaderJob.class);
 	
 	public static String PROFILE_READER = "PROFILE_READER";
 	
@@ -47,7 +47,7 @@ public class MonitoringLoaderJob implements Job {
 			// it's the 1st time when we run the checker
 			MonitoringProfileCache.setInstance(monitoringProfile);
 			try {
-				MonitoringChecker.getInstance().launchCheckJob();
+				MonitoringProfileChecker.getInstance().launchCheckJob();
 			} catch (SchedulerException e) {
 				e.printStackTrace();
 			}
@@ -58,7 +58,7 @@ public class MonitoringLoaderJob implements Job {
 				//Do nothing. A profile exist and the CheckJob has been launched
 				//To make sure, just log the next fire time
 				logger.debug("MonitoringProfile already exists. MonitoringProfile has not been updated");
-				logger.debug("The Check Job has already been launched. Next fire time:"+MonitoringChecker.getInstance().getRegularChecksTrigger().getNextFireTime());
+				logger.debug("The Check Job has already been launched. Next fire time:"+MonitoringProfileChecker.getInstance().getRegularChecksTrigger().getNextFireTime());
 			} else {
 				//profile was updated
 				//Check to see if the job is currently executing
@@ -68,13 +68,13 @@ public class MonitoringLoaderJob implements Job {
 					//CheckJob Is not currently running. 
 					//Just go ahead and reinitialize everything
 					try {
-						MonitoringChecker.getInstance().cleanUp();
+						MonitoringProfileChecker.getInstance().cleanUp();
 					} catch (SchedulerException e) {
 						e.printStackTrace();
 					}
 					MonitoringProfileCache.setInstance(monitoringProfile);
 					try {
-						MonitoringChecker.getInstance().launchCheckJob();
+						MonitoringProfileChecker.getInstance().launchCheckJob();
 					} catch (SchedulerException e) {
 						e.printStackTrace();
 					}
@@ -121,7 +121,7 @@ public class MonitoringLoaderJob implements Job {
 	
 	private boolean isCheckJobCurrentlyRunning(){
 		boolean result = false;
-		Scheduler sched = MonitoringChecker.getInstance().getScheduler();
+		Scheduler sched = MonitoringProfileChecker.getInstance().getScheduler();
 		/*
 		 * sched nu are cum sa fie null.
 		 * Daca e null inseamna ca pornirea initiala nu s-a facut correct.
@@ -136,7 +136,7 @@ public class MonitoringLoaderJob implements Job {
 		if(null!=runningJobs && runningJobs.size()>0){
 			for(JobExecutionContext jobContext: runningJobs){
 				JobKey jobKey = jobContext.getJobDetail().getKey();
-				if(jobKey == MonitoringChecker.getInstance().getJobKey()){
+				if(jobKey == MonitoringProfileChecker.getInstance().getJobKey()){
 					return true;
 				}
 			}

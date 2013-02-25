@@ -27,9 +27,9 @@ import at.apa.pdfwlserver.monitoring.data.SubDirResult;
  * Se pare ca am nevoie DOAR de <code>List<SubDirChecker> subDirectoriesToBeChecked</code>
  * */
 
-public class MonitoringProfileJob implements Job {
+public class MonitoringProfileCheckJob implements Job {
 	
-	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileJob.class);
+	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileCheckJob.class);
 
 	List<SubDirChecker> subDirectoriesToBeChecked = null;
 

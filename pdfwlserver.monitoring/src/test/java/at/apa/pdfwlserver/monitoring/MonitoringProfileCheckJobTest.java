@@ -17,9 +17,9 @@ import org.quartz.JobExecutionContext;
  *
  * @author razvan
  */
-public class MonitoringProfileJobTest {
+public class MonitoringProfileCheckJobTest {
     
-    public MonitoringProfileJobTest() {
+    public MonitoringProfileCheckJobTest() {
     }
     
     @BeforeClass
@@ -55,7 +55,7 @@ public class MonitoringProfileJobTest {
     @Test
     public void testCheck() {
         System.out.println("check");
-        MonitoringProfileJob instance = new MonitoringProfileJob();
+        MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
         ReportResult expResult = null;
         ReportResult result = instance.check();
         assertEquals(expResult, result);

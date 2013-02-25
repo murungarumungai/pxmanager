@@ -14,13 +14,13 @@ import org.quartz.SimpleTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MonitoringLoader {
+public class MonitoringProfileLoader {
 	
 	
 	static String NAME_JOB = "LOAD_JOB";
 	static String NAME_TRIGGER = "loadTrigger";
 	
-	private static Logger logger = LoggerFactory.getLogger(MonitoringLoader.class);
+	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileLoader.class);
 	
 	private File xml;
 	private File csv;
@@ -28,13 +28,13 @@ public class MonitoringLoader {
 	private MonitoringProfileReader profileReader;
 	
 	/**
-	 * before setting the files, make sure they exist phischally on the file system,
+	 * before setting the files, make sure they exist physically on the file system,
 	 * and can read.
 	 * 
 	 * @param repeatPeriod in minutes - how often should we re-read the files?
 	 * 
 	 * */
-	public MonitoringLoader(File xml, File csv, int repeatPeriod){
+	public MonitoringProfileLoader(File xml, File csv, int repeatPeriod){
 		this.xml = xml;
 		this.csv = csv;
 		this.repeatPeriod = repeatPeriod;
@@ -49,20 +49,20 @@ public class MonitoringLoader {
 	 * */
 	public void launchMonitoringLoadingJob() throws SchedulerException {
 		
-		Scheduler sched = MonitoringChecker.buildScheduler();
+		Scheduler sched = MonitoringProfileChecker.buildScheduler();
 		
 		// build job
-		JobDetail job = newJob(MonitoringLoaderJob.class)
-				.withIdentity(NAME_JOB,MonitoringChecker.GROUP_JOB)
+		JobDetail job = newJob(MonitoringProfileLoaderJob.class)
+				.withIdentity(NAME_JOB,MonitoringProfileChecker.GROUP_JOB)
 				.build();
 		
 		// pass initialization parameters into the job
-        job.getJobDataMap().put(MonitoringLoaderJob.PROFILE_READER, profileReader);
+        job.getJobDataMap().put(MonitoringProfileLoaderJob.PROFILE_READER, profileReader);
 		
 		JobKey jobKey = job.getKey();
 		logger.debug("JobDetail created:"+jobKey+" hashCode:"+job.hashCode());
 		
-		SimpleTrigger trigger = MonitoringChecker.buildTrigger(NAME_TRIGGER,repeatPeriod);
+		SimpleTrigger trigger = MonitoringProfileChecker.buildTrigger(NAME_TRIGGER,repeatPeriod);
 		
 		// schedule it to run!
 		Date ft = sched.scheduleJob(job, trigger);
@@ -71,8 +71,8 @@ public class MonitoringLoader {
 				+ trigger.getRepeatCount() + " times, every "
 				+ trigger.getRepeatInterval() / 1000 + " seconds");
 				
-				// All of the jobs have been added to the scheduler, but none of the jobs
-		        // will run until the scheduler has been started
+		//All of the jobs have been added to the scheduler, but none of the jobs
+		//will run until the scheduler has been started
 		sched.start();
 		logger.info("------- Started Scheduler -----------------");
 		
@@ -94,12 +94,12 @@ public class MonitoringLoader {
 		File xml = new File("CustomerFolderStructureConfiguration3.xml");
 		File csv = null;
 		
-		MonitoringLoader monitoringLoader = new MonitoringLoader(xml, csv, repeatTime);
+		MonitoringProfileLoader monitoringProfileLoader = new MonitoringProfileLoader(xml, csv, repeatTime);
 		
 		
 		
 		try {
-			monitoringLoader.launchMonitoringLoadingJob();
+			monitoringProfileLoader.launchMonitoringLoadingJob();
 		} catch (SchedulerException e) {
 			
 			e.printStackTrace();

@@ -20,11 +20,11 @@ import org.slf4j.LoggerFactory;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 
-public class MonitoringChecker {
+public class MonitoringProfileChecker {
 	
-	private static Logger logger = LoggerFactory.getLogger(MonitoringChecker.class);
+	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileChecker.class);
 	
-	private static MonitoringChecker _instance = null;
+	private static MonitoringProfileChecker _instance = null;
 
 	public static String GROUP_JOB = "group1";
 	public static String NAME_JOB = "CHECK_JOB";
@@ -43,14 +43,14 @@ public class MonitoringChecker {
 	 * Oare e bine daca le expun ca instance variable
 	 * */
 	
-	public static MonitoringChecker getInstance(){
+	public static MonitoringProfileChecker getInstance(){
 		if(null == _instance){
-			_instance = new MonitoringChecker(MonitoringProfileCache.getInstance());
+			_instance = new MonitoringProfileChecker(MonitoringProfileCache.getInstance());
 		}
 		return _instance;
 	}
 
-	private MonitoringChecker(MonitoringProfile monitoringProfile) {
+	private MonitoringProfileChecker(MonitoringProfile monitoringProfile) {
 		if(null == monitoringProfile){
 			throw new IllegalArgumentException("MonitoringProfile can't be null!");
 		}
@@ -81,7 +81,7 @@ public class MonitoringChecker {
 		scheduler = buildScheduler(); 
 
 		// build job
-		JobDetail job = newJob(MonitoringProfileJob.class)
+		JobDetail job = newJob(MonitoringProfileCheckJob.class)
 				.withIdentity(NAME_JOB,GROUP_JOB)
 				.build();
 		jobKey = job.getKey();
@@ -127,6 +127,10 @@ public class MonitoringChecker {
 		return sched;
 	}
 
+	/**
+	 * builds a trigger that repeats every timed interval/repeat period
+	 * @param repeatInterval in seconds
+	 * */
 	public static SimpleTrigger buildTrigger(String name ,int repeatInterval) {
 		// Build Trigger
 		SimpleTrigger trigger = null;
