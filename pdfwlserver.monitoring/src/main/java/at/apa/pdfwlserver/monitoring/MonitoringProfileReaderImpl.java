@@ -24,7 +24,8 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader{
 		
 		customerFoldersJAXB =  CustomerDirStructureMarshaler.unMarshal(xmlFilePath);
 		
-		result = new MonitoringProfile(customerFoldersJAXB, 5);
+		//TODO: regularCheckRepeatPeriod should be read from .properties file
+		result = new MonitoringProfile(customerFoldersJAXB, 1);
 		return result;
 	}
 	

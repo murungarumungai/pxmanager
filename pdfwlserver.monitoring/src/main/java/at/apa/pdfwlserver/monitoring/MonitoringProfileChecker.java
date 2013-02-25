@@ -17,7 +17,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
+
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 
 public class MonitoringProfileChecker {
@@ -31,7 +31,7 @@ public class MonitoringProfileChecker {
 	public static String NAME_TRIGGER = "regularChecksTrigger";
 	public static String GROUP_TRIGGER = GROUP_JOB;//"group1";
 
-	private MonitoringProfile monitoringProfile;
+	
 	
 	private JobKey  jobKey;//hold a JobKey Reference to the check Job
 	
@@ -43,19 +43,14 @@ public class MonitoringProfileChecker {
 	 * Oare e bine daca le expun ca instance variable
 	 * */
 	
-	public static MonitoringProfileChecker getInstance(){
+	public static synchronized MonitoringProfileChecker getInstance(){
 		if(null == _instance){
-			_instance = new MonitoringProfileChecker(MonitoringProfileCache.getInstance());
+			_instance = new MonitoringProfileChecker();
 		}
 		return _instance;
 	}
 
-	private MonitoringProfileChecker(MonitoringProfile monitoringProfile) {
-		if(null == monitoringProfile){
-			throw new IllegalArgumentException("MonitoringProfile can't be null!");
-		}
-		this.monitoringProfile = monitoringProfile;
-	}
+
 	
 	/**
 	 * Returns the JobKey of the Monitoring check job  
@@ -85,39 +80,65 @@ public class MonitoringProfileChecker {
 				.withIdentity(NAME_JOB,GROUP_JOB)
 				.build();
 		jobKey = job.getKey();
-		logger.debug("JobDetail created:"+jobKey+" hashCode:"+job.hashCode());
+		logger.debug("JOB DETAIL CREATED:"+jobKey+" hashCode:"+job.hashCode());
 
-		regularChecksTrigger = buildTrigger(NAME_TRIGGER , (int) monitoringProfile.getRepeatPeriod());
+		regularChecksTrigger = buildTrigger(NAME_TRIGGER , (int) MonitoringProfileCache.getInstance().getRepeatPeriod());
 		
 		
 		// schedule it to run!
 		Date ft = scheduler.scheduleJob(job, regularChecksTrigger);
-		logger.info("TriggerKey:"+regularChecksTrigger.getKey()+" TriggerHash:"+regularChecksTrigger.hashCode()+
+		/*
+		logger.info("TRIGGER KEY:"+regularChecksTrigger.getKey()+" TriggerHash:"+regularChecksTrigger.hashCode()+
 				" JobKey:"+job.getKey() + " will run at: " + ft + " and repeat: "
 						+ regularChecksTrigger.getRepeatCount() + " times, every "
-						+ regularChecksTrigger.getRepeatInterval() / 1000 + " seconds");
+						+ regularChecksTrigger.getRepeatInterval() / 1000 + " seconds");*/
 		
 		// All of the jobs have been added to the scheduler, but none of the jobs
         // will run until the scheduler has been started
 		//Razvan sheduler should already be started by MonitoringLoaderJob
 		//scheduler.start();
         //logger.info("------- Started Scheduler -----------------");
+		//logger.info("-------   ---------- Scheduler:"+scheduler);
         return ft;
      
 	}
 
-	public void cleanUp() throws SchedulerException{
-		scheduler.shutdown(true);
+	/**
+	 * Should cleanUp the Jobs and triggers that were launched by this class
+	 * */
+/*	public void cleanUp() throws SchedulerException{
+		//scheduler.shutdown(true);//Razvan: Do not shut down the Scheduler since it is common to both jobs
 		// display some stats about the schedule that just ran
         SchedulerMetaData metaData = scheduler.getMetaData();
         logger.info("Executed " + metaData.getNumberOfJobsExecuted() + " jobs.");
         
 		monitoringProfile = null;
+		MonitoringProfileCache.setInstance(null);//We make sure that the caller of this method will set a new MonitoringProfile in cache
 		jobKey = null;
 		regularChecksTrigger = null;
-		scheduler = null;
+		//scheduler = null;
 		logger.info("Clean up executed! monitoringProfile>"+monitoringProfile+" jobKey>"+jobKey+" regularChecksTrigger>"+ regularChecksTrigger
 				+" scheduler>"+scheduler);
+	}*/
+	
+	/**
+	 * Clean Up
+	 * Delete the identified Job from the Scheduler - and any associated Triggers.
+	 * 
+	 * */
+	public void cleanUp2() throws SchedulerException{
+		
+		SchedulerMetaData metaData = scheduler.getMetaData();
+        logger.info("Executed " + metaData.getNumberOfJobsExecuted() + " jobs.");
+        
+        logger.debug("Delete Job:"+jobKey);
+		scheduler.deleteJob(jobKey);
+		
+		
+		MonitoringProfileCache.setInstance(null);//We make sure that the caller of this method will set a new MonitoringProfile in cache
+		jobKey = null;
+		regularChecksTrigger = null;
+		logger.info("Clean up executed! monitoringProfile>"+MonitoringProfileCache.getInstance()+" jobKey>"+jobKey+" regularChecksTrigger>"+ regularChecksTrigger);
 	}
 	
 	public static Scheduler buildScheduler() throws SchedulerException {

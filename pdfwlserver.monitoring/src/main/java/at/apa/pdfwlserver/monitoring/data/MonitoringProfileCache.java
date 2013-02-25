@@ -14,8 +14,13 @@ public class MonitoringProfileCache {
 	
 	private static boolean profileWasUpdated = true;//we assume that profile is always updated.(defensive/safe approach)
 	
-	
-	public static void setInstance(MonitoringProfile newInstance){
+	/**
+	 * TODO: this should be thread safe. 
+	 * Make sure that when we write a new value,
+	 * another thread will attempt to read it
+	 * Razvan: synchronized is brutal/primitive solution but it will do!
+	 * */
+	public static synchronized void  setInstance(MonitoringProfile newInstance){
 		/* Before setting the profile, check is the newProfile that we are about to set is different than 
 		 * current profile.
 		 * ONLY if is DIFFERENT we should bother we stopping current check() job, 
@@ -32,7 +37,7 @@ public class MonitoringProfileCache {
 		}
 	}
 	
-	public static MonitoringProfile getInstance(){
+	public static synchronized MonitoringProfile getInstance(){
 		return instance;
 	}
 	
@@ -42,7 +47,7 @@ public class MonitoringProfileCache {
 	 * And only if the MonitoringProfile has been updated re-initialize the check task
 	 * else just execute the scheduled check
 	 * */
-	public static boolean isProfileUpdated(){
+	public static synchronized boolean isProfileUpdated(){
 		return profileWasUpdated;
 	}
 	

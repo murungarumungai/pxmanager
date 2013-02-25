@@ -10,6 +10,7 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 import at.apa.pdfwlserver.monitoring.data.MutationResult;
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
 import at.apa.pdfwlserver.monitoring.data.SubDirChecker;
@@ -38,8 +39,25 @@ public class MonitoringProfileCheckJob implements Job {
 		JobKey jobKey = context.getJobDetail().getKey();
 		logger.info("JobKey >"+jobKey + " executing at " + new Date());
 		//check();
+		
+		//we simulate long running job by sleeping the thread
+		try {
+			Thread.sleep(1000L);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
 
+		
+		//Notify Load Job
+		synchronized (MonitoringProfileCache.getInstance()) {
+			MonitoringProfileCache.getInstance().setCheckJobRunning(false);
+			MonitoringProfileCache.getInstance().notifyAll();
+		}
+		
 	}
+	
+	
 
 	/**
 	 * @Schedule(every 20 Minutes every TimePoint: [Due-Date

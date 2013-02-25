@@ -147,6 +147,6 @@ public class MonitoringProfileCheckerTest {
     	MonitoringProfileChecker.getInstance().launchCheckJob();
     	Thread.sleep(10*1000L);
     	//sleep 10 sec. so that scheduler executes some jobes
-    	MonitoringProfileChecker.getInstance().cleanUp();
+    	MonitoringProfileChecker.getInstance().cleanUp2();
     }
 }

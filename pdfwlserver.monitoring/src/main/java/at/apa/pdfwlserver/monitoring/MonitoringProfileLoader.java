@@ -57,24 +57,26 @@ public class MonitoringProfileLoader {
 				.build();
 		
 		// pass initialization parameters into the job
-        job.getJobDataMap().put(MonitoringProfileLoaderJob.PROFILE_READER, profileReader);
+        //job.getJobDataMap().put(MonitoringProfileLoaderJob.PROFILE_READER, profileReader);
+		MonitoringProfileLoaderJob.setMonitoringProfileReader(profileReader);
 		
 		JobKey jobKey = job.getKey();
-		logger.debug("JobDetail created:"+jobKey+" hashCode:"+job.hashCode());
+		logger.debug("JOB DETAIL CREATED:"+jobKey+" hashCode:"+job.hashCode());
 		
 		SimpleTrigger trigger = MonitoringProfileChecker.buildTrigger(NAME_TRIGGER,repeatPeriod);
 		
 		// schedule it to run!
 		Date ft = sched.scheduleJob(job, trigger);
-		logger.info("TriggerKey:"+trigger.getKey()+" TriggerHash:"+trigger.hashCode()+
+		/*
+		logger.info("TRIGGER KEY:"+trigger.getKey()+" TriggerHash:"+trigger.hashCode()+
 				" JobKey:"+job.getKey() + " will run at: " + ft + " and repeat: "
 				+ trigger.getRepeatCount() + " times, every "
-				+ trigger.getRepeatInterval() / 1000 + " seconds");
+				+ trigger.getRepeatInterval() / 1000 + " seconds");*/
 				
 		//All of the jobs have been added to the scheduler, but none of the jobs
 		//will run until the scheduler has been started
 		sched.start();
-		logger.info("------- Started Scheduler -----------------");
+		//logger.info("------- Started Scheduler ---------- Scheduler:"+sched);
 		
 	}
 	

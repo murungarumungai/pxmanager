@@ -5,15 +5,24 @@ import java.util.List;
 import at.apa.pdfwlserver.monitoring.xml.CustomerBaseDir;
 
 public class MonitoringProfile {
+	/**
+	 * because MonitoringProfile is the only shared Object between MonitoringProfileLoaderJob and MonitoringProfileCheckJob
+	 * I decided to use this as a thread notification mechanism
+	 * 
+	 * This signals if the Check Job is currently running
+	 * */
+	private  boolean checkJobRunning = false;
 	
-	private CustomerBaseDir customerBaseDirJAXB;
+	private final CustomerBaseDir customerBaseDirJAXB;
+	private final long repeatPeriod;
+	
 	private List<SubDirChecker> customerFileSystemStructure;
-	private long repeatPeriod;
+	
 	//TODO the only one thing that I am missing is the time-points from .csv
 
 	public MonitoringProfile(CustomerBaseDir customerBaseDirJAXB, long regularCheckRepeatPeriod) {
-		this.setCustomerBaseDirJAXB(customerBaseDirJAXB);
-		this.setRepeatPeriod(regularCheckRepeatPeriod);
+		this.customerBaseDirJAXB = customerBaseDirJAXB;
+		this.repeatPeriod = regularCheckRepeatPeriod;
 	}
 	
 	/**
@@ -29,15 +38,19 @@ public class MonitoringProfile {
 		return customerBaseDirJAXB;
 	}
 
-	public void setCustomerBaseDirJAXB(CustomerBaseDir customerBaseDirJAXB) {
-		this.customerBaseDirJAXB = customerBaseDirJAXB;
-	}
+	
 
 	public long getRepeatPeriod() {
 		return repeatPeriod;
 	}
 
-	public void setRepeatPeriod(long repeatPeriod) {
-		this.repeatPeriod = repeatPeriod;
+	public boolean isCheckJobRunning() {
+		return checkJobRunning;
 	}
+
+	public void setCheckJobRunning(boolean checkJobRunning) {
+		this.checkJobRunning = checkJobRunning;
+	}
+
+	
 }
