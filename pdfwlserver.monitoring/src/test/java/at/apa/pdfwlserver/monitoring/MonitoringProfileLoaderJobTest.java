@@ -79,7 +79,7 @@ public class MonitoringProfileLoaderJobTest {
         //Before we execute set a MonitoringProfile
         MonitoringProfile monitoringProfile =reader.readMonitoringProfile();
     	
-    	MonitoringProfileCache.setInstance(monitoringProfile);
+    	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
         
         instance.execute(context);
         

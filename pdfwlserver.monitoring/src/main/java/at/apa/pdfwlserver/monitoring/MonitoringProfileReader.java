@@ -1,14 +1,21 @@
 package at.apa.pdfwlserver.monitoring;
 
-import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
+import java.io.IOException;
 
 import javax.xml.bind.JAXBException;
+
+import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 
 public interface MonitoringProfileReader {
 	
 	/**
-	 * reads the .csv and .xml and instantiate a monitoring profile
+	 * <p>
+	 * reads the 
+	 * .csv
+	 * .xml
+	 * .properties and instantiate a monitoring profile
+	 * </p>
 	 * */
-	MonitoringProfile readMonitoringProfile() throws JAXBException ;
+	MonitoringProfile readMonitoringProfile() throws JAXBException, IOException ;
 
 }

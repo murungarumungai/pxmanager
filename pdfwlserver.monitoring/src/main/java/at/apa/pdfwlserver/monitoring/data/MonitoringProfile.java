@@ -2,43 +2,36 @@ package at.apa.pdfwlserver.monitoring.data;
 
 import java.util.List;
 
-import at.apa.pdfwlserver.monitoring.xml.CustomerBaseDir;
+
 
 public class MonitoringProfile {
 	/**
-	 * because MonitoringProfile is the only shared Object between MonitoringProfileLoaderJob and MonitoringProfileCheckJob
+	 * because MonitoringProfile is the only shared Object between <code>MonitoringProfileLoaderJob</code> and <code>MonitoringProfileCheckJob</code>
 	 * I decided to use this as a thread notification mechanism
 	 * 
 	 * This signals if the Check Job is currently running
 	 * */
 	private  boolean checkJobRunning = false;
 	
-	private final CustomerBaseDir customerBaseDirJAXB;
+	
 	private final long repeatPeriod;
+	private final List<SubDirChecker> customerFileSystemStructure;
+	private final List<Issue> issues;//issues extracted from .csv
 	
-	private List<SubDirChecker> customerFileSystemStructure;
-	
-	//TODO the only one thing that I am missing is the time-points from .csv
 
-	public MonitoringProfile(CustomerBaseDir customerBaseDirJAXB, long regularCheckRepeatPeriod) {
-		this.customerBaseDirJAXB = customerBaseDirJAXB;
+	public MonitoringProfile( List<SubDirChecker> customerFileSystemStructure, List<Issue> issues,long regularCheckRepeatPeriod) {
+		this.customerFileSystemStructure = customerFileSystemStructure;
+		this.issues = issues;
 		this.repeatPeriod = regularCheckRepeatPeriod;
 	}
 	
-	/**
-	 * this method loads from CustomerBaseDirJAXB - which contains only String-DirNames, 
-	 * the actually directories on the file system.
-	 * checks if all directories configured in the .xml really phisicaly exist on the file System
-	 * */
-	private List<SubDirChecker> loadCustomerFileSystemStructure(){
+	public  List<SubDirChecker> getCustomerFileSystemStructure(){
 		return customerFileSystemStructure;
 	}
-
-	public CustomerBaseDir getCustomerBaseDirJAXB() {
-		return customerBaseDirJAXB;
-	}
-
 	
+	public List<Issue> getIssues(){
+		return issues;
+	}
 
 	public long getRepeatPeriod() {
 		return repeatPeriod;

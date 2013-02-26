@@ -51,6 +51,10 @@ public class MonitoringProfileChecker {
 	}
 
 
+	/**
+	 *  Note: this constructor is private to prevent the creation of objects.
+	 * */
+	private MonitoringProfileChecker(){}
 	
 	/**
 	 * Returns the JobKey of the Monitoring check job  
@@ -82,7 +86,7 @@ public class MonitoringProfileChecker {
 		jobKey = job.getKey();
 		logger.debug("JOB DETAIL CREATED:"+jobKey+" hashCode:"+job.hashCode());
 
-		regularChecksTrigger = buildTrigger(NAME_TRIGGER , (int) MonitoringProfileCache.getInstance().getRepeatPeriod());
+		regularChecksTrigger = buildTrigger(NAME_TRIGGER , (int) MonitoringProfileCache.getMonitoringProfile().getRepeatPeriod());
 		
 		
 		// schedule it to run!
@@ -135,10 +139,10 @@ public class MonitoringProfileChecker {
 		scheduler.deleteJob(jobKey);
 		
 		
-		MonitoringProfileCache.setInstance(null);//We make sure that the caller of this method will set a new MonitoringProfile in cache
+		MonitoringProfileCache.setMonitoringProfile(null);//We enforce the caller of this method will set a new MonitoringProfile in cache
 		jobKey = null;
 		regularChecksTrigger = null;
-		logger.info("Clean up executed! monitoringProfile>"+MonitoringProfileCache.getInstance()+" jobKey>"+jobKey+" regularChecksTrigger>"+ regularChecksTrigger);
+		logger.info("Clean up executed! monitoringProfile>"+MonitoringProfileCache.getMonitoringProfile()+" jobKey>"+jobKey+" regularChecksTrigger>"+ regularChecksTrigger);
 	}
 	
 	public static Scheduler buildScheduler() throws SchedulerException {

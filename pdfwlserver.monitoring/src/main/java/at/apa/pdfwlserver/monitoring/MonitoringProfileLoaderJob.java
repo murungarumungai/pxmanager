@@ -1,5 +1,6 @@
 package at.apa.pdfwlserver.monitoring;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -42,12 +43,15 @@ public class MonitoringProfileLoaderJob implements Job {
 		} catch (JAXBException jaxbEx) {
 			logger.error("Error Reading monitoring profile", jaxbEx);
 			throw new JobExecutionException(jaxbEx);
+		} catch (IOException ioe){
+			logger.error("Error Reading monitoring profile", ioe);
+			throw new JobExecutionException(ioe);
 		}
 
-		if (MonitoringProfileCache.getInstance() == null) {
+		if (MonitoringProfileCache.getMonitoringProfile() == null) {
 			logger.debug("it's the 1st time when we run the checker");
 			// it's the 1st time when we run the checker
-			MonitoringProfileCache.setInstance(monitoringProfile);
+			MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
 			try {
 				MonitoringProfileChecker.getInstance().launchCheckJob();
 			} catch (SchedulerException e) {
@@ -71,7 +75,7 @@ public class MonitoringProfileLoaderJob implements Job {
 				// Check to see if the job is currently executing
 				if (isCheckJobCurrentlyRunning()) {
 					logger.debug("CheckJob IS CurrentlyRunning");
-					MonitoringProfileCache.getInstance().setCheckJobRunning(true);
+					MonitoringProfileCache.getMonitoringProfile().setCheckJobRunning(true);
 					// 1. reschedule this job a second later(hoping that
 					// meanwhile the CheckJob is done)
 					// 2. Or maybe a listener that will notify us that the
@@ -90,7 +94,7 @@ public class MonitoringProfileLoaderJob implements Job {
 					} catch (SchedulerException e) {
 						e.printStackTrace();
 					}
-					MonitoringProfileCache.setInstance(monitoringProfile);
+					MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
 					try {
 						MonitoringProfileChecker.getInstance().launchCheckJob();
 					} catch (SchedulerException e) {
@@ -104,11 +108,11 @@ public class MonitoringProfileLoaderJob implements Job {
 	private void waitForCheckJobToFinish(MonitoringProfile monitoringProfile) {
 		long start = System.currentTimeMillis();
 
-		synchronized (MonitoringProfileCache.getInstance()) {
-			while (MonitoringProfileCache.getInstance().isCheckJobRunning()) {
+		synchronized (MonitoringProfileCache.getMonitoringProfile()) {
+			while (MonitoringProfileCache.getMonitoringProfile().isCheckJobRunning()) {
 				logger.info("WAITING for CHECK_JOB to finish");
 				try {
-					MonitoringProfileCache.getInstance().wait();
+					MonitoringProfileCache.getMonitoringProfile().wait();
 				} catch (InterruptedException e) {
 					//we have been interrupted
 					return;
@@ -122,7 +126,7 @@ public class MonitoringProfileLoaderJob implements Job {
 			} catch (SchedulerException e) {
 				e.printStackTrace();
 			}
-			MonitoringProfileCache.setInstance(monitoringProfile);
+			MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
 			try {
 				MonitoringProfileChecker.getInstance().launchCheckJob();
 			} catch (SchedulerException e) {

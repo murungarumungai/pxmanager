@@ -20,7 +20,7 @@ public class MonitoringProfileCache {
 	 * another thread will attempt to read it
 	 * Razvan: synchronized is brutal/primitive solution but it will do!
 	 * */
-	public static synchronized void  setInstance(MonitoringProfile newInstance){
+	public static synchronized void  setMonitoringProfile(MonitoringProfile newInstance){
 		/* Before setting the profile, check is the newProfile that we are about to set is different than 
 		 * current profile.
 		 * ONLY if is DIFFERENT we should bother we stopping current check() job, 
@@ -37,7 +37,7 @@ public class MonitoringProfileCache {
 		}
 	}
 	
-	public static synchronized MonitoringProfile getInstance(){
+	public static synchronized MonitoringProfile getMonitoringProfile(){
 		return instance;
 	}
 	

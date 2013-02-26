@@ -49,10 +49,10 @@ public class MonitoringProfileCheckJob implements Job {
 		}
 
 		
-		//Notify Load Job
-		synchronized (MonitoringProfileCache.getInstance()) {
-			MonitoringProfileCache.getInstance().setCheckJobRunning(false);
-			MonitoringProfileCache.getInstance().notifyAll();
+		//Notify LoadJob that execution is complete 
+		synchronized (MonitoringProfileCache.getMonitoringProfile()) {
+			MonitoringProfileCache.getMonitoringProfile().setCheckJobRunning(false);
+			MonitoringProfileCache.getMonitoringProfile().notifyAll();
 		}
 		
 	}

@@ -51,12 +51,12 @@ public class MonitoringProfileCheckerTest {
     	MonitoringProfileReader reader = new MonitoringProfileReaderImpl(xmlFilePath, null);
     	try {
 			monitoringProfile =reader.readMonitoringProfile();
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	MonitoringProfileCache.setInstance(monitoringProfile);
+    	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     }
     
@@ -72,60 +72,7 @@ public class MonitoringProfileCheckerTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getInstance method, of class MonitoringChecker.
-     */
-    @Ignore
-    public void testGetInstance() {
-        System.out.println("getInstance");
-        MonitoringProfileChecker expResult = null;
-        MonitoringProfileChecker result = MonitoringProfileChecker.getInstance();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getJobKey method, of class MonitoringChecker.
-     */
-    @Ignore
-    public void testGetJobKey() {
-        System.out.println("getJobKey");
-        MonitoringProfileChecker instance = null;
-        JobKey expResult = null;
-        JobKey result = instance.getJobKey();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getRegularChecksTrigger method, of class MonitoringChecker.
-     */
-    @Ignore
-    public void testGetRegularChecksTrigger() {
-        System.out.println("getRegularChecksTrigger");
-        MonitoringProfileChecker instance = null;
-        SimpleTrigger expResult = null;
-        SimpleTrigger result = instance.getRegularChecksTrigger();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getScheduler method, of class MonitoringChecker.
-     */
-    @Ignore
-    public void testGetScheduler() {
-        System.out.println("getScheduler");
-        MonitoringProfileChecker instance = null;
-        Scheduler expResult = null;
-        Scheduler result = instance.getScheduler();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  
 
     /**
      * Test of launchCheckJob method, of class MonitoringChecker.
