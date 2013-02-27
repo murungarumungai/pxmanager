@@ -38,11 +38,7 @@ public class CsvParser {
 
 
 	/**
-	 * <p>
-	 * Usually the 1st line is the header of the .csv file, e.g <code>"Issue-Date";"Mutations";"Data processed";"Due-Date Data Delivery";"Earliest Data delivery"</code> 
-	 * and it should be removed by the caller.
-	 * The actual data begins with the second line
-	 * </p>
+	 * 
 	 * <p>
 	 * it should not return null. 
 	 * it does not silently fails. if we can't read the file, we throw exception
@@ -75,6 +71,12 @@ public class CsvParser {
 		return result;
 	}
 	/**
+	 * <p>
+	 * Usually the 1st line is the header of the .csv file, e.g <code>"Issue-Date";"Mutations";"Data processed";"Due-Date Data Delivery";"Earliest Data delivery"</code> 
+	 * and it should be removed.
+	 * The actual data begins with the second line
+	 * </p>
+	 * 
 	 * builds issues from csvRows
 	 * <p>
 	 * - it is usually one issue per row. (one row/issue can contain multiple mutations)
@@ -87,11 +89,14 @@ public class CsvParser {
 	public static List<Issue> loadIssuesFromCsvRows(List<CsvRow> csvRows){
 		List<Issue> issues = null; 
 		Map<Date, Issue> issuesGroupedByDate = new HashMap<Date, Issue>();
-		
+		csvRows.remove(0);
 		//Group issues by issuDate
 		for(CsvRow oneRow:csvRows){
 			Issue tempIssue = getIssue(oneRow) ;
-			
+			if(null==tempIssue){
+				logger.warn("Could not create an issue from csvRow:"+oneRow);
+				continue;
+			}
 			if(issuesGroupedByDate.containsKey(tempIssue.getIssuseDate())){
 				//We already have this issue(date)
 				Issue issue = issuesGroupedByDate.get(tempIssue.getIssuseDate());
@@ -109,26 +114,33 @@ public class CsvParser {
 		return issues;
 	}
 	
+	/**
+	 * @return may return null if from the data we could not instantiate an issue
+	 * */
 	private static Issue getIssue(CsvRow csvRow){
 		Issue issue = null;
 		Date issueDate = DateUtils.parseDate(csvRow.getIssueDate());
 		List<Mutation> mutationsPerRow = new ArrayList<Mutation>();
 		
 		List<String> mutations = csvRow.getMutation();
-		Date dataProcessed = DateUtils.parseDate(csvRow.getDataProcessed());
-		Date dataDueDate = DateUtils.parseDate(csvRow.getDataDueDate());
-		Date dataEarliestDelivery = DateUtils.parseDate(csvRow.getDataEarliestDelivery());
+		Date dataProcessed = DateUtils.parseDateTime(csvRow.getDataProcessed());
+		Date dataDueDate = DateUtils.parseDateTime(csvRow.getDataDueDate());
+		Date dataEarliestDelivery = DateUtils.parseDateTime(csvRow.getDataEarliestDelivery());
 		
 		/*
 		 * if we have multiple mutations on the same row, it means that all the mutations have the same time-points:dataProcessed, dataDueDate, dataErliestDelivery
 		 * */
 		Mutation mutation = null;
 		for(String oneMutation : mutations){
+			if(dataProcessed==null || dataDueDate == null || dataEarliestDelivery == null){
+				logger.warn("Skipping mutation:"+oneMutation+ " could not parse date ");
+				continue;
+			}
 			mutation = new Mutation(oneMutation, dataProcessed, dataDueDate, dataEarliestDelivery);
 			mutationsPerRow.add(mutation);
 		}
 		
-		issue = new Issue(issueDate, mutationsPerRow);
+		issue = issueDate==null ? null : new Issue(issueDate, mutationsPerRow);
 		return issue;
 	}
 

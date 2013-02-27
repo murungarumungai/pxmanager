@@ -73,4 +73,19 @@ public class CsvRow {
 	public static void setColumnNumber(int columnNumber) {
 		CsvRow.columnNumber = columnNumber;
 	}
+	
+	@Override
+	public String toString(){
+		StringBuffer result = new StringBuffer();
+		result.append("[").append(issueDate).append("]");
+		if(this.mutation==null){ 
+			result.append("[]"); 
+		} else {
+			result.append("{").append(mutation.toString()).append("}");
+		}
+		result.append("[").append(dataProcessed).append("]");
+		result.append("[").append(dataDueDate).append("]");
+		result.append("[").append(dataEarliestDelivery).append("]");
+		return result.toString();
+	}
 }

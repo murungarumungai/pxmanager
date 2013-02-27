@@ -37,9 +37,6 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader{
 		
 		//List of Issues with their mutations and timepoints from .csv
 		List<CsvRow> csvRows = CsvParser.parseCSVFile(csvFilePath);
-		csvRows.remove(0);
-		
-		
 		List<Issue> issues = CsvParser.loadIssuesFromCsvRows(csvRows);
 		
 		

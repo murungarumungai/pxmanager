@@ -45,7 +45,7 @@ public class DateFormatUtilsTest {
 				"01.01.13 04:30"};
 
 		for (String oneDate : dates) {
-			Date result = DateUtils.parseDate(oneDate);
+			Date result = DateUtils.parseDateTime(oneDate);
 			System.out.println(result);
 		}
 

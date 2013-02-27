@@ -52,5 +52,8 @@ public class Mutation {
 	public void setDataDueDate(Date dataDueDate) {
 		this.dataDueDate = dataDueDate;
 	}
+	
+	//TODO: override toString()
+	//http://www.javapractices.com/topic/TopicAction.do?Id=55
 
 }

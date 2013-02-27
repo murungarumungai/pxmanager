@@ -64,6 +64,8 @@ public class CsvParserTest {
     	
     	 List<CsvRow> csvRows = CsvParser.parseCSVFile(csvFilePath);
     	 List<Issue> issues = CsvParser.loadIssuesFromCsvRows(csvRows);
+    	 
+    	 System.out.println(issues.size());
     	
     }
 }

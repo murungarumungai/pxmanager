@@ -12,6 +12,7 @@ public class DateUtils {
 	private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
 	
 	public static final String FORMAT1 = "dd.mm.yy hh:mm";
+	public static final String FORMAT2 = "dd.mm.yy";
 	//this is equivalent(and it also works for 2 digit year, i.e:yy) with "dd.mm.yyyy hh:mm";
 	//see unit test
 	
@@ -25,21 +26,38 @@ public class DateUtils {
 	 *  <p>1.1.2013 04:30</p>
 	 *  <p>01.01.2013 04:30:00</p>
 	 *  <p>01.01.13 04:30</p>
+	 *  
+	 *  Format:dd.mm.yy hh:mm
 	 * </p>
 	 * 
 	 * 
 	 *  @return may return null if the stringDate could not be parsed using any of the formats
 	 *  
 	 * */
-	public static Date parseDate(String dateString){
+	public static Date parseDateTime(String dateTimeString){
 		Date parsedDate = null;
 		
 		try {
-			parsedDate = parseDate(FORMAT1, dateString);
+			parsedDate = parseDate(FORMAT1, dateTimeString);
+		} catch (ParseException e) {
+			logger.warn("Error Parsing dateString:"+dateTimeString,e);
+		}
+		
+		return parsedDate;
+	}
+	
+	/**
+	 * Trying to parse a DateString which doesn't contain also Time
+	 * 
+	 * Format:dd.mm.yy
+	 * */
+	public static Date parseDate(String dateString) {
+		Date parsedDate = null;
+		try {
+			parsedDate = parseDate(FORMAT2, dateString);
 		} catch (ParseException e) {
 			logger.warn("Error Parsing dateString:"+dateString,e);
 		}
-		
 		return parsedDate;
 	}
 	
