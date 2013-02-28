@@ -13,9 +13,10 @@ import java.util.Date;
  */
 public  class FileCondition {
     
-    boolean fileExists = true; //<fileCondition exists="true" IsWithinTimePoint="true">
-    boolean isWithinTimePoint = true;
-    boolean IsWithinCheckInterval = true; //Always the latest file must be within IsWithinCheckInterval
+    private final Boolean fileExists; //<fileCondition exists="true">
+    private Boolean isWithinTimePoint = null;//this contition can miss, that is, it can be null
+    private boolean IsWithinCheckInterval = true; //Razvan: asta nu mai are sens, pentru ca: @see getLatestFileWithinCheckInterval()  
+    //Always the latest file must be within IsWithinCheckInterval. Conditia asta se  indeplineste Automat cand apelezi metoda:getLatestFileWithinCheckInterval(); 
     private Date earliestDataDelivery ;
     private Date nextEarliestDataDelivery;
     
@@ -28,13 +29,11 @@ public  class FileCondition {
     SubDirResult checkFile() {
         SubDirResult result = null;
         
-        if(fileContitonExists()==true){
-            File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
-            
-            if(null!= latestFileWithinCheckInterval) {
-                //Conditia este indeplinita
-                //return status "not yet processed"
-            }
+        if(fileExistsCONDITION()==true){
+        	if(fileExistsEVALUATION()){
+        		//Conditia este indeplinita
+        		//return status "not yet processed"
+        	}
         } /*else {
             //fileContitionExists = false
             File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
@@ -42,7 +41,7 @@ public  class FileCondition {
             }
         }*/
         
-        if(isWithinTimepointCondition()==true && isWithinTimepoint()){
+        if(isWithinTimepointCONDITION()==true && isWithinTimepointEVALUATION()){
             File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
             if(null == latestFileWithinCheckInterval  ){
                 
@@ -65,11 +64,29 @@ public  class FileCondition {
         return latestFile;
     }
     
-    protected   boolean fileContitonExists(){
+    /**
+     * This condition must be tested! 
+     * daca metoda asta intoarce true inseamna ca conditia trebuie testata
+     * daca e indeplinita returnam statusul
+     * */
+    protected boolean fileExistsCONDITION(){
         return fileExists;
     }
     
-    protected boolean isWithinTimepointCondition(){
+    private boolean fileExistsEVALUATION(){
+    	File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
+    	if(null!= latestFileWithinCheckInterval) {
+    		//Conditia este indeplinita
+            return true;
+        } else {
+        	return false;
+        }
+    }
+    
+    /**
+     * This condition must be evaluated
+     * */
+    protected boolean isWithinTimepointCONDITION(){
         return isWithinTimePoint;
     }
     
@@ -81,7 +98,7 @@ public  class FileCondition {
         return true;
     }
     
-    public boolean isWithinTimepoint(){
+    public boolean isWithinTimepointEVALUATION(){
         
         boolean result = false;
         

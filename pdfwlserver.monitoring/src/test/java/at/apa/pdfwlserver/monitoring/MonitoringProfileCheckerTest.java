@@ -48,7 +48,7 @@ public class MonitoringProfileCheckerTest {
     	
     	
     	
-    	MonitoringProfileReader reader = new MonitoringProfileReaderImpl(xmlFilePath, null);
+    	MonitoringProfileReader reader = new MonitoringProfileReaderImpl(null,xmlFilePath, null);
     	try {
 			monitoringProfile =reader.readMonitoringProfile();
 		} catch (Exception e) {

@@ -11,8 +11,8 @@ public class DateUtils {
 	
 	private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
 	
-	public static final String FORMAT1 = "dd.mm.yy hh:mm";
-	public static final String FORMAT2 = "dd.mm.yy";
+	public static final String FORMAT1 = "dd.MM.yy hh:mm";
+	public static final String FORMAT2 = "dd.MM.yyyy";
 	//this is equivalent(and it also works for 2 digit year, i.e:yy) with "dd.mm.yyyy hh:mm";
 	//see unit test
 	

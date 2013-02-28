@@ -18,8 +18,13 @@ public class SubDirChecker {
      * a open a File Reference, keep it on and send it as parameter?
      * b store a String(DirPath) and who ever needs to make an operation on that Dir, should get a File reference, use it, close it
      */
-    File subDir; //the subDir that is being checked. Must be a valid FileSystem Directory
-    List<FileCondition> fileConditions;
+    private final File subDirPath; //the subDir that is being checked. Must be a valid FileSystem Directory
+    private final List<FileCondition> fileConditions;
+    
+    public SubDirChecker(File subDirPath, List<FileCondition> fileConditions) {
+    	this.subDirPath = subDirPath;
+    	this.fileConditions = fileConditions;
+    }
     
     public SubDirResult  checkDir(){
         SubDirResult subDirStatus = null;

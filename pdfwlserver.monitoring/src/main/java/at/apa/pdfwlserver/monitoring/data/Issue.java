@@ -11,21 +11,21 @@ import java.util.List;
  * </p>
  * */
 
-public class Issue {
+public class Issue implements Comparable<Issue>{
 	
-	private Date issuseDate;
+	private Date issueDate;
 	private List<Mutation> mutations;
 	
 	public Issue(Date issuseDate, List<Mutation> mutations){
-		this.issuseDate = issuseDate;
+		this.issueDate = issuseDate;
 		this.mutations = mutations;
 	}
 	
 	public Date getIssuseDate() {
-		return issuseDate;
+		return issueDate;
 	}
 	public void setIssuseDate(Date issuseDate) {
-		this.issuseDate = issuseDate;
+		this.issueDate = issuseDate;
 	}
 	public List<Mutation> getMutations() {
 		return mutations;
@@ -34,5 +34,20 @@ public class Issue {
 		this.mutations = mutations;
 	}
 	
-	
+	@Override
+	public String toString(){
+		StringBuilder result = new StringBuilder();
+		result.append("[").append(issueDate).append("]");
+		if(this.mutations==null){ 
+			result.append("[]"); 
+		} else {
+			result.append("{").append(mutations.toString()).append("}");
+		}
+
+		return result.toString();
+	}
+
+	public int compareTo(Issue o) {
+		return getIssuseDate().compareTo(o.getIssuseDate());
+	}
 }

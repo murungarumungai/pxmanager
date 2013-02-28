@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,10 @@ import at.apa.pdfwlserver.monitoring.data.Issue;
 import at.apa.pdfwlserver.monitoring.data.Mutation;
 import at.apa.pdfwlserver.monitoring.utils.DateUtils;
 import at.apa.pdfwlserver.monitoring.utils.FileUtils;
+
+/**
+ * TODO: you could use http://opencsv.sourceforge.net/
+ * */
 
 public class CsvParser {
 	
@@ -84,6 +89,8 @@ public class CsvParser {
 	 * <p>
 	 * - but it can be that we have 2 rows that refer to the same issue(date), each row containing a different mutation of the same issue
 	 * in this case we group issues by issueDate
+	 * 
+	 * @return return the issues orderd by <code> issueDate </code>
 	 * </p>
 	 * */
 	public static List<Issue> loadIssuesFromCsvRows(List<CsvRow> csvRows){
@@ -110,7 +117,7 @@ public class CsvParser {
 		}
 		
 		issues = new ArrayList<Issue>(issuesGroupedByDate.values());
-		
+		Collections.sort(issues);
 		return issues;
 	}
 	
@@ -128,6 +135,7 @@ public class CsvParser {
 		Date dataEarliestDelivery = DateUtils.parseDateTime(csvRow.getDataEarliestDelivery());
 		
 		/*
+		 * Background-Info:We get several mutations in the same data-delivery
 		 * if we have multiple mutations on the same row, it means that all the mutations have the same time-points:dataProcessed, dataDueDate, dataErliestDelivery
 		 * */
 		Mutation mutation = null;
@@ -164,10 +172,16 @@ public class CsvParser {
 			String dueDateDataDelivery = lineAtoms[3];
 			String earliestDataDelivery = lineAtoms[4];
 			
-			String[] mutations = mutation.split(MUTATION_SEPARATOR);
+			//Remove double quote (")
+			String mutationNoDquotes = mutation.replaceAll("^\"|\"$", "");
+			
+			String[] mutations = mutationNoDquotes.split(MUTATION_SEPARATOR);
 			List<String> mutationList = new ArrayList<String>();
+			String noDoubleQuotes;
 			for(String oneMutation:mutations){
-				mutationList.add(oneMutation.trim());
+				//Remove double quote (")
+				noDoubleQuotes = oneMutation.replaceAll("^\"|\"$", "");  
+				mutationList.add(noDoubleQuotes.trim());
 			}
 			
 			result = new CsvRow(issueDate, mutationList, dataProcessed, dueDateDataDelivery, earliestDataDelivery);

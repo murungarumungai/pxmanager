@@ -45,7 +45,7 @@ public class MonitoringProfileLoaderJobTest {
     	
     	
     	
-    	 reader = new MonitoringProfileReaderImpl(xmlFilePath, null);
+    	 reader = new MonitoringProfileReaderImpl(null,xmlFilePath, null);
     }
     
     @After

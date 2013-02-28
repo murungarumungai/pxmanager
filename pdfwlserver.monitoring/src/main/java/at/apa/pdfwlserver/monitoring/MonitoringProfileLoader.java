@@ -3,6 +3,7 @@ package at.apa.pdfwlserver.monitoring;
 import static org.quartz.JobBuilder.newJob;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import org.quartz.JobDetail;
@@ -14,6 +15,8 @@ import org.quartz.SimpleTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.apa.pdfwlserver.monitoring.utils.FileUtils;
+
 public class MonitoringProfileLoader {
 	
 	
@@ -22,8 +25,7 @@ public class MonitoringProfileLoader {
 	
 	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileLoader.class);
 	
-	private File xml;
-	private File csv;
+	
 	private int repeatPeriod; //in minutes
 	private MonitoringProfileReader profileReader;
 	
@@ -34,12 +36,12 @@ public class MonitoringProfileLoader {
 	 * @param repeatPeriod in minutes - how often should we re-read the files?
 	 * 
 	 * */
-	public MonitoringProfileLoader(File xml, File csv, int repeatPeriod){
-		this.xml = xml;
-		this.csv = csv;
+	public MonitoringProfileLoader(File customerBaseDir, File xml, File csv, int repeatPeriod){
+		
+		
 		this.repeatPeriod = repeatPeriod;
 		
-		profileReader = new MonitoringProfileReaderImpl(xml, csv);
+		profileReader = new MonitoringProfileReaderImpl(customerBaseDir, xml, csv);
 	}
 	
 	/**
@@ -56,8 +58,7 @@ public class MonitoringProfileLoader {
 				.withIdentity(NAME_JOB,MonitoringProfileChecker.GROUP_JOB)
 				.build();
 		
-		// pass initialization parameters into the job
-        //job.getJobDataMap().put(MonitoringProfileLoaderJob.PROFILE_READER, profileReader);
+		
 		MonitoringProfileLoaderJob.setMonitoringProfileReader(profileReader);
 		
 		JobKey jobKey = job.getKey();
@@ -83,29 +84,31 @@ public class MonitoringProfileLoader {
 	/**
 	 * This is the entry point into the application
 	 * */
-	public static void main(String[] args){
+	public static void main(String[] args) throws NumberFormatException, IOException, SchedulerException {
 		
-		//input
-		String xmlPath = "";
-		String csvPath =  null;
+		//input TODO: should be read from command line
+		String xmlPath = "CustomerFolderStructureConfiguration3.xml";
+		String csvPath =  "mutationExample.csv";
 		String repeatTimeString = "10";
+		String customerBaseDirectoryPath = "d:/zTask/_MP/MPS-66-Monitoring for optimizing Hotline/derstandard/";
 		
-		int repeatTime = -1;
+		int repeatTime = 0;//how often should we re-read the files and reload the monitotingProfile in minutes
 		
 		repeatTime = Integer.parseInt(repeatTimeString);
-		File xml = new File("CustomerFolderStructureConfiguration3.xml");
+		
+		File xml = null;
 		File csv = null;
+		File customerBaseDir = null;
 		
-		MonitoringProfileLoader monitoringProfileLoader = new MonitoringProfileLoader(xml, csv, repeatTime);
+		xml = FileUtils.checkFileExists(xmlPath);
+		csv = FileUtils.checkFileExists(csvPath);
+		customerBaseDir = FileUtils.checkDirExists(customerBaseDirectoryPath);
 		
 		
+		MonitoringProfileLoader monitoringProfileLoader = new MonitoringProfileLoader(customerBaseDir, xml, csv, repeatTime);
 		
-		try {
-			monitoringProfileLoader.launchMonitoringLoadingJob();
-		} catch (SchedulerException e) {
-			
-			e.printStackTrace();
-		}
+		monitoringProfileLoader.launchMonitoringLoadingJob();
+		
 	}
 
 }

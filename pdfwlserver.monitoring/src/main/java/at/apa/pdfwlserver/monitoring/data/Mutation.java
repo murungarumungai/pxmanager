@@ -1,5 +1,6 @@
 package at.apa.pdfwlserver.monitoring.data;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
@@ -51,6 +52,24 @@ public class Mutation {
 
 	public void setDataDueDate(Date dataDueDate) {
 		this.dataDueDate = dataDueDate;
+	}
+	
+	@Override
+	public String toString(){
+		StringBuilder result = new StringBuilder();
+		//determine fields declared in this class only (no fields of superclass)
+	    Field[] fields = this.getClass().getDeclaredFields();
+	    for(Field field : fields){
+	    	result.append("[");
+	    	try{
+	    		result.append(field.getName());
+	    		result.append(":");
+	    		//requires access to private field:
+	            result.append( field.get(this) );
+	    	}catch(IllegalAccessException ex){}
+	    	result.append("]");
+	    }
+		return result.toString();
 	}
 	
 	//TODO: override toString()
