@@ -7,26 +7,38 @@ package at.apa.pdfwlserver.monitoring.data;
 import java.io.File;
 import java.util.Date;
 
+import at.apa.pdfwlserver.monitoring.xml.Status;
+
 /**
  *
  * @author rgaston
+ * 
+ * todo: rename this DirectoryFileCondition
  */
-public  class FileCondition {
+public class DirectoryFileCondition {
     
+	private final File subDirPath;// the canonicalFilePath of the dir
+	private final Status status;//a FileCondition can return this status if the conditions are fulfilled, or it not not return it 
     private final Boolean fileExists; //<fileCondition exists="true">
     private Boolean isWithinTimePoint = null;//this contition can miss, that is, it can be null
     private boolean IsWithinCheckInterval = true; //Razvan: asta nu mai are sens, pentru ca: @see getLatestFileWithinCheckInterval()  
     //Always the latest file must be within IsWithinCheckInterval. Conditia asta se  indeplineste Automat cand apelezi metoda:getLatestFileWithinCheckInterval(); 
     private Date earliestDataDelivery ;
-    private Date nextEarliestDataDelivery;
+    private Date nextEarliestDataDelivery; //TODO: cuta si itereaza numai daca now() nu se gaseste / e in afara intervalului/ dates are expired
     
-    public FileCondition(boolean fileConditionExists){
+    public DirectoryFileCondition(boolean fileConditionExists, Status status, File subDirPath){
         this.fileExists = fileConditionExists;
+        this.status = status;
+        this.subDirPath = subDirPath;
     }
     
+    
+    public void setIsWithinTimePoint(boolean value){
+    	this.isWithinTimePoint = value;
+    }
    
 
-    SubDirResult checkFile() {
+    public SubDirResult checkDirectoryForFile() {
         SubDirResult result = null;
         
         if(fileExistsCONDITION()==true){
@@ -54,8 +66,13 @@ public  class FileCondition {
         return result;
     }
     
+    private Status checkFileExistence(){
+    	Status result = null;
+    	return result;
+    }
+    
     /**
-     * when getting the latest file from the folder, always apply the contion <b>IsWithinCheckInterval</b>
+     * when getting the latest file from the folder, always apply the condition <b>IsWithinCheckInterval</b>
      * that means: 
      * Next[Earliest Data delivery] >{isBefore}   now(){the moment in which the check is done} >{is after} [Earliest Data delivery] 
      */

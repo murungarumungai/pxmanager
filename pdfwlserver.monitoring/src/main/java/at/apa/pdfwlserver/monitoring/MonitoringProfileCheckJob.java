@@ -19,7 +19,7 @@ import at.apa.pdfwlserver.monitoring.data.SubDirResult;
 /**
  * The purpose of this class is to execute a complete check
  * 
- * it does not know and it does not care about scheduling
+ * it does not know when it is called, or how often, and it does not care about scheduling
  * 
  * it is just a sequence of logical steps, which are executed in order to run a check,
  * and produce a reportResult, and write the status-page.html

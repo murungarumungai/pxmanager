@@ -19,7 +19,7 @@ public class MonitoringProfile {
 	private final List<Issue> issues;//issues extracted from .csv, ordered by issueDate
 	
 
-	public MonitoringProfile( List<SubDirChecker> customerFileSystemStructure, List<Issue> issues,long regularCheckRepeatPeriod) {
+	public MonitoringProfile( List<SubDirChecker> customerFileSystemStructure, List<Issue> issues, long regularCheckRepeatPeriod) {
 		this.customerFileSystemStructure = customerFileSystemStructure;
 		this.issues = issues;
 		this.repeatPeriod = regularCheckRepeatPeriod;

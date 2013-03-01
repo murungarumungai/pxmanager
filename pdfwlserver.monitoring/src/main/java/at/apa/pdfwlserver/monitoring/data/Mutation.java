@@ -10,6 +10,7 @@ import java.util.Date;
 public class Mutation {
 
 	private String name;
+	//Maybe it is better that the references to this date should be cloned, so that clients can not change the date
 	private Date dataProcessed;
 	private Date dataDueDate;
 	private Date dataEarliestDelivery;

@@ -52,7 +52,7 @@ public class CsvUnitTestData {
 		return data;
 	}
 	
-	private static List<Mutation> getMutationList(Mutation... mutations){
+	public static List<Mutation> getMutationList(Mutation... mutations){
 		List<Mutation> result = new ArrayList<Mutation>();
 		for(Mutation  oneMutation : mutations){
 			result.add(oneMutation);
@@ -60,7 +60,7 @@ public class CsvUnitTestData {
 		return result;
 	}
 	
-	private static Mutation getMutation(String name, String dataProcessed, String dueDateDelivery, String earliestDelivery){
+	public static Mutation getMutation(String name, String dataProcessed, String dueDateDelivery, String earliestDelivery){
 		Mutation result = null;
 		result = new Mutation(name, DateUtils.parseDateTime(dataProcessed), DateUtils.parseDateTime(dueDateDelivery), DateUtils.parseDateTime(earliestDelivery));
 		return result;

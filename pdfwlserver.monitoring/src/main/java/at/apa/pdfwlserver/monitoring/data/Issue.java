@@ -13,7 +13,8 @@ import java.util.List;
 
 public class Issue implements Comparable<Issue>{
 	
-	private Date issueDate;
+	//Maybe it is better that the references to this date should be cloned, so that clients can not change the date
+	private final Date issueDate;
 	private List<Mutation> mutations;
 	
 	public Issue(Date issuseDate, List<Mutation> mutations){
@@ -24,9 +25,7 @@ public class Issue implements Comparable<Issue>{
 	public Date getIssuseDate() {
 		return issueDate;
 	}
-	public void setIssuseDate(Date issuseDate) {
-		this.issueDate = issuseDate;
-	}
+	
 	public List<Mutation> getMutations() {
 		return mutations;
 	}

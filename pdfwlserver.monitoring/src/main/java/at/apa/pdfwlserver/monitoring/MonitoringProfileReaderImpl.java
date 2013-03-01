@@ -9,12 +9,14 @@ import javax.xml.bind.JAXBException;
 
 import at.apa.pdfwlserver.monitoring.csv.CsvParser;
 import at.apa.pdfwlserver.monitoring.csv.CsvRow;
+import at.apa.pdfwlserver.monitoring.data.DirectoryFileCondition;
 import at.apa.pdfwlserver.monitoring.data.Issue;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 import at.apa.pdfwlserver.monitoring.data.SubDirChecker;
 import at.apa.pdfwlserver.monitoring.utils.FileUtils;
 import at.apa.pdfwlserver.monitoring.xml.CustomerBaseDir;
 import at.apa.pdfwlserver.monitoring.xml.CustomerDirStructureMarshaler;
+import at.apa.pdfwlserver.monitoring.xml.FileCondition;
 import at.apa.pdfwlserver.monitoring.xml.SubDir;
 
 public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
@@ -51,10 +53,18 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 	}
 
 	/**
-	 * this method loads from CustomerBaseDir(JAXB) - which contains only
-	 * String-DirNames - the actually directories on the file system. checks if
+	 * <p>
+	 * This method loads from CustomerBaseDir(JAXB) - which contains only
+	 * String-DirNames - the actually directories on the file system (checks if
 	 * all directories configured in the .xml really physically exist on the
-	 * file System
+	 * file System)
+	 * </p>
+	 * <p>
+	 * It also convert the xml.FileCondition(JAXB = are just JAXB artifacts) of each folder into data.FileContions - which tell
+	 * what conditions are configured for this subDir and what is the returned status if the condition is fulfilled.
+	 * If the subDir has more than one condition, these are mutually exclusive, 
+	 * that is, only one of these condition should be true 
+	 * </p>
 	 * @throws IOException 
 	 * 
 	 * @throws IllegalAccessException
@@ -62,7 +72,7 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 	private List<SubDirChecker> loadCustomerFileSystemStructure(
 			CustomerBaseDir customerFoldersJAXB) throws IOException {
 		
-		List<SubDirChecker> result = null;
+		List<SubDirChecker> customerBaseDirStructure = null;
 
 		String customerBaseDirName = customerFoldersJAXB.getName();
 		/*
@@ -71,30 +81,47 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 		 * */
 		String lastFolderInPath = FileUtils
 				.getLastFolderInPath(customerBaseDirPath);
-
 		if (!customerBaseDirName.equalsIgnoreCase(lastFolderInPath)) {
 			throw new IllegalArgumentException(
-					"Configuration Error! CustomerBaseDir in xml:"
+					"CustomerBaseDir does not match! Configuration Error! CustomerBaseDir in xml:"
 							+ customerBaseDirName + " But customerBaseDirPath:"
 							+ customerBaseDirPath.toString());
 		}
-		result = new ArrayList<SubDirChecker>(customerFoldersJAXB.getSubDir().size());
+		
+		customerBaseDirStructure = new ArrayList<SubDirChecker>(customerFoldersJAXB.getSubDir().size());
 		SubDirChecker subDirChecker = null;
-		String subDirName = null;
-		File subDirPath = null;
-		List<at.apa.pdfwlserver.monitoring.xml.FileCondition> fileConditionsJAXB = null;
+		
 		for(SubDir oneSubDir:customerFoldersJAXB.getSubDir()){
-			subDirName = oneSubDir.getName();
-			//build the subDirPath from the CustomerBaseDir
-			subDirPath = FileUtils.checkDirExists(new File(customerBaseDirPath, subDirName));
 			
-			fileConditionsJAXB = oneSubDir.getFileCondition();
-			
-			subDirChecker = new SubDirChecker(subDirPath, null);
-			result.add(subDirChecker);
+			subDirChecker = getSubDirChecker(oneSubDir);
+			customerBaseDirStructure.add(subDirChecker);
 		}
 		
-		return result;
+		return customerBaseDirStructure;
+	}
+	
+	private SubDirChecker getSubDirChecker(SubDir subDirJAXB) throws IOException{
+		SubDirChecker subDirChecker = null;
+		
+		String subDirName = subDirJAXB.getName();
+		//build the subDirPath from the CustomerBaseDir
+		File subDirPath = FileUtils.checkDirExists(new File(customerBaseDirPath, subDirName)); 
+		
+		List<FileCondition> fileConditionsJAXB = subDirJAXB.getFileCondition();
+		
+		List<DirectoryFileCondition> subDirFileConditions = new ArrayList<DirectoryFileCondition>(fileConditionsJAXB.size());
+		
+		for(FileCondition condition : fileConditionsJAXB){
+			DirectoryFileCondition subDirFileCondition = new DirectoryFileCondition(condition.isExists(), condition.getStatus(), subDirPath);
+			if(null!=condition.isWithinTimePoint()){
+				subDirFileCondition.setIsWithinTimePoint(condition.isWithinTimePoint().booleanValue());
+			}
+			subDirFileConditions.add(subDirFileCondition);
+		}
+		
+		subDirChecker = new SubDirChecker(subDirFileConditions);
+		
+		return subDirChecker;
 	}
 
 }

@@ -2,6 +2,7 @@ package at.apa.pdfwlserver.monitoring.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -68,6 +69,19 @@ public class DateUtils {
 		Date parsedDate =  simpleDateFormat.parse(date);
 		
 		return parsedDate;
+	}
+	
+	/**
+	 * returns the same date but with hour set at 23:59:00:00 
+	 * */
+	public static Date getEndOfDayTime(Date date){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+		return cal.getTime();
 	}
 
 }

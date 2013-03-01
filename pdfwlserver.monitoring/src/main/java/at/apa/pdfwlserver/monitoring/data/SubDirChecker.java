@@ -13,23 +13,22 @@ import java.util.List;
  */
 public class SubDirChecker {
     
-    /* TODO: what is a File reference? when we send a File reference in Java, does it mean that we have an open File Handler to that directory
-     * What is the best way? 
-     * a open a File Reference, keep it on and send it as parameter?
-     * b store a String(DirPath) and who ever needs to make an operation on that Dir, should get a File reference, use it, close it
-     */
-    private final File subDirPath; //the subDir that is being checked. Must be a valid FileSystem Directory
-    private final List<FileCondition> fileConditions;
+   
     
-    public SubDirChecker(File subDirPath, List<FileCondition> fileConditions) {
-    	this.subDirPath = subDirPath;
-    	this.fileConditions = fileConditions;
+    private final List<DirectoryFileCondition> directoryFileConditions;
+    
+    /**
+     * @param subDirPath - the canonicalFilePath of the dir
+     * */
+    public SubDirChecker(List<DirectoryFileCondition> directoryFileConditions) {
+    	
+    	this.directoryFileConditions = directoryFileConditions;
     }
     
     public SubDirResult  checkDir(){
         SubDirResult subDirStatus = null;
-        for(FileCondition fileCondition : fileConditions){
-            subDirStatus = fileCondition.checkFile();
+        for(DirectoryFileCondition directoryFileCondition : directoryFileConditions){
+            subDirStatus = directoryFileCondition.checkDirectoryForFile();
         }
         return subDirStatus;
     }

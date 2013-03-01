@@ -11,10 +11,10 @@ import javax.xml.bind.annotation.XmlElement;
 public class FileCondition {
 
 	@XmlAttribute(required = true)
-	private boolean exists;
+	private Boolean exists;
 
 	@XmlAttribute(required = false, name = "IsWithinTimePoint")
-	private boolean isWithinTimePoint;
+	private Boolean isWithinTimePoint;
 
 	@XmlElement
 	private Status status;
@@ -26,7 +26,7 @@ public class FileCondition {
 
 	}
 
-	public boolean isExists() {
+	public Boolean isExists() {
 		return exists;
 	}
 
@@ -38,7 +38,7 @@ public class FileCondition {
 		return errorSpecialHandling;
 	}
 
-	public boolean isWithinTimePoint() {
+	public Boolean isWithinTimePoint() {
 		return isWithinTimePoint;
 	}
 
