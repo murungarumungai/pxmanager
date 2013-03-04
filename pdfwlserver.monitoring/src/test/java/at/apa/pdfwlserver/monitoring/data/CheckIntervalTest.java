@@ -120,9 +120,65 @@ public class CheckIntervalTest {
     	
     	Issue issue2 = new Issue(DateUtils.parseDate("01.03.2013"), mutations2);
     	issues.add(issue2);
+    	
+    	List<Mutation> mutations3 = getMutationList(
+				getMutation("Morning"		, "31.12.2012 23:00", "31.12.2012 21:30", "31.12.2012 17:00"),
+				getMutation("Wiena"			, "31.12.2012 23:00", "31.12.2012 21:30", "31.12.2012 17:00"),
+				getMutation("Upper_Austria"	, "31.12.2012 23:00", "31.12.2012 21:30", "31.12.2012 20:00")
+				);
+    	
+    	Issue issue3 = new Issue(DateUtils.parseDate("31.12.2012"), mutations3);
+    	issues.add(issue3);
+    	
     	return issues;
     	
     }
+    
+    /**
+     * Test When we have an Issue with multiple issues
+     * */
+    @Test
+    public void testGetMutationBeingCheckedRightNow3(){
+    	Date now = DateUtils.parseDateTime("31.12.2012 17:00");
+    	List<Issue> issues = getTestData3();
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0);
+    	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
+    	
+    	CheckInterval response = CheckInterval.getMutationBeingCheckedRightNow(now);
+    	
+    	assertEquals("Checking expected issue date", DateUtils.parseDate("31.12.2012 23:00"), response.getCurrentCheckedIssue().getIssuseDate());
+    	
+    	assertEquals("Checking expected Current checked mutations number", 3, response.getCurrentCheckedIssue().getMutations().size());
+    }
+    
+    public static List<Issue> getTestData3(){
+    	List<Issue> issues = new ArrayList<Issue>();
+    	List<Mutation> mutations1 =  getMutationList(
+				getMutation("Morning", "28.02.2013 04:30", "28.02.2013 04:00", "28.02.2013 00:00")				
+				);
+    	Issue issue1 = new Issue(DateUtils.parseDate("28.02.2013"), mutations1);
+    	//issues.add(issue1);
+    	
+    	List<Mutation> mutations2 = getMutationList(
+				getMutation("Morning"		, "31.12.2012 23:00", "31.12.2012 21:30", "31.12.2012 17:00"),
+				getMutation("Wiena"			, "31.12.2012 23:00", "31.12.2012 21:30", "31.12.2012 17:00"),
+				getMutation("Upper_Austria"	, "31.12.2012 23:00", "31.12.2012 21:30", "31.12.2012 20:00")
+				);
+    	
+    	Issue issue2 = new Issue(DateUtils.parseDate("31.12.2012"), mutations2);
+    	issues.add(issue2);
+    	
+    	List<Mutation> mutations3 = getMutationList(
+				getMutation("Evening", "28.02.2013 23:00", "28.02.2013 21:30", "28.02.2013 17:00"),
+				getMutation("Morning", "01.03.2013 04:30", "01.03.2013 04:00", "01.03.2013 00:00")
+				);
+    	
+    	Issue issue3 = new Issue(DateUtils.parseDate("01.03.2013"), mutations3);
+    	//issues.add(issue3);
+    	return issues;
+    	
+    }
+    
     
     
 }

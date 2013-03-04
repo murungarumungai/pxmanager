@@ -4,6 +4,8 @@
  */
 package at.apa.pdfwlserver.monitoring;
 
+import java.io.IOException;
+
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -50,10 +52,11 @@ public class MonitoringProfileCheckJobTest {
      * Razvan: o alta idee puneti <code>interface</code> peste metodele gen isWithinTimePoint(), 
      * ca sa pot testa mai usor si automat. Daca am interfete pot sa fac mock-uri, 
      * si nu trebe sa astept sa se indeplineasca conditia de timp astfel ca isWithinTimePoint() sa intoarca ce am eu nevoie in test-case
+     * @throws IOException 
      * 
      */
     @Test
-    public void testCheck() {
+    public void testCheck() throws IOException {
         System.out.println("check");
         MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
         ReportResult expResult = null;

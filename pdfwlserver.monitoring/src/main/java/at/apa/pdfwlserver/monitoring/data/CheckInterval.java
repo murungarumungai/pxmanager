@@ -13,13 +13,6 @@ public class CheckInterval {
 	 * dataEarliestDelivery of the next mutation
 	 * 
 	 * if there is no next mutation return issueDate.23:59 of the current(which should be the last) issue date
-	 * 
-	 * TODO: 
-	 * 
-	 * 
-	 * 2.b now() == nextEarliestDelivery
-	 * 
-	 *  TODO: cuta si itereaza numai daca now() nu se gaseste i
 	 * */ 
 	private final Date nextEarliestDataDelivery; 
 	
@@ -41,7 +34,8 @@ public class CheckInterval {
 	}
 	
 	/**
-	 * Return the next EarliestDataDelivery of the next issue/mutation
+	 * Return the next EarliestDataDelivery of the next issue->mutation
+	 * Represents the End of the Check interval
 	 * */
 	public Date getNextEarliestDataDelivery(){
 		return nextEarliestDataDelivery;
@@ -51,36 +45,39 @@ public class CheckInterval {
 	/**
 	 * @param now - is the moment in time(currentSystemTime) when the check is performed
 	 * <p>
-	 * looks into the MonitoringProfile, it iterates through all issues.mutations and it finds the mutation 
-	 * for which the check is done in this moment
+	 * looks into the MonitoringProfile, it iterates through all issues->mutations and it finds the mutation 
+	 * for which the check is done in this moment.
+	 * <p>
+	 * now.after(earliestDataDelivery) && now.before(nextEarliestDataDelivery)
+	 * </p>
 	 * 
-	 * @return may return null is all the mutations(date) are expired
+	 * @return may return null is all the mutations(date) are expired, or if the monitoringProfile is null
 	 * </p>
 	 * */
 	public static CheckInterval getMutationBeingCheckedRightNow(Date now){
 		CheckInterval result = null;
+		Date earliestDataDelivery;
+		Date nextEarliestDataDelivery;
 		MonitoringProfile monitoringProfile = MonitoringProfileCache.getMonitoringProfile();
 		if(null!=monitoringProfile){
 			List<Issue> issues = monitoringProfile.getIssues();
-			
 			int issuesLen = issues.size();
-			
-			Date earliestDataDelivery;
-			Date nextEarliestDataDelivery;
 			boolean onLastIssue = false;
 			
 			for(int i =0; i<=issuesLen-1; i++){
-				boolean onLastMutation = false;
 				Issue currentIssue = issues.get(i);
 				if(i==issuesLen-1){
 					onLastIssue = true;
 				}
+				
+				boolean onLastMutation = false;
 				List<Mutation> mutations = currentIssue.getMutations();
 				int mutationLen = mutations.size();
-				Date firstMutationDateOfCurrentIssue = null;
+				
 				Mutation nextMutation = null;
+				
 				for(int j=0; j<=mutationLen-1; j++){
-					firstMutationDateOfCurrentIssue = mutations.get(0).getDataEarliestDelivery();
+					
 					Mutation currentMutation = mutations.get(j);
 					if(j==mutationLen-1){
 						//we are on the last mutation(we only have one mutation in this issue)
@@ -92,32 +89,46 @@ public class CheckInterval {
 						//we are on the last issue, there is no issue in the list after this
 						if(onLastMutation){
 							//we are on the last mutation, there is no other entry after this
-							//nextEarliestDataDelivery =  23.59 from issueDate
+							//nextEarliestDataDelivery is the end of the day issueDate, i.e. issueDate.23.59 
 							nextEarliestDataDelivery = DateUtils.getEndOfDayTime(currentIssue.getIssuseDate());
 						} else{
 							//there is at least one mutation after this, get the next mutation's earliest data delivery
+							nextMutation = mutations.get(j+1);
 							//But 1st make sure that we don't have an Issue with multiple mutations with exactly same dates
-							
-							//TODO this doesn't cover the case when we have multiple mutations with the same dates
-							 nextMutation = mutations.get(j+1);
-							
-							if(firstMutationDateOfCurrentIssue.equals(nextMutation.getDataEarliestDelivery())){
+							if(currentMutation.getDataEarliestDelivery().equals(nextMutation.getDataEarliestDelivery())){
 								//We are in the case when we have multiple mutations with the same date
-								//so take the 1st mutation of the next issue
-								Issue nextIssue = issues.get(i+1);
-								 nextMutation = nextIssue.getMutations().get(0);
-								nextEarliestDataDelivery = nextMutation.getDataEarliestDelivery();
+								//since we are onLastIssue 
+								nextEarliestDataDelivery = DateUtils.getEndOfDayTime(currentIssue.getIssuseDate());
 							} else {
 								nextEarliestDataDelivery = nextMutation.getDataEarliestDelivery();
 							}
 						}
 					} else {
-						//there is at least one issue after this, get the next issue
-						Issue nextIssue = issues.get(i+1);
-						 nextMutation = nextIssue.getMutations().get(0);
-						nextEarliestDataDelivery = nextMutation.getDataEarliestDelivery();
+						//there is at least one issue after this, get the next issue, if we do not have a next mutation
+						if(onLastMutation){
+							//we only have one mutation in this issue, so get nextIssue->firstMutation
+							Issue nextIssue = issues.get(i+1);
+							nextMutation = nextIssue.getMutations().get(0);
+							nextEarliestDataDelivery = nextMutation.getDataEarliestDelivery();
+						} else{
+							//current issue has more than one mutation,
+							//so take the next mutation and if it has a different date than currentIssue
+							nextMutation = mutations.get(j+1);
+							if(currentMutation.getDataEarliestDelivery().equals(nextMutation.getDataEarliestDelivery())){
+								//We are in the case when we have multiple mutations with the same date
+								//so get nextIssue->firstMutation
+								Issue nextIssue = issues.get(i+1);
+								nextMutation = nextIssue.getMutations().get(0);
+								nextEarliestDataDelivery = nextMutation.getDataEarliestDelivery();
+							} else {
+								//We are in the case when we have multiple mutations and the next mutation has a different date
+								//so take the date of the next issue
+								//there is at least one mutation after this, get the next mutation's earliest data delivery								
+								nextEarliestDataDelivery = nextMutation.getDataEarliestDelivery();
+							}
+						}
+						
 					}
-					
 					if( (now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(nextEarliestDataDelivery)){
 						//we are within the check interval of this mutation
 						result = new CheckInterval(currentIssue, currentMutation, nextEarliestDataDelivery);

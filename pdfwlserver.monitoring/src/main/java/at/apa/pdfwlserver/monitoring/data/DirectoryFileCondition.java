@@ -5,119 +5,141 @@
 package at.apa.pdfwlserver.monitoring.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import at.apa.pdfwlserver.monitoring.utils.FileUtils;
 import at.apa.pdfwlserver.monitoring.xml.Status;
 
 /**
  *
  * @author rgaston
  * 
- * todo: rename this DirectoryFileCondition
  */
 public class DirectoryFileCondition {
     
-	private final File subDirPath;// the canonicalFilePath of the dir
-	private final Status status;//a FileCondition can return this status if the conditions are fulfilled, or it not not return it 
-    private final Boolean fileExists; //<fileCondition exists="true">
-    private Boolean isWithinTimePoint = null;//this contition can miss, that is, it can be null
-    private boolean IsWithinCheckInterval = true; //Razvan: asta nu mai are sens, pentru ca: @see getLatestFileWithinCheckInterval()  
-    //Always the latest file must be within IsWithinCheckInterval. Conditia asta se  indeplineste Automat cand apelezi metoda:getLatestFileWithinCheckInterval(); 
+	protected final File subDirPath;// the canonicalFilePath of the dir
+	protected final Status status;//a FileCondition can return this status if the conditions are fulfilled, or it not not return it 
+    protected final Boolean fileExists; //<fileCondition exists="true">
+    protected Boolean isWithinTimePoint = null;//this condition can miss, that is, it can be null
+    protected Date now;//the moment when the check is done
+   
     private Date earliestDataDelivery ;
-    private Date nextEarliestDataDelivery; //TODO: cuta si itereaza numai daca now() nu se gaseste / e in afara intervalului/ dates are expired
+    private Date nextEarliestDataDelivery; 
+    private CheckInterval checkInterval;
     
-    public DirectoryFileCondition(boolean fileConditionExists, Status status, File subDirPath){
+    private static Logger logger = LoggerFactory.getLogger(DirectoryFileCondition.class);
+    
+    
+    private DirectoryFileChecker fileChecker; 
+    
+    public DirectoryFileCondition(boolean fileConditionExists, Boolean isWithinTimePoint, Status status, File subDirPath){
+    	this.isWithinTimePoint = isWithinTimePoint;
         this.fileExists = fileConditionExists;
         this.status = status;
         this.subDirPath = subDirPath;
     }
     
-    
-    public void setIsWithinTimePoint(boolean value){
-    	this.isWithinTimePoint = value;
-    }
-   
-
-    public SubDirResult checkDirectoryForFile() {
+    //TODO overrite this in importFileCondition
+    public SubDirResult checkDirectoryForFile() throws IOException {
         SubDirResult result = null;
         
-        if(fileExistsCONDITION()==true){
-        	if(fileExistsEVALUATION()){
-        		//Conditia este indeplinita
-        		//return status "not yet processed"
-        	}
-        } /*else {
-            //fileContitionExists = false
-            File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
-            if(null == latestFileWithinCheckInterval){
-            }
-        }*/
+        //begin check, we chek now
+        now = new Date();
+        logger.debug("Began checking folder>>"+subDirPath+" at:"+now);
+        /*
+         * result status of this FileCondition, 
+         * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
+         * 
+         * Else this FileCondition returns null. For folders: import, success, error, 
+         * if the file doesn't exist, we do not return a status, so it's ok to return null  
+         * */
+        Status status = checkFileExistence();
         
-        if(isWithinTimepointCONDITION()==true && isWithinTimepointEVALUATION()){
-            File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
-            if(null == latestFileWithinCheckInterval  ){
-                
-                //conditia este indeplinita
-                
-                //return status "waiting"
-            }
-        }
+       
         
         return result;
     }
     
-    private Status checkFileExistence(){
+    /**
+     * get the Issues, Mutations, that are being checked
+     * */
+    private CheckInterval getCheckInterval(){
+    	if(null == checkInterval){
+    		checkInterval = CheckInterval.getMutationBeingCheckedRightNow(now);
+    		earliestDataDelivery = checkInterval.getCurrentCheckedMutation().getDataEarliestDelivery();
+    		nextEarliestDataDelivery = checkInterval.getNextEarliestDataDelivery();
+    	} else if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(nextEarliestDataDelivery)){
+    		//we already have a check interval, and now() is still within the check interval, so no reason to request a new mutation
+    		// just return the current one
+    		return checkInterval;
+    		} else {
+    			//Dates are expired, make a new request for the current checked issue->mutation
+    			checkInterval = CheckInterval.getMutationBeingCheckedRightNow(now);
+    			earliestDataDelivery = checkInterval.getCurrentCheckedMutation().getDataEarliestDelivery();
+        		nextEarliestDataDelivery = checkInterval.getNextEarliestDataDelivery();
+    	}
+    	return checkInterval;
+    }
+    
+       
+    protected Status checkFileExistence() throws IOException{
     	Status result = null;
+    	 if(isWithinTimePoint!=null){//IsWithinTimePoint condition was set         	
+         	if( (fileExists==fileExistsEvaluation()) && (isWithinTimePoint==isWithinTimepointEvaluation()) ){
+         		//condition fulfilled => return status
+         		result = status;
+         	} else {
+         		//condition not fulfilled return null
+         		result = null;
+         	}
+         } else {
+        	 if(fileExists==fileExistsEvaluation()){
+        		 //condition fulfilled => return status
+        		 result = status;
+        	 }
+         }
     	return result;
     }
     
-    /**
-     * when getting the latest file from the folder, always apply the condition <b>IsWithinCheckInterval</b>
-     * that means: 
-     * Next[Earliest Data delivery] >{isBefore}   now(){the moment in which the check is done} >{is after} [Earliest Data delivery] 
-     */
-    private File getLatestFileWithinCheckInterval(){
-        File latestFile = null;
-        return latestFile;
-    }
     
+    protected DirectoryFileChecker getDirectoryFileChecker(){
+    	if(null==fileChecker){
+    		fileChecker = new DirectoryFileCheckerImpl(earliestDataDelivery,nextEarliestDataDelivery, checkInterval.getCurrentCheckedMutation().getDataDueDate() ); 
+    	}
+    	return fileChecker;
+    }
+  
     /**
-     * This condition must be tested! 
-     * daca metoda asta intoarce true inseamna ca conditia trebuie testata
-     * daca e indeplinita returnam statusul
+     * to be used in unit Tests
      * */
-    protected boolean fileExistsCONDITION(){
-        return fileExists;
+    public void setFileChecker(DirectoryFileChecker fileChecker){
+    	this.fileChecker = fileChecker;
     }
     
-    private boolean fileExistsEVALUATION(){
-    	File latestFileWithinCheckInterval = getLatestFileWithinCheckInterval();
+   
+    protected boolean fileExistsEvaluation() throws IOException{
+    	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval();
     	if(null!= latestFileWithinCheckInterval) {
-    		//Conditia este indeplinita
+    		//File exists in folder within Check interval
             return true;
         } else {
+        	//No file exists in folder within check interval
         	return false;
         }
     }
     
-    /**
-     * This condition must be evaluated
-     * */
-    protected boolean isWithinTimepointCONDITION(){
-        return isWithinTimePoint;
-    }
-    
-    /**
-     * all contitions must check that now, the moment the check is done is IsWithinCheckInterval
-     * TODO: maybe this should be done at a higher level on the call stack
-     */
-    final boolean isWithinCheckInterval(){
-        return true;
-    }
-    
-    public boolean isWithinTimepointEVALUATION(){
+   
+    protected boolean isWithinTimepointEvaluation(){
         
         boolean result = false;
+        
+        if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(checkInterval.getCurrentCheckedMutation().getDataDueDate())){
+        	result = true;
+        }
         
         //now() - the time the check si done
         //[Due-Date Delivery] >{is before} now(){the moment in which the check is done} >{is after} [Earliest Data Delivery]

@@ -5,6 +5,7 @@
 package at.apa.pdfwlserver.monitoring.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class SubDirChecker {
     	this.directoryFileConditions = directoryFileConditions;
     }
     
-    public SubDirResult  checkDir(){
+    public SubDirResult  checkDir() throws IOException{
         SubDirResult subDirStatus = null;
         for(DirectoryFileCondition directoryFileCondition : directoryFileConditions){
             subDirStatus = directoryFileCondition.checkDirectoryForFile();

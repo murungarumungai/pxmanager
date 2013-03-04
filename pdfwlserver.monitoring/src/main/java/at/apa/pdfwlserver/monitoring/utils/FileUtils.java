@@ -3,6 +3,7 @@ package at.apa.pdfwlserver.monitoring.utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Date;
 
 public class FileUtils {
 
@@ -96,6 +97,20 @@ public class FileUtils {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * should return the date when the file was created/copied on this file system
+	 * the date when the file was received on this fileSystem
+	 * */
+	public static Date getReceivedDate(File filePath){
+		Date dateReceived = new Date(filePath.lastModified());
+		return dateReceived;
+	}
+	
+	public static File getLatestFileFromDir(File dirPath){
+		File file = null;
+		return file;
 	}
 
 }

@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import at.apa.pdfwlserver.monitoring.csv.CsvParser;
 import at.apa.pdfwlserver.monitoring.csv.CsvRow;
 import at.apa.pdfwlserver.monitoring.data.DirectoryFileCondition;
+import at.apa.pdfwlserver.monitoring.data.IncomingDirectoryFileCondition;
 import at.apa.pdfwlserver.monitoring.data.Issue;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 import at.apa.pdfwlserver.monitoring.data.SubDirChecker;
@@ -110,12 +111,14 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 		List<FileCondition> fileConditionsJAXB = subDirJAXB.getFileCondition();
 		
 		List<DirectoryFileCondition> subDirFileConditions = new ArrayList<DirectoryFileCondition>(fileConditionsJAXB.size());
-		
+		DirectoryFileCondition subDirFileCondition = null;
 		for(FileCondition condition : fileConditionsJAXB){
-			DirectoryFileCondition subDirFileCondition = new DirectoryFileCondition(condition.isExists(), condition.getStatus(), subDirPath);
-			if(null!=condition.isWithinTimePoint()){
-				subDirFileCondition.setIsWithinTimePoint(condition.isWithinTimePoint().booleanValue());
+			if(subDirName.equalsIgnoreCase("incoming")){
+				subDirFileCondition = new IncomingDirectoryFileCondition(condition.isExists(), condition.isWithinTimePoint(), condition.getStatus(), subDirPath);				
+			}else{
+				subDirFileCondition = new DirectoryFileCondition(condition.isExists(), condition.isWithinTimePoint(), condition.getStatus(), subDirPath);
 			}
+			
 			subDirFileConditions.add(subDirFileCondition);
 		}
 		

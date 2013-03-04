@@ -1,5 +1,6 @@
 package at.apa.pdfwlserver.monitoring;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -60,10 +61,11 @@ public class MonitoringProfileCheckJob implements Job {
 	
 
 	/**
+	 * @throws IOException 
 	 * @Schedule(every 20 Minutes every TimePoint: [Due-Date
 	 *                 Datadelivery]-02.30AM [Data processed]-4.30 AM)
 	 */
-	public ReportResult check() {
+	public ReportResult check() throws IOException {
 		SubDirResult dataDeliveryResult = checkDataDelivery();
 		SubDirResult importResult = checkImport();
 		MutationResult mutationResult = checkMutation();
@@ -73,8 +75,9 @@ public class MonitoringProfileCheckJob implements Job {
 	/**
 	 * reprezinta zona din raport Data-Delivery it must return a result. It can
 	 * not return null. Daca returneaza null e o eroare de programare
+	 * @throws IOException 
 	 */
-	private SubDirResult checkDataDelivery() {
+	private SubDirResult checkDataDelivery() throws IOException {
 		SubDirResult dataDeliveryStatus = null;
 		// check 1.incoming
 		for (SubDirChecker subDir : subDirectoriesToBeChecked) {
@@ -85,10 +88,11 @@ public class MonitoringProfileCheckJob implements Job {
 	}
 
 	/**
-	 * it must return a result. It can not return null. Daca returneaza null e o
-	 * erare de programare
+	 * it must return a result. It can not return null. If it returns null there's a
+	 * programming error
+	 * @throws IOException 
 	 */
-	private SubDirResult checkImport() {
+	private SubDirResult checkImport() throws IOException {
 		SubDirResult importStatus = null;
 		/**
 		 * check the subDirectories in the order which they are in the List
