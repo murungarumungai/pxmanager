@@ -1,11 +1,14 @@
 package at.apa.pdfwlserver.monitoring.utils;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 
 public class FileUtils {
+	
+	public static final String FILE_EXTENSION = ".zip";//TODO: to be read from .properties
 
 	/**
 	 * The system-dependent file-separator character. <br>
@@ -108,8 +111,17 @@ public class FileUtils {
 		return dateReceived;
 	}
 	
-	public static File getLatestFileFromDir(File dirPath){
+	/**
+	 * may return null if there are no files in dir
+	 * */
+	public static File getLatestFileFromDir(File dirPath, String fileExt){
 		File file = null;
+		File[] listOfFiles = dirPath.listFiles(new FilenameFilter() {
+			
+			public boolean accept(File dir, String name) {
+				 return name.toLowerCase().endsWith(FILE_EXTENSION);
+			}
+		}); 
 		return file;
 	}
 

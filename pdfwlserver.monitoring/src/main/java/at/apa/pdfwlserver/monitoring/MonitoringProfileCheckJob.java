@@ -88,11 +88,17 @@ public class MonitoringProfileCheckJob implements Job {
 	 */
 	public SubDirResult checkDataDelivery() throws IOException {
 		SubDirResult dataDeliveryStatus = null;
-		// check 1.incoming
+		//check 1.incoming
+		/*
 		for (SubDirChecker subDir : subDirectoriesToBeChecked) {
 			// if subDir = "incoming"
 			dataDeliveryStatus = subDir.checkDir();
-		}
+		}*/
+		/*
+		 * "incoming" subDir is the 1st one defined in .xml.
+		 * So dataDelivery results from checking ONLY this dir
+		 * */
+		dataDeliveryStatus = subDirectoriesToBeChecked.get(0).checkDir();
 		return dataDeliveryStatus;
 	}
 

@@ -52,11 +52,15 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         	//expected status: waiting
         } else if(fileExists==false && isWithinTimePoint==false && null!=status){
         	//expected status: no data received
-        	latestFileInDirectory = FileUtils.getLatestFileFromDir(subDirPath);
+        	latestFileInDirectory = FileUtils.getLatestFileFromDir(subDirPath,FileUtils.FILE_EXTENSION);
         	dateReceived = FileUtils.getReceivedDate(latestFileInDirectory);
         }
         
-        result = new SubDirResult(now, subDirPath, dateReceived, status, latestFileInDirectory);
+        //Only if status!=null return a result
+        if(null!=status){
+        	result = new SubDirResult(now, subDirPath, dateReceived, status, latestFileInDirectory);
+        }
+        
         
         return result;
     }
