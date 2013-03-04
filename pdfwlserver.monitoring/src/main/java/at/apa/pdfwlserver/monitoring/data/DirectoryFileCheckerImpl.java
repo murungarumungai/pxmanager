@@ -6,24 +6,23 @@ import java.util.Date;
 
 public class DirectoryFileCheckerImpl implements DirectoryFileChecker {
 	
-	private final Date earliestDataDelivery ;
-    private final Date nextEarliestDataDelivery;
-    private final Date dataDueDate;
-    
-    public DirectoryFileCheckerImpl(Date earliestDataDelivery, Date nextEarliestDataDelivery,  Date dataDueDate){
-    	this.earliestDataDelivery = earliestDataDelivery;
-    	this.nextEarliestDataDelivery = nextEarliestDataDelivery;
-    	this.dataDueDate = dataDueDate;
-    }
+	private static DirectoryFileCheckerImpl _instance = null;
+	
+	private DirectoryFileCheckerImpl(){}
+	
+	public static DirectoryFileChecker getInstance(){
+		if(null == _instance){
+			return new DirectoryFileCheckerImpl();
+		} else {
+			return _instance;
+		}
+	}
 
-	public File getLatestFileWithinCheckInterval() throws IOException {
+	public File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery,  Date dataDueDate) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-/*	public File getLatestFileWithinDueDateDataDelivery() throws IOException {
-		Not needed by any fileConditions!
-		return null;
-	}*/
+
 
 }

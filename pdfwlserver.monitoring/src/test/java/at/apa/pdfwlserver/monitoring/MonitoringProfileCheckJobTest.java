@@ -4,28 +4,62 @@
  */
 package at.apa.pdfwlserver.monitoring;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.File;
 import java.io.IOException;
 
-import at.apa.pdfwlserver.monitoring.data.ReportResult;
+import javax.xml.bind.JAXBException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.quartz.JobExecutionContext;
+
+import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
+import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
+import at.apa.pdfwlserver.monitoring.data.ReportResult;
+import at.apa.pdfwlserver.monitoring.data.SubDirResult;
+import at.apa.pdfwlserver.monitoring.utils.ClassPathInstrumentation;
 
 /**
  *
  * @author razvan
  */
 public class MonitoringProfileCheckJobTest {
-    
+	static String testDir = "CheckJobTest";
+	static String customerBaseDir = "derstandard";
+	static String xmlPath = "CustomerFolderStructureConfigurationCheckJob.xml";
+	static String csvPath = "IssuesCheckJob.csv";
+	
+	static MonitoringProfileReader monitoringProfileReader = null;
+	
+    static MonitoringProfile monitoringProfile = null; 
+	
     public MonitoringProfileCheckJobTest() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() {    	
+    	
+    	
+    	monitoringProfileReader = new MonitoringProfileReaderImpl(
+    			new File(testDir,customerBaseDir), 
+    			new File(testDir,xmlPath), 
+    			new File(testDir,csvPath));
+    	
+    	try {
+			monitoringProfile = monitoringProfileReader.readMonitoringProfile();
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     }
     
     @AfterClass
@@ -55,7 +89,7 @@ public class MonitoringProfileCheckJobTest {
      * @throws IOException 
      * 
      */
-    @Test
+    @Ignore
     public void testCheck() throws IOException {
         System.out.println("check");
         MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
@@ -64,5 +98,12 @@ public class MonitoringProfileCheckJobTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testCheckDataDelivery() throws IOException {
+    	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
+    	
+    	SubDirResult result = instance.checkDataDelivery();
     }
 }

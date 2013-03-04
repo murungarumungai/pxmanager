@@ -42,7 +42,10 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         File latestFileInDirectory = null;
         Date dateReceived = null;
         if(fileExists && isWithinTimePoint==null && null!= status){
-        	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(); 
+        	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
+        			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
+        			getCheckInterval().getNextEarliestDataDelivery(), 
+        			getCheckInterval().getCurrentCheckedMutation().getDataDueDate()); 
         	dateReceived = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
         	//expected status: not processed yet
         } else if(fileExists==false && isWithinTimePoint==true && null!=status ){

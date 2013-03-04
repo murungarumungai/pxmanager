@@ -34,6 +34,15 @@ public class MonitoringProfileCheckJob implements Job {
 	private static Logger logger = LoggerFactory.getLogger(MonitoringProfileCheckJob.class);
 
 	List<SubDirChecker> subDirectoriesToBeChecked = null;
+	
+	
+	/**
+     * Empty constructor for job initialization
+     * required by quartz
+     */
+	public MonitoringProfileCheckJob(){
+		subDirectoriesToBeChecked = MonitoringProfileCache.getMonitoringProfile().getCustomerFileSystemStructure();
+	}
 
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
@@ -77,7 +86,7 @@ public class MonitoringProfileCheckJob implements Job {
 	 * not return null. Daca returneaza null e o eroare de programare
 	 * @throws IOException 
 	 */
-	private SubDirResult checkDataDelivery() throws IOException {
+	public SubDirResult checkDataDelivery() throws IOException {
 		SubDirResult dataDeliveryStatus = null;
 		// check 1.incoming
 		for (SubDirChecker subDir : subDirectoriesToBeChecked) {
@@ -92,7 +101,7 @@ public class MonitoringProfileCheckJob implements Job {
 	 * programming error
 	 * @throws IOException 
 	 */
-	private SubDirResult checkImport() throws IOException {
+	public SubDirResult checkImport() throws IOException {
 		SubDirResult importStatus = null;
 		/**
 		 * check the subDirectories in the order which they are in the List
@@ -107,7 +116,7 @@ public class MonitoringProfileCheckJob implements Job {
 	/**
 	 * it must return a result. It can not return null.
 	 */
-	private MutationResult checkMutation() {
+	public MutationResult checkMutation() {
 		MutationResult result = null;
 		return result;
 	}

@@ -2,6 +2,7 @@ package at.apa.pdfwlserver.monitoring.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 public interface DirectoryFileChecker {
 	
@@ -16,7 +17,7 @@ public interface DirectoryFileChecker {
      * Next[Earliest Data delivery] >{isBefore}   now(){the moment in which the check is done} >{is after} [Earliest Data delivery] 
      */
 	
-	File getLatestFileWithinCheckInterval() throws IOException;
+	File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery,  Date dataDueDate) throws IOException;
 
 	//File getLatestFileWithinDueDateDataDelivery() throws IOException; not needed
 }

@@ -28,6 +28,9 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 	List<Issue> issues;// issues extracted from .csv
 	private File freeMarkerTemplatePath;//path to the freeMarker Template. TODO: should be read from .properties file
 
+	/**
+	 * customerBaseDir - the Path to customer base directory
+	 * */
 	public MonitoringProfileReaderImpl(File customerBaseDir,
 			File customerDirConfigXmlFilePath, File csvConfigFilePath) {
 		this.customerBaseDirPath = customerBaseDir;

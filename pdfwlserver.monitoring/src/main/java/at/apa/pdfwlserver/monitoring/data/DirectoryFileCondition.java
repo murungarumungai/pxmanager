@@ -27,8 +27,8 @@ public class DirectoryFileCondition {
     protected Boolean isWithinTimePoint = null;//this condition can miss, that is, it can be null
     protected Date now;//the moment when the check is done
    
-    private Date earliestDataDelivery ;
-    private Date nextEarliestDataDelivery; 
+    private Date earliestDataDelivery ;//cache the dates 
+    private Date nextEarliestDataDelivery;//cache the dates 
     private CheckInterval checkInterval;
     
     private static Logger logger = LoggerFactory.getLogger(DirectoryFileCondition.class);
@@ -67,9 +67,14 @@ public class DirectoryFileCondition {
     /**
      * get the Issues, Mutations, that are being checked
      * */
-    private CheckInterval getCheckInterval(){
+    protected CheckInterval getCheckInterval(){
     	if(null == checkInterval){
     		checkInterval = CheckInterval.getMutationBeingCheckedRightNow(now);
+    		if(null == checkInterval){
+    			//either the issues.csv is expired, or the monitoring profile is null
+    			throw new IllegalArgumentException("CheckInterval for current time:"+now+" is null. " +
+    					"Isses.csv is outdated, there are now issues to be checked, please update it");
+    		}
     		earliestDataDelivery = checkInterval.getCurrentCheckedMutation().getDataEarliestDelivery();
     		nextEarliestDataDelivery = checkInterval.getNextEarliestDataDelivery();
     	} else if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(nextEarliestDataDelivery)){
@@ -79,6 +84,11 @@ public class DirectoryFileCondition {
     		} else {
     			//Dates are expired, make a new request for the current checked issue->mutation
     			checkInterval = CheckInterval.getMutationBeingCheckedRightNow(now);
+    			if(null == checkInterval){
+        			//either the issues.csv is expired, or the monitoring profile is null
+    				throw new IllegalArgumentException("CheckInterval for current time:"+now+" is null. " +
+        					"Isses.csv is outdated, there are now issues to be checked, please update it");
+        		}
     			earliestDataDelivery = checkInterval.getCurrentCheckedMutation().getDataEarliestDelivery();
         		nextEarliestDataDelivery = checkInterval.getNextEarliestDataDelivery();
     	}
@@ -108,7 +118,7 @@ public class DirectoryFileCondition {
     
     protected DirectoryFileChecker getDirectoryFileChecker(){
     	if(null==fileChecker){
-    		fileChecker = new DirectoryFileCheckerImpl(earliestDataDelivery,nextEarliestDataDelivery, checkInterval.getCurrentCheckedMutation().getDataDueDate() ); 
+    		fileChecker =  DirectoryFileCheckerImpl.getInstance(); 
     	}
     	return fileChecker;
     }
@@ -122,7 +132,10 @@ public class DirectoryFileCondition {
     
    
     protected boolean fileExistsEvaluation() throws IOException{
-    	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval();
+    	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
+    			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
+    			getCheckInterval().getNextEarliestDataDelivery(), 
+    			getCheckInterval().getCurrentCheckedMutation().getDataDueDate());
     	if(null!= latestFileWithinCheckInterval) {
     		//File exists in folder within Check interval
             return true;
@@ -137,7 +150,7 @@ public class DirectoryFileCondition {
         
         boolean result = false;
         
-        if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(checkInterval.getCurrentCheckedMutation().getDataDueDate())){
+        if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(getCheckInterval().getCurrentCheckedMutation().getDataDueDate())){
         	result = true;
         }
         
