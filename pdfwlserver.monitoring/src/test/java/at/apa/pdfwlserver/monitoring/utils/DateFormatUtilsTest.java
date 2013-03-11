@@ -39,7 +39,8 @@ public class DateFormatUtilsTest {
 	@Test
 	public void testParseDate() {
 
-		String[] dates = { "01.01.2013 04:30", 
+		String[] dates = { 
+				"01.01.2013 04:30", 
 				"1.1.2013 04:30",
 				"01.01.2013 04:30:00",
 				"01.01.13 04:30"};
