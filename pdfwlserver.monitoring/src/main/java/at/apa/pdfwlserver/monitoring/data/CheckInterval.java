@@ -12,7 +12,7 @@ public class CheckInterval {
 	/*
 	 * dataEarliestDelivery of the next mutation
 	 * 
-	 * if there is no next mutation return issueDate.23:59 of the current(which should be the last) issue date
+	 * if there is no next mutation return issueDate.23:59 of the current(which should be the last issue in .csv) issue date
 	 * */ 
 	private final Date nextEarliestDataDelivery; 
 	
