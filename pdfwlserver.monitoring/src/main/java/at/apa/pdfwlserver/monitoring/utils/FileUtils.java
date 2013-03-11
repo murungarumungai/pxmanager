@@ -124,5 +124,47 @@ public class FileUtils {
 		}); 
 		return file;
 	}
+	
+	//TODO Razvan also see PDF-Importer-Core
+	/*
+	public File peekNextIncomingFile() {
+		final File[] files = directory.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(final File file) {
+				final boolean nameMatches = fileMatches(file);
+				if (!nameMatches) {
+					return false;
+				}
+
+				if (minIncomingFileAge > 0) {
+					final long age = System.currentTimeMillis() - file.lastModified();
+					if (age < minIncomingFileAge) {
+						logger.debug("Ignoring file " + file.getAbsolutePath() + " because it is only " + age + "ms old. Minimum age is: " + minIncomingFileAge);
+						return false;
+					}
+				}
+
+				return true;
+			}
+		});
+
+		Arrays.sort(files, new Comparator<File>() {
+			@Override
+			public int compare(final File o1, final File o2) {
+				// sort by timestamp, older first
+                Long l1 = o1.lastModified();
+                Long l2 = o2.lastModified();
+                return l1.compareTo(l2);
+			}
+		});
+
+		if (files.length > 0) {
+			logger.debug("Found " + files.length + " matching files in directory " + directory.getAbsolutePath() + " - Returning " + files[0].getAbsolutePath());
+			return files[0];
+		}
+
+		logger.debug("Didn't find a matching file in directory: " + directory.getAbsolutePath());
+		return null;
+	}*/
 
 }
