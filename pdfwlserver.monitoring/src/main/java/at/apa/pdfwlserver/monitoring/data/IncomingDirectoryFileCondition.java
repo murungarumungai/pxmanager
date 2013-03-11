@@ -28,9 +28,9 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         logger.debug("Began checking folder>>"+subDirPath+" at:"+now);
         /*
          * result status of this FileCondition, 
-         * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
-         * 
-         * Else this FileCondition returns null. For folders: import, success, error, 
+         * If the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
+         * Else this FileCondition returns null. 
+         * For folders: import, success, error, 
          * if the file doesn't exist, we do not return a status, so it's ok to return null  
          * */
         Status status = checkFileExistence();
