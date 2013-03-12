@@ -46,7 +46,7 @@ public class PropertiesReaderTest {
 	}
 	
 	@Test 
-	public void testGet(){
+	public void testGetStatusPageFilePath(){
 		String expectedResult = "statusPage.html";
 		String result = instance.getStatusPageFilePath();
 		assertEquals(expectedResult,result);

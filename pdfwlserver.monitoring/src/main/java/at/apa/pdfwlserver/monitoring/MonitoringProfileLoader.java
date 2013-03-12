@@ -36,12 +36,12 @@ public class MonitoringProfileLoader {
 	 * @param repeatPeriod in minutes - how often should we re-read the files?
 	 * 
 	 * */
-	public MonitoringProfileLoader(File customerBaseDir, File xml, File csv, int repeatPeriod){
+	public MonitoringProfileLoader(File configPropertiesFilePath, File customerBaseDir, File xml, File csv, int repeatPeriod){
 		
 		
 		this.repeatPeriod = repeatPeriod;
 		
-		profileReader = new MonitoringProfileReaderImpl(customerBaseDir, xml, csv);
+		profileReader = new MonitoringProfileReaderImpl(configPropertiesFilePath,customerBaseDir, xml, csv);
 	}
 	
 	/**
@@ -87,6 +87,7 @@ public class MonitoringProfileLoader {
 	public static void main(String[] args) throws NumberFormatException, IOException, SchedulerException {
 		
 		//input TODO: should be read from command line
+		String propsPath = "";
 		String xmlPath = "CustomerFolderStructureConfiguration3.xml";
 		String csvPath =  "mutationExample.csv";
 		String repeatTimeString = "10";
@@ -96,16 +97,18 @@ public class MonitoringProfileLoader {
 		
 		repeatTime = Integer.parseInt(repeatTimeString);
 		
+		File propertiesFilePath = null;
 		File xml = null;
 		File csv = null;
 		File customerBaseDir = null;
 		
+		propertiesFilePath = FileUtils.checkFileExists(propsPath);
 		xml = FileUtils.checkFileExists(xmlPath);
 		csv = FileUtils.checkFileExists(csvPath);
 		customerBaseDir = FileUtils.checkDirExists(customerBaseDirectoryPath);
 		
 		
-		MonitoringProfileLoader monitoringProfileLoader = new MonitoringProfileLoader(customerBaseDir, xml, csv, repeatTime);
+		MonitoringProfileLoader monitoringProfileLoader = new MonitoringProfileLoader(propertiesFilePath, customerBaseDir, xml, csv, repeatTime);
 		
 		monitoringProfileLoader.launchMonitoringLoadingJob();
 		

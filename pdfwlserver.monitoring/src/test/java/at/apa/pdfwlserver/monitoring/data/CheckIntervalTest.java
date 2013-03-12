@@ -59,7 +59,7 @@ public class CheckIntervalTest {
     	//lets assume that now is 28.02.2013
     	Date now = DateUtils.parseDate("28.02.2013");
     	List<Issue> issues = getTestData1();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	 
     	 
@@ -83,8 +83,6 @@ public class CheckIntervalTest {
     	return issues;
     }
     
-    //TODO CHECK WHAT HAPPENS WHEN WE HAVE MULTIPLE MUTATIONS IN THE SAME ROW,
-    //multiple mutations in the same data-packet, with exactly the same dates
     
     /**
      * Test case: when now() is right at the start of checkInterval,
@@ -97,7 +95,7 @@ public class CheckIntervalTest {
     	Date now = DateUtils.parseDateTime("28.02.2013 17:00");
     	//Date now = new Date();
     	List<Issue> issues = getTestData2();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     	CheckInterval response = CheckInterval.getMutationBeingCheckedRightNow(now);
@@ -135,13 +133,13 @@ public class CheckIntervalTest {
     }
     
     /**
-     * Test When we have an Issue with multiple issues
+     * Test When we have an Issue with multiple mutations
      * */
     @Test
     public void testGetMutationBeingCheckedRightNow3(){
     	Date now = DateUtils.parseDateTime("31.12.2012 17:00");
     	List<Issue> issues = getTestData3();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     	CheckInterval response = CheckInterval.getMutationBeingCheckedRightNow(now);

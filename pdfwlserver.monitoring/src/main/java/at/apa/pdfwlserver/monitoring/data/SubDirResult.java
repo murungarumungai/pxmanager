@@ -20,6 +20,7 @@ public class SubDirResult {
     private Date receivedDate;
     private Status status;
     private File latestFileOutOfCheckInterval;
+    private File latestFileWithinCheckInterval;
     
     public SubDirResult(){}
     

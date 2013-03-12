@@ -22,6 +22,7 @@ import org.quartz.JobExecutionContext;
 /**
  *
  * @author razvan
+ * TODO: Razvan 12.03 mai are rost UnitTestul asta?
  */
 public class MonitoringProfileLoaderJobTest {
 	
@@ -45,7 +46,7 @@ public class MonitoringProfileLoaderJobTest {
     	
     	
     	
-    	 reader = new MonitoringProfileReaderImpl(null,xmlFilePath, null);
+    	 //reader = new MonitoringProfileReaderImpl(null,xmlFilePath, null);
     }
     
     @After

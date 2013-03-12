@@ -15,25 +15,27 @@ import at.apa.pdfwlserver.monitoring.data.Issue;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 import at.apa.pdfwlserver.monitoring.data.SubDirChecker;
 import at.apa.pdfwlserver.monitoring.utils.FileUtils;
+import at.apa.pdfwlserver.monitoring.utils.PropertiesReader;
 import at.apa.pdfwlserver.monitoring.xml.CustomerBaseDir;
 import at.apa.pdfwlserver.monitoring.xml.CustomerDirStructureMarshaler;
 import at.apa.pdfwlserver.monitoring.xml.FileCondition;
 import at.apa.pdfwlserver.monitoring.xml.SubDir;
 
 public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
+	private File propertiesFilePath;
 	private File customerBaseDirPath;
 	private File xmlFilePath;
 	private File csvFilePath;
-	List<SubDirChecker> customerFileSystemStructure;
-	List<Issue> issues;// issues extracted from .csv
-	private File freeMarkerTemplatePath;//path to the freeMarker Template. TODO: should be read from .properties file
+	
+	private File freeMarkerTemplatePath;
 
 	/**
 	 * customerBaseDir - the Path to customer base directory
 	 * */
-	public MonitoringProfileReaderImpl(File customerBaseDir,
+	public MonitoringProfileReaderImpl(File configPropertiesFilePath, File customerBaseDir,
 			File customerDirConfigXmlFilePath, File csvConfigFilePath) {
-		this.customerBaseDirPath = customerBaseDir;
+		propertiesFilePath = configPropertiesFilePath;
+		customerBaseDirPath = customerBaseDir;
 		xmlFilePath = customerDirConfigXmlFilePath;
 		csvFilePath = csvConfigFilePath;
 	}
@@ -41,7 +43,11 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 	public MonitoringProfile readMonitoringProfile() throws JAXBException, IOException {
 		MonitoringProfile result = null;
 
+		//Read Configuration properties file 
+		PropertiesReader propsReader = PropertiesReader.getInstance(propertiesFilePath);
+		
 		// Customer Directory Structure
+		List<SubDirChecker> customerFileSystemStructure = null;
 		CustomerBaseDir customerFoldersJAXB = null;
 		customerFoldersJAXB = CustomerDirStructureMarshaler
 				.unMarshal(xmlFilePath);
@@ -51,8 +57,8 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 		List<CsvRow> csvRows = CsvParser.parseCSVFile(csvFilePath);
 		List<Issue> issues = CsvParser.loadIssuesFromCsvRows(csvRows);
 
-		// TODO: regularCheckRepeatPeriod should be read from .properties file
-		result = new MonitoringProfile(customerFileSystemStructure, issues, 1);
+		
+		result = new MonitoringProfile(customerFileSystemStructure, issues, /*1*/ propsReader.getRegularCheckRepeatPeriod(), propsReader.getCheckedFileExtension());
 		return result;
 	}
 

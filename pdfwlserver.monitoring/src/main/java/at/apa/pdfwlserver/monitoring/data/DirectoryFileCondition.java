@@ -43,18 +43,20 @@ public class DirectoryFileCondition {
         this.subDirPath = subDirPath;
     }
     
-    //TODO overrite this in importFileCondition
+    
     public SubDirResult checkDirectoryForFile() throws IOException {
         SubDirResult result = null;
         
         //begin check, we chek now
-        now = new Date();
-        logger.debug("Began checking folder>>"+subDirPath+" at:"+now);
+        now = now();
+        logger.debug("Began checking folder>>"+subDirPath+" at:"+now+" checking FileCondition:"+this);
         /*
          * result status of this FileCondition, 
          * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
-         * 
-         * Else this FileCondition returns null. For folders: import, success, error, 
+         * Else this FileCondition returns null. 
+         */
+        /*
+         * For folders: import, success, error, 
          * if the file doesn't exist, we do not return a status, so it's ok to return null  
          * */
         Status status = checkFileExistence();
@@ -118,13 +120,29 @@ public class DirectoryFileCondition {
     
     protected DirectoryFileChecker getDirectoryFileChecker(){
     	if(null==fileChecker){
-    		fileChecker =  DirectoryFileCheckerImpl.getInstance(); 
+    		fileChecker =  new DirectoryFileCheckerImpl(subDirPath); 
     	}
     	return fileChecker;
     }
+    
+    /**
+     * NOTE: this is just used in UnitTesting
+     * */
+    protected Date now(){
+    	if(null ==now){
+    		if(DirectoryFileConditionNowMocker.getNow()==null){
+    			//Normal Flow, Production Flow
+    			now = new Date();
+    		}else{
+    			//UnitTest Flow
+    			now = DirectoryFileConditionNowMocker.getNow();
+    		}
+    	}
+    	return now;
+    }
   
     /**
-     * to be used in unit Tests
+     * NOTE: to be used in unit Tests
      * */
     public void setFileChecker(DirectoryFileChecker fileChecker){
     	this.fileChecker = fileChecker;
@@ -134,8 +152,7 @@ public class DirectoryFileCondition {
     protected boolean fileExistsEvaluation() throws IOException{
     	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
     			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
-    			getCheckInterval().getNextEarliestDataDelivery(), 
-    			getCheckInterval().getCurrentCheckedMutation().getDataDueDate());
+    			getCheckInterval().getNextEarliestDataDelivery());
     	if(null!= latestFileWithinCheckInterval) {
     		//File exists in folder within Check interval
             return true;
@@ -161,4 +178,19 @@ public class DirectoryFileCondition {
         return result;
     }
     
+    @Override
+    public String toString(){
+    	String NEW_LINE = System.getProperty("line.separator");
+    	StringBuilder result = new StringBuilder();
+    	result.append(super.toString());
+    	result.append(NEW_LINE);
+    	result.append("{");
+    	result.append("subDir:").append("[").append(subDirPath).append("]");
+    	result.append("fileExists:").append("[").append(fileExists).append("]");
+    	result.append("isWithinTimePoint:").append("[").append(isWithinTimePoint).append("]");
+    	result.append("earliestDataDelivery:").append("[").append(earliestDataDelivery).append("]");
+    	result.append("nextEarliestDataDelivery:").append("[").append(nextEarliestDataDelivery).append("]");
+    	result.append("}");
+    	return result.toString();
+    }
 }

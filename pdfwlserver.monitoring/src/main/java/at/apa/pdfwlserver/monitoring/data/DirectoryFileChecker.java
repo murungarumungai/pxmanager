@@ -14,10 +14,16 @@ public interface DirectoryFileChecker {
      * 
      * when getting the latest file from the folder, always apply the condition <b>IsWithinCheckInterval</b>
      * that means: 
-     * Next[Earliest Data delivery] >{isBefore}   now(){the moment in which the check is done} >{is after} [Earliest Data delivery] 
+     * Next[Earliest Data delivery] >{isBefore}  {the date of the latest file} >{is after} [Earliest Data delivery] 
      */
 	
-	File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery,  Date dataDueDate) throws IOException;
+	File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) throws IOException;
+	
+	/**
+	 * Return the latest file from this directory
+	 * @return may return null if directory is empty
+	 * */
+	public File getLatestFile();
 
 	//File getLatestFileWithinDueDateDataDelivery() throws IOException; not needed
 }

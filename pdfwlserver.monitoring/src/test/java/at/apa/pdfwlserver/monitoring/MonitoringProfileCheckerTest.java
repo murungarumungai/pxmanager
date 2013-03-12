@@ -31,6 +31,7 @@ import at.apa.pdfwlserver.monitoring.xml.CustomerDirStructureMarshalerTest;
 /**
  *
  * @author razvan
+ * TODO: Razvan 12.03 - mai are vreun rost UnitTestul asta?
  */
 public class MonitoringProfileCheckerTest {
 	
@@ -48,9 +49,9 @@ public class MonitoringProfileCheckerTest {
     	
     	
     	
-    	MonitoringProfileReader reader = new MonitoringProfileReaderImpl(null,xmlFilePath, null);
+    	//MonitoringProfileReader reader = new MonitoringProfileReaderImpl(null,xmlFilePath, null);
     	try {
-			monitoringProfile =reader.readMonitoringProfile();
+			//monitoringProfile =reader.readMonitoringProfile();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

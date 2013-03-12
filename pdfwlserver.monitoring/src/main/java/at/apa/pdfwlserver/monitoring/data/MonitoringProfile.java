@@ -13,16 +13,21 @@ public class MonitoringProfile {
 	 * */
 	private  boolean checkJobRunning = false;
 	
-	
+	private final String checkedFileExtension;
 	private final long repeatPeriod;
 	private final List<SubDirChecker> customerFileSystemStructure;
 	private final List<Issue> issues;//issues extracted from .csv, ordered by issueDate
 	
 
-	public MonitoringProfile( List<SubDirChecker> customerFileSystemStructure, List<Issue> issues, long regularCheckRepeatPeriod) {
+	public MonitoringProfile( List<SubDirChecker> customerFileSystemStructure, List<Issue> issues, long regularCheckRepeatPeriod, String checkedFileExtension) {
+		this.checkedFileExtension = checkedFileExtension;
 		this.customerFileSystemStructure = customerFileSystemStructure;
 		this.issues = issues;
 		this.repeatPeriod = regularCheckRepeatPeriod;
+	}
+	
+	public String getCheckedFileExtension(){
+		return checkedFileExtension;
 	}
 	
 	public  List<SubDirChecker> getCustomerFileSystemStructure(){

@@ -12,8 +12,9 @@ public class DateUtils {
 	
 	private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
 	
-	public static final String FORMAT1 = "dd.MM.yy hh:mm";
-	public static final String FORMAT2 = "dd.MM.yyyy";
+	public static final String DATE_TIME_FORMAT 			= "dd.MM.yy HH:mm";
+	public static final String DATE_TIME_FORMAT_WITH_SECOND = "dd.MM.yy HH:mm:ss";
+	public static final String DATE_FORMAT = "dd.MM.yyyy";
 	//this is equivalent(and it also works for 2 digit year, i.e:yy) with "dd.mm.yyyy hh:mm";
 	//see unit test
 	
@@ -39,9 +40,13 @@ public class DateUtils {
 		Date parsedDate = null;
 		
 		try {
-			parsedDate = parseDate(FORMAT1, dateTimeString);
+			parsedDate = parseDate(DATE_TIME_FORMAT_WITH_SECOND, dateTimeString);
 		} catch (ParseException e) {
-			logger.warn("Error Parsing dateString:"+dateTimeString,e);
+			try{
+				parsedDate = parseDate(DATE_TIME_FORMAT, dateTimeString);
+			}catch(ParseException e1){
+				logger.warn("Error Parsing dateString:"+dateTimeString,e);
+			}
 		}
 		
 		return parsedDate;
@@ -55,7 +60,7 @@ public class DateUtils {
 	public static Date parseDate(String dateString) {
 		Date parsedDate = null;
 		try {
-			parsedDate = parseDate(FORMAT2, dateString);
+			parsedDate = parseDate(DATE_FORMAT, dateString);
 		} catch (ParseException e) {
 			logger.warn("Error Parsing dateString:"+dateString,e);
 		}
@@ -82,6 +87,15 @@ public class DateUtils {
 		cal.set(Calendar.SECOND,0);
 		cal.set(Calendar.MILLISECOND,0);
 		return cal.getTime();
+	}
+	
+	/**
+	 * return equal is the two dates are equal upto a milisecond precision
+	 * */
+	public static boolean compareDatesUpToMillis(Date a, Date b){
+		long difference = Math.abs(a.getTime() - b.getTime());
+		boolean difLesThanAMillis = difference<=100 ? true : false;
+		return difLesThanAMillis;
 	}
 
 }

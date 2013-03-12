@@ -24,15 +24,13 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         SubDirResult result = null;
         
         //begin check, we chek now
-        now = new Date();
-        logger.debug("Began checking folder>>"+subDirPath+" at:"+now);
+        now = now();
+        logger.debug("Began checking folder>>"+subDirPath+" at:"+now+" checking FileCondition:"+this);
         /*
          * result status of this FileCondition, 
-         * If the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
+         * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
          * Else this FileCondition returns null. 
-         * For folders: import, success, error, 
-         * if the file doesn't exist, we do not return a status, so it's ok to return null  
-         * */
+         */
         Status status = checkFileExistence();
         
         /*
@@ -44,15 +42,14 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         if(fileExists && isWithinTimePoint==null && null!= status){
         	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
         			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
-        			getCheckInterval().getNextEarliestDataDelivery(), 
-        			getCheckInterval().getCurrentCheckedMutation().getDataDueDate()); 
+        			getCheckInterval().getNextEarliestDataDelivery()); 
         	dateReceived = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
         	//expected status: not processed yet
         } else if(fileExists==false && isWithinTimePoint==true && null!=status ){
         	//expected status: waiting
         } else if(fileExists==false && isWithinTimePoint==false && null!=status){
         	//expected status: no data received
-        	latestFileInDirectory = FileUtils.getLatestFileFromDir(subDirPath,FileUtils.FILE_EXTENSION);
+        	latestFileInDirectory = getDirectoryFileChecker().getLatestFile();
         	dateReceived = FileUtils.getReceivedDate(latestFileInDirectory);
         }
         

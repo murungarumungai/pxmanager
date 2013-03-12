@@ -40,6 +40,8 @@ public class DateFormatUtilsTest {
 	public void testParseDate() {
 
 		String[] dates = { 
+				"12.02.2013 00:24:01",
+				"12.02.2013 12:24:01",
 				"01.01.2013 04:30", 
 				"1.1.2013 04:30",
 				"01.01.2013 04:30:00",
@@ -51,5 +53,11 @@ public class DateFormatUtilsTest {
 		}
 
 	}
+	/**
+	 * We need to differenciate between
+	 * "12.02.2013 12:24:01"
+	 * and
+	 * "12.02.2013 00:24:01"
+	 * */
 
 }

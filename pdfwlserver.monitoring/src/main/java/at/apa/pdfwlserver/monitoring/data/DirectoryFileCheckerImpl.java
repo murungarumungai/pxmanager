@@ -4,25 +4,30 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import at.apa.pdfwlserver.monitoring.utils.FileUtils;
+
 public class DirectoryFileCheckerImpl implements DirectoryFileChecker {
 	
-	private static DirectoryFileCheckerImpl _instance = null;
+	private File dirPath;
 	
-	private DirectoryFileCheckerImpl(){}
+	public DirectoryFileCheckerImpl(File dirPath){
+		this.dirPath = dirPath;
+	}
 	
-	public static DirectoryFileChecker getInstance(){
-		if(null == _instance){
-			return new DirectoryFileCheckerImpl();
-		} else {
-			return _instance;
-		}
+	
+
+	public File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) throws IOException {
+		
+		return FileUtils.getLatestFileFromDir(dirPath, earliestDataDelivery, nextEarliestDataDelivery, MonitoringProfileCache.getMonitoringProfile().getCheckedFileExtension());
 	}
 
-	public File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery,  Date dataDueDate) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Return the latest file from this directory
+	 * @return may return null if directory is empty
+	 * */
+	public File getLatestFile(){
+		return FileUtils.getLatestFileFromDir(dirPath, MonitoringProfileCache.getMonitoringProfile().getCheckedFileExtension());
 	}
-
 
 
 }
