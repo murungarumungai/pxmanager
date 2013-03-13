@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * I need this class just in UnitTest to setup TestCases, 
- * which based on <code>now()</code> can return different statuses
+ * which depending on <code>now()</code> can return different statuses
  * */
 public class DirectoryFileConditionNowMocker {
 	

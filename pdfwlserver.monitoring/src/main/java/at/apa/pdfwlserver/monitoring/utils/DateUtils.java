@@ -90,11 +90,11 @@ public class DateUtils {
 	}
 	
 	/**
-	 * return equal is the two dates are equal upto a milisecond precision
+	 * return equal is the two dates are equal up to a millisecond precision
 	 * */
 	public static boolean compareDatesUpToMillis(Date a, Date b){
 		long difference = Math.abs(a.getTime() - b.getTime());
-		boolean difLesThanAMillis = difference<=100 ? true : false;
+		boolean difLesThanAMillis = difference<=1000 ? true : false;
 		return difLesThanAMillis;
 	}
 

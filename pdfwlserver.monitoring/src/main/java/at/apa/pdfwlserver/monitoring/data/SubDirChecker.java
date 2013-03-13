@@ -30,6 +30,13 @@ public class SubDirChecker {
         SubDirResult subDirStatus = null;
         for(DirectoryFileCondition directoryFileCondition : directoryFileConditions){
             subDirStatus = directoryFileCondition.checkDirectoryForFile();
+            if(null!=subDirStatus){
+            	/*
+            	 * Depending on the system state, Only one condition should happen and be returned, 
+            	 * reflecting the system state, so if status!=null return a result
+            	 * */
+            	return subDirStatus;
+            }
         }
         return subDirStatus;
     }

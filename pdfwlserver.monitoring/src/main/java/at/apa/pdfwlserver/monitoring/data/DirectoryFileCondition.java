@@ -127,9 +127,11 @@ public class DirectoryFileCondition {
     
     /**
      * NOTE: this is just used in UnitTesting
+     * TODO: in production, the who application flow is built arround the idea that 
+     * now() - is CurrentTime. so now should always return the present Time = The moment in time when the chekc is done
      * */
     protected Date now(){
-    	if(null ==now){
+    	
     		if(DirectoryFileConditionNowMocker.getNow()==null){
     			//Normal Flow, Production Flow
     			now = new Date();
@@ -137,7 +139,7 @@ public class DirectoryFileCondition {
     			//UnitTest Flow
     			now = DirectoryFileConditionNowMocker.getNow();
     		}
-    	}
+    	
     	return now;
     }
   
@@ -166,8 +168,8 @@ public class DirectoryFileCondition {
     protected boolean isWithinTimepointEvaluation(){
         
         boolean result = false;
-        
-        if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(getCheckInterval().getCurrentCheckedMutation().getDataDueDate())){
+        Date dataDueDate = getCheckInterval().getCurrentCheckedMutation().getDataDueDate();
+        if( (now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && (now.before(dataDueDate)|| now.equals(dataDueDate)) ){
         	result = true;
         }
         
@@ -182,10 +184,10 @@ public class DirectoryFileCondition {
     public String toString(){
     	String NEW_LINE = System.getProperty("line.separator");
     	StringBuilder result = new StringBuilder();
-    	result.append(super.toString());
+    	result.append(this.getClass().getSimpleName());
     	result.append(NEW_LINE);
     	result.append("{");
-    	result.append("subDir:").append("[").append(subDirPath).append("]");
+    	result.append("subDir:").append("[").append(FileUtils.getLastFolderInPath(subDirPath)).append("]");
     	result.append("fileExists:").append("[").append(fileExists).append("]");
     	result.append("isWithinTimePoint:").append("[").append(isWithinTimePoint).append("]");
     	result.append("earliestDataDelivery:").append("[").append(earliestDataDelivery).append("]");

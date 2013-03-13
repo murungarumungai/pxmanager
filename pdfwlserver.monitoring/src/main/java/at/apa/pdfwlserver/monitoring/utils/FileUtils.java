@@ -106,8 +106,11 @@ public class FileUtils {
 
 	/**
 	 * <p>
-	 * should return the date when the file was created/copied on this file
-	 * system. That is: the date when the file was received on this fileSystem
+	 * should return the date when the file was created(copied) on this file
+	 * system.
+	 * <br> 
+	 * That is: the date when the file was received on this fileSystem
+	 * @return File.lastModified()
 	 * </p>
 	 * */
 	public static Date getReceivedDate(File filePath) {

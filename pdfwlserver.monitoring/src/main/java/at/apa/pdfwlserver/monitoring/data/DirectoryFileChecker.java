@@ -14,7 +14,7 @@ public interface DirectoryFileChecker {
      * 
      * when getting the latest file from the folder, always apply the condition <b>IsWithinCheckInterval</b>
      * that means: 
-     * Next[Earliest Data delivery] >{isBefore}  {the date of the latest file} >{is after} [Earliest Data delivery] 
+     * Next[Earliest Data delivery] >{isBefore} [the date(<code>File.lastModified()</code>) of the latest file] >{is after} [Earliest Data delivery] 
      */
 	
 	File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) throws IOException;

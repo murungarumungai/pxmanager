@@ -25,7 +25,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         
         //begin check, we chek now
         now = now();
-        logger.debug("Began checking folder>>"+subDirPath+" at:"+now+" checking FileCondition:"+this);
+        logger.debug("Began checking DirectoryFileCondition at:"+now+" checking FileCondition:"+this);
         /*
          * result status of this FileCondition, 
          * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
@@ -38,24 +38,25 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
          * Razvan: see activity flow diagram
          * */
         File latestFileInDirectory = null;
-        Date dateReceived = null;
+        File latestFileWithinCheckInterval = null;
+        //Date dateReceived = null;
         if(fileExists && isWithinTimePoint==null && null!= status){
-        	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
+        	latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
         			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
         			getCheckInterval().getNextEarliestDataDelivery()); 
-        	dateReceived = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
+        	//dateReceived = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
         	//expected status: not processed yet
         } else if(fileExists==false && isWithinTimePoint==true && null!=status ){
         	//expected status: waiting
         } else if(fileExists==false && isWithinTimePoint==false && null!=status){
         	//expected status: no data received
         	latestFileInDirectory = getDirectoryFileChecker().getLatestFile();
-        	dateReceived = FileUtils.getReceivedDate(latestFileInDirectory);
+        	//dateReceived = FileUtils.getReceivedDate(latestFileInDirectory);
         }
         
         //Only if status!=null return a result
         if(null!=status){
-        	result = new SubDirResult(now, subDirPath, dateReceived, status, latestFileInDirectory);
+        	result = new SubDirResult(now, subDirPath, status,latestFileWithinCheckInterval, latestFileInDirectory);
         }
         
         

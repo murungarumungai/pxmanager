@@ -17,18 +17,24 @@ public class SubDirResult {
     
 	private Date checkTime;
     private File subDir;
-    private Date receivedDate;
+    //private Date receivedDate; TODO: it is now clear receivedDate to which file refers? 
     private Status status;
-    private File latestFileOutOfCheckInterval;
     private File latestFileWithinCheckInterval;
+    private File latestFileOutOfCheckInterval;
+    
     
     public SubDirResult(){}
     
-    public SubDirResult(Date checkTime, File subDir, Date receivedDate, Status status, File latestFileOutOfCheckInterval){
+    /**
+     * @param latestFileWithinCheckInterval - this is the latest file in directory within the check interval
+     * @param latestFileOutOfCheckInterval - this is the latest file in directory (outside the check interval ,even if the check interval has expired)
+     * */
+    public SubDirResult(Date checkTime, File subDir, /*Date receivedDate,*/ Status status, File latestFileWithinCheckInterval, File latestFileOutOfCheckInterval){
     	this.checkTime =checkTime;
     	this.subDir = subDir;
-    	this.receivedDate =receivedDate;
+    	//this.receivedDate =receivedDate;
     	this.status = status;
+    	this.latestFileWithinCheckInterval = latestFileWithinCheckInterval;
     	this.latestFileOutOfCheckInterval = latestFileOutOfCheckInterval;
     }
 
@@ -48,16 +54,20 @@ public class SubDirResult {
 		this.subDir = subDir;
 	}
 
-	public Date getReceivedDate() {
+/*	public Date getReceivedDate() {
 		return receivedDate;
 	}
 
 	public void setReceivedDate(Date receivedDate) {
 		this.receivedDate = receivedDate;
-	}
+	}*/
     
 	public Status getStatus(){
 		return status;
+	}
+	
+	public File getLatestFileWithinTheCheckInterval(){
+		return latestFileWithinCheckInterval;
 	}
 	
 	public File getLatestFileOutOfCheckInterval(){
