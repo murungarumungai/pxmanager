@@ -65,7 +65,7 @@ public class CheckIntervalTest {
     	 
     	//Date now = new Date();
     	 
-    	CheckInterval response = CheckInterval.getMutationBeingCheckedRightNow(now);
+    	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);
     	 
     	assertEquals("Comparing next Earliest Data Delivery", DateUtils.getEndOfDayTime(now) ,response.getNextEarliestDataDelivery());
     	
@@ -98,7 +98,7 @@ public class CheckIntervalTest {
     	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
-    	CheckInterval response = CheckInterval.getMutationBeingCheckedRightNow(now);
+    	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);
     	assertEquals("Comparing check mutation", "Evening", response.getCurrentCheckedMutation().getName());
     	assertEquals("Comparing next Earliest Data Delivery", DateUtils.parseDateTime("01.03.2013 00:00"), response.getNextEarliestDataDelivery());
     }
@@ -142,7 +142,7 @@ public class CheckIntervalTest {
     	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
-    	CheckInterval response = CheckInterval.getMutationBeingCheckedRightNow(now);
+    	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);
     	
     	assertEquals("Checking expected issue date", DateUtils.parseDate("31.12.2012 23:00"), response.getCurrentCheckedIssue().getIssuseDate());
     	

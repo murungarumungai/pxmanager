@@ -86,7 +86,7 @@ public class MonitoringProfileCheckJobTest {
     /**
      * Test Case Scenario/SetUp
      * <p>
-     * a. CheckJobTest\derstandard\incoming we have 2 .zip files with date: 11.03.2013 14:53:15
+     * a. CheckJobTest\derstandard\incoming we have 2 .zip files with date: 11.03.2013 14:53:15 // 
      * </p>
      * <p>
      * b. We have the following Mutation:
@@ -108,8 +108,9 @@ public class MonitoringProfileCheckJobTest {
      * - expected status is: "not processed yet" and receivedDate
      * <p>
      * */
+    
     @Test
-    public void testCheckDataDelivery() throws IOException {
+    public void testCheckDataDelivery()  {
     	//Set the now()
     	Date now = DateUtils.parseDateTime("11.03.2013 14:53");
     	DirectoryFileConditionNowMocker.setNow(now);
@@ -119,6 +120,7 @@ public class MonitoringProfileCheckJobTest {
     	Date expectedDate = DateUtils.parseDateTime("11.03.2013 14:53:15");
     	assertNotNull("Checking received file WithInCheck interval", result.getLatestFileWithinTheCheckInterval());
     	assertTrue("Checking RECEIVED DATE", DateUtils.compareDatesUpToMillis(expectedDate, FileUtils.getReceivedDate(result.getLatestFileWithinTheCheckInterval())));
+    	assertTrue("checking flag data was in incoming", result.wasInIncoming());
     }
     
     /**
@@ -134,8 +136,9 @@ public class MonitoringProfileCheckJobTest {
      * but we are still within the TimePoint. So expected status is "waiting"
      * </p>
      * */
+   
     @Test 
-    public void testCheckDataDelivery2() throws IOException{
+    public void testCheckDataDelivery2() {
     	//set the now
     	Date now = DateUtils.parseDateTime("01.01.2013 21:30"); 
     	DirectoryFileConditionNowMocker.setNow(now);
@@ -156,8 +159,9 @@ public class MonitoringProfileCheckJobTest {
      * The timePoint has expired. now() the moment the check is done is after [Due-Date Delivery]
      * </p>
      * */
+   
     @Test
-    public void testCheckDataDelivery3() throws IOException{
+    public void testCheckDataDelivery3() {
     	//set the now
     	Date now = DateUtils.parseDateTime("01.01.2013 21:31"); 
     	DirectoryFileConditionNowMocker.setNow(now);
@@ -167,6 +171,25 @@ public class MonitoringProfileCheckJobTest {
     	assertEquals("Checking TODO","Call customer",result.getStatus().getTodo());
     	assertNull("Checking Received File Name. Should be null:n/A",result.getLatestFileWithinTheCheckInterval());
     	assertNotNull("Checking Latest known File Name. Should be NOT be null",result.getLatestFileOutOfCheckInterval());
+    }
+    
+    
+    /**
+     * <p>
+     * CheckJobTest\derstandard\import we have a .zip files with date: 11.03.2013 14:53:15
+     * </p>
+     * Files dot exist in folder import.
+     * import is empty Or we have old files that are outside the checkInterval
+     * Expected SubDirResult is null
+     * */
+    @Test
+    public void testCheckImportDir()  {
+    	//We need to set the now so that issues.csv won't be outdated
+    	Date now = DateUtils.parseDateTime("12.03.2013 21:31"); 
+    	DirectoryFileConditionNowMocker.setNow(now);
+    	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
+    	SubDirResult result = instance.checkImportDir();
+    	assertNull("import folder is empty, expecting null", result);
     }
     
 }

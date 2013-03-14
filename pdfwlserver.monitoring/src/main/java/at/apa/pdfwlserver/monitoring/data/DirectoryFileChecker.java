@@ -17,7 +17,7 @@ public interface DirectoryFileChecker {
      * Next[Earliest Data delivery] >{isBefore} [the date(<code>File.lastModified()</code>) of the latest file] >{is after} [Earliest Data delivery] 
      */
 	
-	File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) throws IOException;
+	File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) ;
 	
 	/**
 	 * Return the latest file from this directory

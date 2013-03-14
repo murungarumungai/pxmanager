@@ -26,7 +26,7 @@ public class SubDirChecker {
     	this.directoryFileConditions = directoryFileConditions;
     }
     
-    public SubDirResult  checkDir() throws IOException{
+    public SubDirResult  checkDir() {
         SubDirResult subDirStatus = null;
         for(DirectoryFileCondition directoryFileCondition : directoryFileConditions){
             subDirStatus = directoryFileCondition.checkDirectoryForFile();

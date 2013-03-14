@@ -29,7 +29,8 @@ public class DirectoryFileCondition {
    
     private Date earliestDataDelivery ;//cache the dates 
     private Date nextEarliestDataDelivery;//cache the dates 
-    private CheckInterval checkInterval;
+    private CheckSession checkSession;
+    //cache the checkInterval, so that we have the same checkInterval instance for the whole period of a checking session for a certain Issue.Mutation 
     
     private static Logger logger = LoggerFactory.getLogger(DirectoryFileCondition.class);
     
@@ -44,12 +45,12 @@ public class DirectoryFileCondition {
     }
     
     
-    public SubDirResult checkDirectoryForFile() throws IOException {
+    public SubDirResult checkDirectoryForFile() {
         SubDirResult result = null;
         
         //begin check, we chek now
         now = now();
-        logger.debug("Began checking folder>>"+subDirPath+" at:"+now+" checking FileCondition:"+this);
+        logger.debug("Began checking DirectoryFileCondition at:"+now+" checking FileCondition:"+this);
         /*
          * result status of this FileCondition, 
          * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.
@@ -69,36 +70,36 @@ public class DirectoryFileCondition {
     /**
      * get the Issues, Mutations, that are being checked
      * */
-    protected CheckInterval getCheckInterval(){
-    	if(null == checkInterval){
-    		checkInterval = CheckInterval.getMutationBeingCheckedRightNow(now);
-    		if(null == checkInterval){
+    protected CheckSession getCheckInterval(){
+    	if(null == checkSession){
+    		checkSession = CheckSession.getMutationBeingCheckedRightNow(now);
+    		if(null == checkSession){
     			//either the issues.csv is expired, or the monitoring profile is null
     			throw new IllegalArgumentException("CheckInterval for current time:"+now+" is null. " +
     					"Isses.csv is outdated, there are now issues to be checked, please update it");
     		}
-    		earliestDataDelivery = checkInterval.getCurrentCheckedMutation().getDataEarliestDelivery();
-    		nextEarliestDataDelivery = checkInterval.getNextEarliestDataDelivery();
+    		earliestDataDelivery = checkSession.getCurrentCheckedMutation().getDataEarliestDelivery();
+    		nextEarliestDataDelivery = checkSession.getNextEarliestDataDelivery();
     	} else if((now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(nextEarliestDataDelivery)){
     		//we already have a check interval, and now() is still within the check interval, so no reason to request a new mutation
     		// just return the current one
-    		return checkInterval;
+    		return checkSession;
     		} else {
     			//Dates are expired, make a new request for the current checked issue->mutation
-    			checkInterval = CheckInterval.getMutationBeingCheckedRightNow(now);
-    			if(null == checkInterval){
+    			checkSession = CheckSession.getMutationBeingCheckedRightNow(now);
+    			if(null == checkSession){
         			//either the issues.csv is expired, or the monitoring profile is null
     				throw new IllegalArgumentException("CheckInterval for current time:"+now+" is null. " +
         					"Isses.csv is outdated, there are now issues to be checked, please update it");
         		}
-    			earliestDataDelivery = checkInterval.getCurrentCheckedMutation().getDataEarliestDelivery();
-        		nextEarliestDataDelivery = checkInterval.getNextEarliestDataDelivery();
+    			earliestDataDelivery = checkSession.getCurrentCheckedMutation().getDataEarliestDelivery();
+        		nextEarliestDataDelivery = checkSession.getNextEarliestDataDelivery();
     	}
-    	return checkInterval;
+    	return checkSession;
     }
     
        
-    protected Status checkFileExistence() throws IOException{
+    protected Status checkFileExistence() {
     	Status result = null;
     	 if(isWithinTimePoint!=null){//IsWithinTimePoint condition was set         	
          	if( (fileExists==fileExistsEvaluation()) && (isWithinTimePoint==isWithinTimepointEvaluation()) ){
@@ -151,7 +152,7 @@ public class DirectoryFileCondition {
     }
     
    
-    protected boolean fileExistsEvaluation() throws IOException{
+    protected boolean fileExistsEvaluation() {
     	File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
     			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
     			getCheckInterval().getNextEarliestDataDelivery());

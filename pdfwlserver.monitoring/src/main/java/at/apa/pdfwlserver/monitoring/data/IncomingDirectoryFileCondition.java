@@ -20,7 +20,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
 	}
 	
 	@Override
-    public SubDirResult checkDirectoryForFile() throws IOException {
+    public SubDirResult checkDirectoryForFile(){
         SubDirResult result = null;
         
         //begin check, we chek now
@@ -37,6 +37,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
          * Only for incoming SubDir, there is much work to do, special conditions
          * Razvan: see activity flow diagram
          * */
+        
         File latestFileInDirectory = null;
         File latestFileWithinCheckInterval = null;
         //Date dateReceived = null;
@@ -44,6 +45,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         	latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
         			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
         			getCheckInterval().getNextEarliestDataDelivery()); 
+        	getCheckInterval().setWasInIncoming();
         	//dateReceived = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
         	//expected status: not processed yet
         } else if(fileExists==false && isWithinTimePoint==true && null!=status ){
@@ -56,7 +58,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         
         //Only if status!=null return a result
         if(null!=status){
-        	result = new SubDirResult(now, subDirPath, status,latestFileWithinCheckInterval, latestFileInDirectory);
+        	result = new SubDirResult(now, subDirPath, status,latestFileWithinCheckInterval, latestFileInDirectory, getCheckInterval().wasInIncoming());
         }
         
         

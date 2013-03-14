@@ -82,11 +82,15 @@ public class MonitoringProfileCheckJob implements Job {
 	}
 
 	/**
-	 * reprezinta zona din raport Data-Delivery it must return a result. It can
-	 * not return null. Daca returneaza null e o eroare de programare
-	 * @throws IOException 
-	 */
-	public SubDirResult checkDataDelivery() throws IOException {
+	 * TODO: Razvan: 13.03.2013 Ask Roman how importer works.
+	 * It can happen the following scenario: 
+	 * 1. that we have a file in incoming Dir within TimePoint, => we display status "not processed yet"
+	 * 2. Importer begins importing and moves the file from "incoming" dir to the next Directory, which is "import"
+	 * but then after 5 min, at the next check we see that there is no file in "incoming" dir, 
+	 * and we still display status "waiting" or "No data received in time". 
+	 * But this doesn't make sense since a valid dataFile was received in "incoming" folder, but then was processed by importer and moved to "import" folder  
+	 * */
+	public SubDirResult checkDataDelivery() {
 		SubDirResult dataDeliveryStatus = null;
 		//check 1.incoming
 		/*
@@ -102,12 +106,23 @@ public class MonitoringProfileCheckJob implements Job {
 		return dataDeliveryStatus;
 	}
 
+	
+	public SubDirResult checkImportDir()  {
+		SubDirResult importDirStatus = null;
+		for(int i=0; i<subDirectoriesToBeChecked.size();i++){
+			if(i==1){//I know that in .xml import is on 2nd pos
+				return subDirectoriesToBeChecked.get(i).checkDir();
+			}
+		}
+		return importDirStatus;
+	}
+	
 	/**
 	 * it must return a result. It can not return null. If it returns null there's a
 	 * programming error
 	 * @throws IOException 
 	 */
-	public SubDirResult checkImport() throws IOException {
+	public SubDirResult checkImport()  {
 		SubDirResult importStatus = null;
 		/**
 		 * check the subDirectories in the order which they are in the List

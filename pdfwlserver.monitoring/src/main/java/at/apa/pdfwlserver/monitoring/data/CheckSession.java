@@ -5,7 +5,7 @@ import java.util.List;
 
 import at.apa.pdfwlserver.monitoring.utils.DateUtils;
 
-public class CheckInterval {
+public class CheckSession {
 	
 	private final Mutation currentCheckedMutation;
 	private final Issue currentCheckedIssue;
@@ -14,12 +14,14 @@ public class CheckInterval {
 	 * 
 	 * if there is no next mutation return issueDate.23:59 of the current(which should be the last issue in .csv) issue date
 	 * */ 
-	private final Date nextEarliestDataDelivery; 
+	private final Date nextEarliestDataDelivery;
+	//We must trace the data Packets through the importing process during a CheckSession(CheckInterval) of a certain mutation
+	private boolean wasInIncoming = false; 
 	
 	/**
 	 * Private Constructor to prevent instantiation
 	 * */
-	private CheckInterval(Issue issue, Mutation mutation, Date  nextEarliestDataDelivery){
+	private CheckSession(Issue issue, Mutation mutation, Date  nextEarliestDataDelivery){
 		this.currentCheckedIssue = issue;
 		this.currentCheckedMutation = mutation;
 		this.nextEarliestDataDelivery = nextEarliestDataDelivery;
@@ -41,6 +43,19 @@ public class CheckInterval {
 		return nextEarliestDataDelivery;
 	}
 	
+	/**
+	 * returns true if data ever existed in incoming folder during this CheckInterval
+	 * */
+	public boolean wasInIncoming(){
+		return wasInIncoming;
+	}
+	
+	/**
+	 * asserts that data was in incoming folder during this CheckInterval
+	 * */
+	public void setWasInIncoming(){
+		wasInIncoming = true;
+	}
 	
 	/**
 	 * @param now - is the moment in time(currentSystemTime) when the check is performed
@@ -54,8 +69,8 @@ public class CheckInterval {
 	 * @return may return null is all the mutations(date) are expired, or if the monitoringProfile is null
 	 * </p>
 	 * */
-	public static CheckInterval getMutationBeingCheckedRightNow(Date now){
-		CheckInterval result = null;
+	public static CheckSession getMutationBeingCheckedRightNow(Date now){
+		CheckSession result = null;
 		Date earliestDataDelivery;
 		Date nextEarliestDataDelivery;
 		MonitoringProfile monitoringProfile = MonitoringProfileCache.getMonitoringProfile();
@@ -131,7 +146,7 @@ public class CheckInterval {
 					}
 					if( (now.equals(earliestDataDelivery) || now.after(earliestDataDelivery))  && now.before(nextEarliestDataDelivery)){
 						//we are within the check interval of this mutation
-						result = new CheckInterval(currentIssue, currentMutation, nextEarliestDataDelivery);
+						result = new CheckSession(currentIssue, currentMutation, nextEarliestDataDelivery);
 						return result;
 					}
 				}

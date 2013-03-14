@@ -16,7 +16,7 @@ public class DirectoryFileCheckerImpl implements DirectoryFileChecker {
 	
 	
 
-	public File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) throws IOException {
+	public File getLatestFileWithinCheckInterval(Date earliestDataDelivery, Date nextEarliestDataDelivery) {
 		
 		return FileUtils.getLatestFileFromDir(dirPath, earliestDataDelivery, nextEarliestDataDelivery, MonitoringProfileCache.getMonitoringProfile().getCheckedFileExtension());
 	}
