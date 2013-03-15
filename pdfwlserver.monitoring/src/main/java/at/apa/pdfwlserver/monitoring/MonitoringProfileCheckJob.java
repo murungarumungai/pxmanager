@@ -11,6 +11,7 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.apa.pdfwlserver.monitoring.data.IncomingSubDirResult;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 import at.apa.pdfwlserver.monitoring.data.MutationResult;
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
@@ -76,9 +77,10 @@ public class MonitoringProfileCheckJob implements Job {
 	 */
 	public ReportResult check() throws IOException {
 		SubDirResult dataDeliveryResult = checkDataDelivery();
+		
 		SubDirResult importResult = checkImport();
 		MutationResult mutationResult = checkMutation();
-		return createReport();
+		return createReport(dataDeliveryResult, importResult,mutationResult);
 	}
 
 	/**
@@ -127,10 +129,30 @@ public class MonitoringProfileCheckJob implements Job {
 		/**
 		 * check the subDirectories in the order which they are in the List
 		 * 2.import 3.succes 4.error
-		 */
-		for (SubDirChecker subDir : subDirectoriesToBeChecked) {
-			importStatus = subDir.checkDir();
+		 */		
+		for(int i=1; i<subDirectoriesToBeChecked.size();i++){
+			importStatus = subDirectoriesToBeChecked.get(i).checkDir();
+			/**
+			 * only one subDir should return a status!=null
+			 * because a file can either be in: import or success or error.
+			 * during a checkingSession you can not have some data in import and success/error at the same time?!
+			 * ---
+			 * Yes you can, in case of updates or reImports
+			 * Test Scenario: you have received data: incoming->import>[success] => status success
+			 * Update Scenario: incoming->[import]->[success] => ?! what status should be displayed? because you have files both in [import] and [success]
+			 * */
+			if(null!=importStatus){
+				return importStatus;
+				/**
+				 * This solves the problem of reImports of updates.
+				 * 1.incoming->import>[success] => status success
+				 * 2.incoming->[import]->[success] => what status?! - in this case the fact that we have data in [success] would be an out-dated status
+				 * the actual state of the system is that it has received an update and is now importing 
+				 * */
+			}
+			
 		}
+		
 		return importStatus;
 	}
 
@@ -146,7 +168,25 @@ public class MonitoringProfileCheckJob implements Job {
 	 * Compile the results and creates a report, Before writing the report, read
 	 * every time the FreeMarkerTemplate write StatusPage.html
 	 */
-	private ReportResult createReport() {
+	private ReportResult createReport(SubDirResult dataDeliveryResult, SubDirResult importResult, MutationResult mutationResult) {
+		/*
+		 * Razvan 15.03.2013
+		 * when you consolidate a result from DataDelivery and ImportStatus
+		 * Display the status of dataDelivery ONLY if all other statuses are null. 
+		 * Else, if we have a status after incoming, is means that we had data in incoming, 
+		 * and in this case just display fileName and Date of the last known file within the CheckSession
+		 * */
+		
+		if(null==importResult){
+			//ReportResult.setStatus() system is incoming state
+		} else {
+			/*
+			 * it means that we are passed the incoming state, we already received data in coming
+			 * so just let the user know about the last known file in incoming within this checking session
+			 * */
+			/*ReportResult.set()*/ ((IncomingSubDirResult) dataDeliveryResult).getIncomingLastKnownFileWithinCheckInterval();
+		}
+		
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 

@@ -22,6 +22,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import at.apa.pdfwlserver.monitoring.data.DirectoryFileConditionNowMocker;
+import at.apa.pdfwlserver.monitoring.data.IncomingSubDirResult;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
@@ -115,12 +116,12 @@ public class MonitoringProfileCheckJobTest {
     	Date now = DateUtils.parseDateTime("11.03.2013 14:53");
     	DirectoryFileConditionNowMocker.setNow(now);
     	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
-    	SubDirResult result = instance.checkDataDelivery();
+    	IncomingSubDirResult result = (IncomingSubDirResult) instance.checkDataDelivery();
     	assertEquals("Checking STATUS","not yet processed",result.getStatus().getText());
     	Date expectedDate = DateUtils.parseDateTime("11.03.2013 14:53:15");
     	assertNotNull("Checking received file WithInCheck interval", result.getLatestFileWithinTheCheckInterval());
     	assertTrue("Checking RECEIVED DATE", DateUtils.compareDatesUpToMillis(expectedDate, FileUtils.getReceivedDate(result.getLatestFileWithinTheCheckInterval())));
-    	assertTrue("checking flag data was in incoming", result.wasInIncoming());
+    	assertNotNull("checking that data was in incoming", result.getIncomingLastKnownFileWithinCheckInterval());
     }
     
     /**

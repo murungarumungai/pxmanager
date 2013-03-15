@@ -1,5 +1,6 @@
 package at.apa.pdfwlserver.monitoring.data;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class CheckSession {
 	 * */ 
 	private final Date nextEarliestDataDelivery;
 	//We must trace the data Packets through the importing process during a CheckSession(CheckInterval) of a certain mutation
-	private boolean wasInIncoming = false; 
+	//private boolean wasInIncoming = false;
+	private File incomingLatestFileWithinCheckInterval;//cache the latestFileWithinCheckInterval so that we can provide some information
 	
 	/**
 	 * Private Constructor to prevent instantiation
@@ -46,16 +48,31 @@ public class CheckSession {
 	/**
 	 * returns true if data ever existed in incoming folder during this CheckInterval
 	 * */
-	public boolean wasInIncoming(){
+/*	public boolean wasInIncoming(){
 		return wasInIncoming;
+	}*/
+	
+	/**
+	 * @return Returns the last know file WithinCheckInterval in incoming folder,
+	 * if data ever existed in incoming folder during this CheckInterval
+	 * */
+	public File getIncomingLatestFileWithinCheckInterval(){
+		return incomingLatestFileWithinCheckInterval;
 	}
 	
 	/**
 	 * asserts that data was in incoming folder during this CheckInterval
 	 * */
-	public void setWasInIncoming(){
-		wasInIncoming = true;
+	public void setIncomingLatestFileWithinCheckInterval(File file){
+		this.incomingLatestFileWithinCheckInterval = file;
 	}
+	
+	/**
+	 * asserts that data was in incoming folder during this CheckInterval
+	 * */
+	/*public void setWasInIncoming(){
+		wasInIncoming = true;
+	}*/
 	
 	/**
 	 * @param now - is the moment in time(currentSystemTime) when the check is performed

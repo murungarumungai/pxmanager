@@ -21,7 +21,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
 	
 	@Override
     public SubDirResult checkDirectoryForFile(){
-        SubDirResult result = null;
+        IncomingSubDirResult result = null;
         
         //begin check, we chek now
         now = now();
@@ -45,7 +45,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         	latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
         			getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
         			getCheckInterval().getNextEarliestDataDelivery()); 
-        	getCheckInterval().setWasInIncoming();
+        	getCheckInterval().setIncomingLatestFileWithinCheckInterval(latestFileWithinCheckInterval);
         	//dateReceived = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
         	//expected status: not processed yet
         } else if(fileExists==false && isWithinTimePoint==true && null!=status ){
@@ -58,7 +58,7 @@ public class IncomingDirectoryFileCondition extends DirectoryFileCondition {
         
         //Only if status!=null return a result
         if(null!=status){
-        	result = new SubDirResult(now, subDirPath, status,latestFileWithinCheckInterval, latestFileInDirectory, getCheckInterval().wasInIncoming());
+        	result = new IncomingSubDirResult(now, subDirPath, status,latestFileWithinCheckInterval, latestFileInDirectory, getCheckInterval().getIncomingLatestFileWithinCheckInterval() );
         }
         
         
