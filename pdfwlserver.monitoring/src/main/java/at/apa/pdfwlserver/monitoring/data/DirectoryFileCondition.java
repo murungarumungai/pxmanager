@@ -62,7 +62,13 @@ public class DirectoryFileCondition {
          * */
         Status status = checkFileExistence();
         
-       
+       if(status!=null){
+    	   File latestFileWithinCheckInterval = getDirectoryFileChecker().getLatestFileWithinCheckInterval(
+    			   getCheckInterval().getCurrentCheckedMutation().getDataEarliestDelivery(),
+    			   getCheckInterval().getNextEarliestDataDelivery());
+    	   
+    	   result = new SubDirResult(now, subDirPath, status, latestFileWithinCheckInterval, getDirectoryFileChecker().getLatestFile());
+       }
         
         return result;
     }

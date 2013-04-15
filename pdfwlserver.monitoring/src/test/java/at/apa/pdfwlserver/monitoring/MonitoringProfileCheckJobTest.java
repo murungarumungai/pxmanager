@@ -110,7 +110,7 @@ public class MonitoringProfileCheckJobTest {
      * <p>
      * */
     
-    @Test
+    @Ignore
     public void testCheckDataDelivery()  {
     	//Set the now()
     	Date now = DateUtils.parseDateTime("11.03.2013 14:53");
@@ -138,7 +138,7 @@ public class MonitoringProfileCheckJobTest {
      * </p>
      * */
    
-    @Test 
+    @Ignore
     public void testCheckDataDelivery2() {
     	//set the now
     	Date now = DateUtils.parseDateTime("01.01.2013 21:30"); 
@@ -161,7 +161,7 @@ public class MonitoringProfileCheckJobTest {
      * </p>
      * */
    
-    @Test
+    @Ignore
     public void testCheckDataDelivery3() {
     	//set the now
     	Date now = DateUtils.parseDateTime("01.01.2013 21:31"); 
@@ -183,7 +183,7 @@ public class MonitoringProfileCheckJobTest {
      * import is empty Or we have old files that are outside the checkInterval
      * Expected SubDirResult is null
      * */
-    @Test
+    @Ignore
     public void testCheckImportDir()  {
     	//We need to set the now so that issues.csv won't be outdated
     	Date now = DateUtils.parseDateTime("12.03.2013 21:31"); 
@@ -191,6 +191,24 @@ public class MonitoringProfileCheckJobTest {
     	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
     	SubDirResult result = instance.checkImportDir();
     	assertNull("import folder is empty, expecting null", result);
+    }
+    
+    /**
+     * CheckJobTest\derstandard\import we have a .zip files with date: 11.03.2013 14:53:15
+     * 11 martie 2013, 14:53:15
+     * 
+     * File does exist in the folder within timepoint.
+     * We have a file within checkInterval => Expected status is importing right now
+     * */
+    @Test
+    public void testCheckImportDir2(){
+    	//set the now() so that we return the file
+    	Date now = DateUtils.parseDateTime("11.03.2013 14:55");
+    	DirectoryFileConditionNowMocker.setNow(now);
+    	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
+    	SubDirResult result = instance.checkImportDir();
+    	assertEquals("Checking expected status", "importing right now", result.getStatus().getText());
+    	
     }
     
 }

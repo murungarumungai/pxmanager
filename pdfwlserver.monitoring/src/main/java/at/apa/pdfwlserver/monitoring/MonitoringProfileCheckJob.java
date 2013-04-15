@@ -144,10 +144,22 @@ public class MonitoringProfileCheckJob implements Job {
 			if(null!=importStatus){
 				return importStatus;
 				/**
+				 * So the algorithm is: Return the 1st status diferit de null
+				 * 
 				 * This solves the problem of reImports of updates.
 				 * 1.incoming->import>[success] => status success
 				 * 2.incoming->[import]->[success] => what status?! - in this case the fact that we have data in [success] would be an out-dated status
 				 * the actual state of the system is that it has received an update and is now importing 
+				 * 
+				 * Razvan. 09.04.2013: Mai corect ar fi return cel mai recent status, adica cu data fisierului cee mai recenta
+				 * cazul de mai sus nu rezolva urmatorul test case:
+				 * 
+				 * 1. primul import: incoming->import->success => status success
+				 * 2. reImport incoming->import->error => status error. dar tu pentru ca verifici intai folderul success si iti returneaza un status, si abia apoi verifici statusul error,
+				 * tu in loc sa intorci statusul succes, intorci tot error.
+				 * TODO: scrie un test case in felul urmator:
+				 * 1. La primul import avem: incoming->import->success => status success
+				 * 2. Apoi facem un update cu un alt fiser cu data mai recenta (sa zice cu o ora) care se va duce asa: incoming->import->error => expected status error
 				 * */
 			}
 			
