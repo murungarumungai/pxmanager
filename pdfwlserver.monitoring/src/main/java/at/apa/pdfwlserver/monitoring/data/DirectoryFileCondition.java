@@ -11,6 +11,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.apa.pdfwlserver.monitoring.utils.DateUtils;
 import at.apa.pdfwlserver.monitoring.utils.FileUtils;
 import at.apa.pdfwlserver.monitoring.xml.Status;
 
@@ -50,7 +51,7 @@ public class DirectoryFileCondition {
         
         //begin check, we chek now
         now = now();
-        logger.debug("Began checking DirectoryFileCondition at:"+now+" checking FileCondition:"+this);
+        logger.debug("Began checking DirectoryFileCondition at:"+DateUtils.formatDate(now)+" checking FileCondition:"+this);
         /*
          * result status of this FileCondition, 
          * if the evaluation of the conditions matches the set conditions configured in .xml, then we return the configured status.

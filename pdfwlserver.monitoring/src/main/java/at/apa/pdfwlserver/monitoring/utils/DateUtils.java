@@ -97,5 +97,12 @@ public class DateUtils {
 		boolean difLesThanAMillis = difference<=1000 ? true : false;
 		return difLesThanAMillis;
 	}
+	
+	public static String formatDate(final Date date){
+		String result = null;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_WITH_SECOND);
+		result = simpleDateFormat.format(date);
+		return result;
+	}
 
 }
