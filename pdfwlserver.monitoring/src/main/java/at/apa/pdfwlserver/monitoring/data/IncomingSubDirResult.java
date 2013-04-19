@@ -11,7 +11,7 @@ public class IncomingSubDirResult extends SubDirResult {
 	 * this is the same data as <code>latestFileWithinCheckInterval</code> in the parent class
 	 * but I decided to have it here for clarity, as it has different purpose
 	 * */
-	File incomingLastKnownFileWithinCheckInterval;
+	private File incomingLastKnownFileWithinCheckInterval;
 	
 	/**
      * @param latestFileWithinCheckInterval - this is the latest file in directory within the check interval

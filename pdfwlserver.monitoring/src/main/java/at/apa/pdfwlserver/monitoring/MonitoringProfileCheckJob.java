@@ -1,5 +1,6 @@
 package at.apa.pdfwlserver.monitoring;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import at.apa.pdfwlserver.monitoring.data.MutationResult;
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
 import at.apa.pdfwlserver.monitoring.data.SubDirChecker;
 import at.apa.pdfwlserver.monitoring.data.SubDirResult;
+import at.apa.pdfwlserver.monitoring.utils.FileUtils;
 
 /**
  * The purpose of this class is to execute a complete check
@@ -109,7 +111,7 @@ public class MonitoringProfileCheckJob implements Job {
 	}
 
 	
-	public SubDirResult checkImportDir()  {
+/*	public SubDirResult checkImportDir()  {
 		SubDirResult importDirStatus = null;
 		for(int i=0; i<subDirectoriesToBeChecked.size();i++){
 			if(i==1){//I know that in .xml import is on 2nd pos
@@ -117,7 +119,7 @@ public class MonitoringProfileCheckJob implements Job {
 			}
 		}
 		return importDirStatus;
-	}
+	}*/
 	
 	/**
 	 * it must return a result. It can not return null. If it returns null there's a
@@ -129,43 +131,30 @@ public class MonitoringProfileCheckJob implements Job {
 		/**
 		 * check the subDirectories in the order which they are in the List
 		 * 2.import 3.succes 4.error
-		 */		
+		 */
+		SubDirResult mostRecentStatus = null;
+		Date mostRecentDate = null;
+		File latestFileWithinCheckInterval = null;
 		for(int i=1; i<subDirectoriesToBeChecked.size();i++){
 			importStatus = subDirectoriesToBeChecked.get(i).checkDir();
-			/**
-			 * only one subDir should return a status!=null
-			 * because a file can either be in: import or success or error.
-			 * during a checkingSession you can not have some data in import and success/error at the same time?!
-			 * ---
-			 * Yes you can, in case of updates or reImports
-			 * Test Scenario: you have received data: incoming->import>[success] => status success
-			 * Update Scenario: incoming->[import]->[success] => ?! what status should be displayed? because you have files both in [import] and [success]
-			 * */
-			if(null!=importStatus){
-				return importStatus;
-				/**
-				 * So the algorithm is: Return the 1st status diferit de null
-				 * 
-				 * This solves the problem of reImports of updates.
-				 * 1.incoming->import>[success] => status success
-				 * 2.incoming->[import]->[success] => what status?! - in this case the fact that we have data in [success] would be an out-dated status
-				 * the actual state of the system is that it has received an update and is now importing 
-				 * 
-				 * Razvan. 09.04.2013: Mai corect ar fi return cel mai recent status, adica cu data fisierului cee mai recenta
-				 * cazul de mai sus nu rezolva urmatorul test case:
-				 * 
-				 * 1. primul import: incoming->import->success => status success
-				 * 2. reImport incoming->import->error => status error. dar tu pentru ca verifici intai folderul success si iti returneaza un status, si abia apoi verifici statusul error,
-				 * tu in loc sa intorci statusul succes, intorci tot error.
-				 * TODO: scrie un test case in felul urmator:
-				 * 1. La primul import avem: incoming->import->success => status success
-				 * 2. Apoi facem un update cu un alt fiser cu data mai recenta (sa zice cu o ora) care se va duce asa: incoming->import->error => expected status error
-				 * */
-			}
 			
+			if(null!=importStatus){
+				//Try to return the most recent status based on the latest received file(last modified date)
+				if(mostRecentDate==null){
+					latestFileWithinCheckInterval = importStatus.getLatestFileWithinTheCheckInterval();
+					mostRecentDate = FileUtils.getReceivedDate(latestFileWithinCheckInterval);
+					mostRecentStatus = importStatus;
+				} else {
+					latestFileWithinCheckInterval = importStatus.getLatestFileWithinTheCheckInterval();
+					Date fileDate =  FileUtils.getReceivedDate(latestFileWithinCheckInterval);
+					if(fileDate.after(mostRecentDate)){
+						mostRecentDate = fileDate;
+						mostRecentStatus = importStatus;
+					}
+				}
+			}
 		}
-		
-		return importStatus;
+		return mostRecentStatus;
 	}
 
 	/**

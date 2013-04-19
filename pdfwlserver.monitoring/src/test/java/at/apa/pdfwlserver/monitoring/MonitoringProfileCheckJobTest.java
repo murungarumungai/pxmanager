@@ -189,7 +189,7 @@ public class MonitoringProfileCheckJobTest {
     	Date now = DateUtils.parseDateTime("12.03.2013 21:31"); 
     	DirectoryFileConditionNowMocker.setNow(now);
     	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
-    	SubDirResult result = instance.checkImportDir();
+    	SubDirResult result = instance.checkImport();
     	assertNull("import folder is empty, expecting null", result);
     }
     
@@ -200,15 +200,34 @@ public class MonitoringProfileCheckJobTest {
      * File does exist in the folder within timepoint.
      * We have a file within checkInterval => Expected status is importing right now
      * */
-    @Test
+    @Ignore
     public void testCheckImportDir2(){
     	//set the now() so that we return the file
     	Date now = DateUtils.parseDateTime("11.03.2013 14:55");
     	DirectoryFileConditionNowMocker.setNow(now);
     	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
-    	SubDirResult result = instance.checkImportDir();
+    	SubDirResult result = instance.checkImport();
     	assertEquals("Checking expected status", "importing right now", result.getStatus().getText());
     	
     }
+    
+    /**
+     * in  Folder:
+     * CheckJobTest\derstandard\import[modified 11 ‎martie ‎2013, ‏‎14:53:15]
+     * CheckJobTest\derstandard\success[modified 11 ‎martie ‎2013, ‏‎14:55:15] 
+     * 
+     * expected status is success
+     * 
+     * */
+    @Test
+    public void testCheckSuccess(){
+    	//set the now() so that we return the file
+    	Date now = DateUtils.parseDateTime("11.03.2013 14:55");
+    	DirectoryFileConditionNowMocker.setNow(now);
+    	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
+    	SubDirResult result = instance.checkImport();
+    	assertEquals("Checking expected status", "successfully imported", result.getStatus().getText());
+    }
+    
     
 }
