@@ -74,6 +74,10 @@ public class SubDirResult {
 		return status;
 	}
 	
+	public void setStatus(Status status){
+		this.status = status;
+	}
+	
 	public File getLatestFileWithinTheCheckInterval(){
 		return latestFileWithinCheckInterval;
 	}

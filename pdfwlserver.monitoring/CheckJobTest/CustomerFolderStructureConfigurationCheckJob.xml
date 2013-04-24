@@ -70,7 +70,7 @@
 		<!-- Aside from general status, we must parse the latestFile.zip.txt files and search for following errorStrings 
 		and if we find them, we return a more specific status-->
             <errorSpecialHandling id="1">
-                <errorString>ApaError </errorString>
+                <errorString>ApaError</errorString>
                 <errorString>ApaOrCustomerError</errorString>
                 <status>
                     <text>not successfully imported (cause Error on APA-IT Systems!)</text>

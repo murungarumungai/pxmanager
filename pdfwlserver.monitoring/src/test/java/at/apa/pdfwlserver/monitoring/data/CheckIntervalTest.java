@@ -59,7 +59,7 @@ public class CheckIntervalTest {
     	//lets assume that now is 28.02.2013
     	Date now = DateUtils.parseDate("28.02.2013");
     	List<Issue> issues = getTestData1();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	 
     	 
@@ -95,7 +95,7 @@ public class CheckIntervalTest {
     	Date now = DateUtils.parseDateTime("28.02.2013 17:00");
     	//Date now = new Date();
     	List<Issue> issues = getTestData2();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);
@@ -139,7 +139,7 @@ public class CheckIntervalTest {
     public void testGetMutationBeingCheckedRightNow3(){
     	Date now = DateUtils.parseDateTime("31.12.2012 17:00");
     	List<Issue> issues = getTestData3();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null, null);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);

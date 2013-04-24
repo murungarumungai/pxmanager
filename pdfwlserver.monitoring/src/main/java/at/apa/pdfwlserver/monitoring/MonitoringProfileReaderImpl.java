@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import at.apa.pdfwlserver.monitoring.csv.CsvParser;
 import at.apa.pdfwlserver.monitoring.csv.CsvRow;
 import at.apa.pdfwlserver.monitoring.data.DirectoryFileCondition;
+import at.apa.pdfwlserver.monitoring.data.ErrorDirectoryFileCondition;
 import at.apa.pdfwlserver.monitoring.data.IncomingDirectoryFileCondition;
 import at.apa.pdfwlserver.monitoring.data.Issue;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfile;
@@ -58,7 +59,7 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 		List<Issue> issues = CsvParser.loadIssuesFromCsvRows(csvRows);
 
 		
-		result = new MonitoringProfile(customerFileSystemStructure, issues, /*1*/ propsReader.getRegularCheckRepeatPeriod(), propsReader.getCheckedFileExtension());
+		result = new MonitoringProfile(customerFileSystemStructure, issues, /*1*/ propsReader.getRegularCheckRepeatPeriod(), propsReader.getCheckedFileExtension(), propsReader.getErrorFileExtension());
 		return result;
 	}
 
@@ -122,12 +123,13 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 		List<DirectoryFileCondition> subDirFileConditions = new ArrayList<DirectoryFileCondition>(fileConditionsJAXB.size());
 		DirectoryFileCondition subDirFileCondition = null;
 		for(FileCondition condition : fileConditionsJAXB){
-			if(subDirName.equalsIgnoreCase("incoming")){
+			if(subDirName.equalsIgnoreCase(SubDirChecker.INCOMING)){
 				subDirFileCondition = new IncomingDirectoryFileCondition(condition.isExists(), condition.isWithinTimePoint(), condition.getStatus(), subDirPath);				
+			} else if(condition.getErrorSpecialHandling()!=null){
+				subDirFileCondition = new ErrorDirectoryFileCondition(condition.isExists(), condition.isWithinTimePoint(), condition.getStatus(), subDirPath, condition.getErrorSpecialHandling());
 			}else{
 				subDirFileCondition = new DirectoryFileCondition(condition.isExists(), condition.isWithinTimePoint(), condition.getStatus(), subDirPath);
 			}
-			
 			subDirFileConditions.add(subDirFileCondition);
 		}
 		

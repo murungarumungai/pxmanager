@@ -110,7 +110,7 @@ public class MonitoringProfileCheckJobTest {
      * <p>
      * */
     
-    @Ignore
+    @Test
     public void testCheckDataDelivery()  {
     	//Set the now()
     	Date now = DateUtils.parseDateTime("11.03.2013 14:53");
@@ -138,7 +138,7 @@ public class MonitoringProfileCheckJobTest {
      * </p>
      * */
    
-    @Ignore
+    @Test
     public void testCheckDataDelivery2() {
     	//set the now
     	Date now = DateUtils.parseDateTime("01.01.2013 21:30"); 
@@ -161,7 +161,7 @@ public class MonitoringProfileCheckJobTest {
      * </p>
      * */
    
-    @Ignore
+    @Test
     public void testCheckDataDelivery3() {
     	//set the now
     	Date now = DateUtils.parseDateTime("01.01.2013 21:31"); 
@@ -183,7 +183,7 @@ public class MonitoringProfileCheckJobTest {
      * import is empty Or we have old files that are outside the checkInterval
      * Expected SubDirResult is null
      * */
-    @Ignore
+    @Test
     public void testCheckImportDir()  {
     	//We need to set the now so that issues.csv won't be outdated
     	Date now = DateUtils.parseDateTime("12.03.2013 21:31"); 
@@ -200,7 +200,7 @@ public class MonitoringProfileCheckJobTest {
      * File does exist in the folder within timepoint.
      * We have a file within checkInterval => Expected status is importing right now
      * */
-    @Ignore
+    @Test
     public void testCheckImportDir2(){
     	//set the now() so that we return the file
     	Date now = DateUtils.parseDateTime("11.03.2013 14:55");
@@ -216,7 +216,7 @@ public class MonitoringProfileCheckJobTest {
      * CheckJobTest\derstandard\import[modified 11 ‎martie ‎2013, ‏‎14:53:15]
      * CheckJobTest\derstandard\success[modified 11 ‎martie ‎2013, ‏‎14:55:15] 
      * 
-     * expected status is success
+     * expected status is success, because the file in success folder is the latest file
      * 
      * */
     @Test
@@ -227,6 +227,26 @@ public class MonitoringProfileCheckJobTest {
     	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
     	SubDirResult result = instance.checkImport();
     	assertEquals("Checking expected status", "successfully imported", result.getStatus().getText());
+    }
+    
+    /**
+     * -in folder \derstandard\error we have a zip file with last modified date: 22 02 2013, 17:37:48
+     * 
+     * - in Issues.csv we have the following mutation:
+     * 22.02.2013;"Morning";22.02.2013 04:30;22.02.2013 04:00;22.02.2013 00:00 
+     * => earliestDateDelivery: 22.02.2013 00:00
+     * => nextEarliestDataDelivery:11.03.2013 00:00
+     * 
+     * - lets say that we check at: 22 02 2013, 17:40
+     * */
+    @Test
+    public void testErrorDir(){
+    	Date now = DateUtils.parseDateTime("22.02.2013 17:40");
+    	DirectoryFileConditionNowMocker.setNow(now);
+    	MonitoringProfileCheckJob instance = new MonitoringProfileCheckJob();
+    	SubDirResult result = instance.checkImport();
+    	assertEquals("Checking expected status", "not successfully imported (cause Error on APA-IT Systems!)", result.getStatus().getText());
+    	assertEquals("Checking the TODO", "Reimport file into directory", result.getStatus().getTodo());
     }
     
     

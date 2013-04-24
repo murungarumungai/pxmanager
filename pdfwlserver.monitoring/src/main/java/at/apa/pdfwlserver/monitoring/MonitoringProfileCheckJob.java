@@ -96,31 +96,11 @@ public class MonitoringProfileCheckJob implements Job {
 	 * */
 	public SubDirResult checkDataDelivery() {
 		SubDirResult dataDeliveryStatus = null;
-		//check 1.incoming
-		/*
-		for (SubDirChecker subDir : subDirectoriesToBeChecked) {
-			// if subDir = "incoming"
-			dataDeliveryStatus = subDir.checkDir();
-		}*/
-		/*
-		 * "incoming" subDir is the 1st one defined in .xml.
-		 * So dataDelivery results from checking ONLY this dir
-		 * */
+		//check 1.incoming folder to check dataDelivery, we know form .xml tha incoming folder is the first folder 
+		
 		dataDeliveryStatus = subDirectoriesToBeChecked.get(0).checkDir();
 		return dataDeliveryStatus;
 	}
-
-	
-/*	public SubDirResult checkImportDir()  {
-		SubDirResult importDirStatus = null;
-		for(int i=0; i<subDirectoriesToBeChecked.size();i++){
-			if(i==1){//I know that in .xml import is on 2nd pos
-				return subDirectoriesToBeChecked.get(i).checkDir();
-			}
-		}
-		return importDirStatus;
-	}*/
-	
 	/**
 	 * it must return a result. It can not return null. If it returns null there's a
 	 * programming error

@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class SubDirChecker {
     
+	public static final String INCOMING = "incoming";//for incoming we have special functionality
    
     
     private final List<DirectoryFileCondition> directoryFileConditions;

@@ -19,12 +19,14 @@ public class PropertiesReader {
 	public static final String KEY_regular_checks_repeat 	= "regular.cheks.repeat.period";
 	public static final String KEY_file_extension 			= "checked.file.extension";
 	public static final String KEY_webservice_url 			= "Services2Impl.webservice.url";
+	public static final String KEY_error_file_extension 	= "error.description.file.extension";
 
 	private String freemarkerTemplateFilePath;
 	private String checkedFileExtension;
 	private int regularCheckRepeatPeriod;
 	private String webServiceUrl;
 	private String statusPageFilePath;
+	private String errorFileExtension;
 
 	private static PropertiesReader _instance;
 	private static File propsFilePath;
@@ -51,6 +53,7 @@ public class PropertiesReader {
 		getRegularCheckRepeatPeriod();
 		getCheckedFileExtension();
 		getWebServiceUrl();
+		getErrorFileExtension();
 	}
 
 	/**
@@ -143,6 +146,17 @@ public class PropertiesReader {
 			statusPageFilePath = newVal;
 		}
 		return statusPageFilePath;
+	}
+
+	/**
+	 * It always reads the latest value from the Properties file
+	 * */
+	public String getErrorFileExtension() {
+		String newVal = readProperty(KEY_error_file_extension);
+		if(null!=newVal){
+			errorFileExtension = newVal;
+		}
+		return errorFileExtension;
 	}
 
 }
