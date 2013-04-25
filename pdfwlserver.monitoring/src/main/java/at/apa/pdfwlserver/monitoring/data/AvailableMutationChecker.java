@@ -1,5 +1,7 @@
 package at.apa.pdfwlserver.monitoring.data;
 
+import java.util.Date;
+
 public interface AvailableMutationChecker {
 	
 	/**
@@ -21,14 +23,6 @@ public interface AvailableMutationChecker {
 		what do the specifications say: Check for available Mutations for the certain issue-date (from 00:00 to 23:59).
 	 *  
 	 * */
-	public void checkMutationAvailability(String appKey, 
-			String networkType, 
-			String localFromDate, 
-			String localToDate, 
-			String region,
-			String udid,
-			String deviceType, 
-			String deviceLocale,
-			String clientVersion);
+	public void checkMutationAvailability(Date localFromDate, Date localToDate);
 
 }

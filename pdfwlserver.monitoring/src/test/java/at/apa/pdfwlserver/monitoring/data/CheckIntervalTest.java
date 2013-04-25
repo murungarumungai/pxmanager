@@ -8,6 +8,7 @@ import static at.apa.pdfwlserver.monitoring.csv.CsvUnitTestData.getMutation;
 import static at.apa.pdfwlserver.monitoring.csv.CsvUnitTestData.getMutationList;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import at.apa.pdfwlserver.monitoring.utils.DateUtils;
+import at.apa.pdfwlserver.monitoring.utils.PropertiesReader;
 
 /**
  *
@@ -27,13 +29,14 @@ import at.apa.pdfwlserver.monitoring.utils.DateUtils;
  */
 public class CheckIntervalTest {
 	
-	
+	static PropertiesReader propsReader = null;
     
     public CheckIntervalTest() {
     }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+    	propsReader = PropertiesReader.getInstance(new File("src/test/resources/monitoring.properties"));
     }
 
     @AfterClass
@@ -59,7 +62,7 @@ public class CheckIntervalTest {
     	//lets assume that now is 28.02.2013
     	Date now = DateUtils.parseDate("28.02.2013");
     	List<Issue> issues = getTestData1();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null, null);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues,  propsReader);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	 
     	 
@@ -95,7 +98,7 @@ public class CheckIntervalTest {
     	Date now = DateUtils.parseDateTime("28.02.2013 17:00");
     	//Date now = new Date();
     	List<Issue> issues = getTestData2();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null, null);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, propsReader);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);
@@ -139,7 +142,7 @@ public class CheckIntervalTest {
     public void testGetMutationBeingCheckedRightNow3(){
     	Date now = DateUtils.parseDateTime("31.12.2012 17:00");
     	List<Issue> issues = getTestData3();
-    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues, 0, null, null);
+    	MonitoringProfile monitoringProfile = new MonitoringProfile(null, issues,  propsReader);
     	MonitoringProfileCache.setMonitoringProfile(monitoringProfile);
     	
     	CheckSession response = CheckSession.getMutationBeingCheckedRightNow(now);

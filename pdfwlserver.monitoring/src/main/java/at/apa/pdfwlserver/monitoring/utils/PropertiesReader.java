@@ -187,5 +187,65 @@ public class PropertiesReader {
 		return webServiceNamespace;
 	}
 
+	public String getParamAppKey() {
+		String newVal = readProperty("appKey");
+		if(null!=newVal){
+			paramAppKey = newVal;
+		}
+		return paramAppKey;
+	}
+
+
+	public String getParamNetworkType() {
+		String newVal = readProperty("networkType");
+		if(null!=newVal){
+			paramNetworkType = newVal;
+		}
+		return paramNetworkType;
+	}
+
+
+	public String getParamRegion() {
+		String newVal = readProperty("region");
+		if(null!=newVal){
+			paramRegion = newVal;
+		}
+		return paramRegion;
+	}
+
+
+	public String getParamUdid() {
+		String newVal = readProperty("udid");
+		if(null!=newVal){
+			paramUdid = newVal;
+		}
+		return paramUdid;
+	}
+
+
+	public String getParamDeviceType() {
+		String newVal = readProperty("deviceType");
+		if(null!=newVal){
+			paramDeviceType = newVal;
+		}
+		return paramDeviceType;
+	}
+
+
+	public String getParamDeviceLocale() {
+		String newVal = readProperty("deviceLocale");
+		if(null!=newVal){
+			paramDeviceLocale = newVal;
+		}
+		return paramDeviceLocale;
+	}
+
+	public String getParamClientVersion() {
+		String newVal = readProperty("clientVersion");
+		if(null!=newVal){
+			paramClientVersion = newVal;
+		}
+		return paramClientVersion;
+	}
 
 }

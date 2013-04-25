@@ -73,6 +73,47 @@ public class PropertiesReaderTest {
 		assertEquals(expectedResult,result);
 	}
 	
+	@Test 
+	public void testGetParamAppKey(){
+		String expectedResult = "RHSQROHSAKNADFLKEADFAWE";
+		String result = instance.getParamAppKey();
+		assertEquals(expectedResult,result);
+	}
+	
+	@Test 
+	public void testGetParamUdid(){
+		String expectedResult = "f6099142092673b3fa2645748923980b2d0a9152";
+		String result = instance.getParamUdid();
+		assertEquals(expectedResult,result);
+	}
+	
+	@Test 
+	public void testGetParamDeviceType(){
+		String expectedResult = "iPad";
+		String result = instance.getParamDeviceType();
+		assertEquals(expectedResult,result);
+	}
+	
+	@Test 
+	public void testGetParamDeviceLocale(){
+		String expectedResult = "de";
+		String result = instance.getParamDeviceLocale();
+		assertEquals(expectedResult,result);
+	}
+	
+	@Test 
+	public void testGetParamClientVersion(){
+		String expectedResult = "WiBlattTest/3110/3110";
+		String result = instance.getParamClientVersion();
+		assertEquals(expectedResult,result);
+	}
+	
+	@Test 
+	public void testGetParamNetworkType(){
+		String expectedResult = "";
+		String result = instance.getParamNetworkType();
+		assertEquals(expectedResult,result);
+	}
 	
 
 }

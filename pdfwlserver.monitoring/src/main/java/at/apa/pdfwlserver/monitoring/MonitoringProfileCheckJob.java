@@ -12,6 +12,8 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.apa.pdfwlserver.monitoring.data.AvailableMutationChecker;
+import at.apa.pdfwlserver.monitoring.data.AvailableMutationCheckerImpl;
 import at.apa.pdfwlserver.monitoring.data.CheckSession;
 import at.apa.pdfwlserver.monitoring.data.IncomingSubDirResult;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
@@ -161,6 +163,10 @@ public class MonitoringProfileCheckJob implements Job {
 		Date issueDate = checkSession.getCurrentCheckedIssue().getIssuseDate();
 		//Check for available Mutations for the certain issue-date (from 00:00 to 23:59).
 		Date toDate = DateUtils.getEndOfDayTime(issueDate);
+		
+		AvailableMutationChecker mutationChecker = new AvailableMutationCheckerImpl();
+		
+		mutationChecker.checkMutationAvailability(fromDate, toDate);
 		/*
 		 * I have to know Mutation being checked right now
 		 * and check whether it's available or not

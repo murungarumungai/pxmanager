@@ -59,7 +59,7 @@ public class MonitoringProfileReaderImpl implements MonitoringProfileReader {
 		List<Issue> issues = CsvParser.loadIssuesFromCsvRows(csvRows);
 
 		
-		result = new MonitoringProfile(customerFileSystemStructure, issues, /*1*/ propsReader.getRegularCheckRepeatPeriod(), propsReader.getCheckedFileExtension(), propsReader.getErrorFileExtension());
+		result = new MonitoringProfile(customerFileSystemStructure, issues, propsReader /*1*/ /*propsReader.getRegularCheckRepeatPeriod(), propsReader.getCheckedFileExtension(), propsReader.getErrorFileExtension()*/);
 		return result;
 	}
 
