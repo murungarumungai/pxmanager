@@ -20,14 +20,26 @@ public class PropertiesReader {
 	public static final String KEY_file_extension 			= "checked.file.extension";
 	public static final String KEY_webservice_url 			= "Services2Impl.webservice.url";
 	public static final String KEY_error_file_extension 	= "error.description.file.extension";
-
+	public static final String KEY_webservice_name 			= "Services2Impl.webservice.name";
+	public static final String KEY_webservice_namespace 	= "Services2Impl.webservice.namespace";
+	
 	private String freemarkerTemplateFilePath;
 	private String checkedFileExtension;
 	private int regularCheckRepeatPeriod;
 	private String webServiceUrl;
+	private String webServiceName;
+	private String webServiceNamespace;
 	private String statusPageFilePath;
 	private String errorFileExtension;
 
+	private String paramAppKey;
+	private String paramNetworkType;
+	private String paramRegion;
+	private String paramUdid;
+	private String paramDeviceType;
+	private String paramDeviceLocale;
+	private String paramClientVersion;
+	
 	private static PropertiesReader _instance;
 	private static File propsFilePath;
 
@@ -158,5 +170,22 @@ public class PropertiesReader {
 		}
 		return errorFileExtension;
 	}
+
+	public String getWebServiceName() {
+		String newVal = readProperty(KEY_webservice_name);
+		if(null!=newVal){
+			webServiceName = newVal;
+		}
+		return webServiceName;
+	}
+
+	public String getWebServiceNamespace() {
+		String newVal = readProperty(KEY_webservice_namespace);
+		if(null!=newVal){
+			webServiceNamespace = newVal;
+		}
+		return webServiceNamespace;
+	}
+
 
 }

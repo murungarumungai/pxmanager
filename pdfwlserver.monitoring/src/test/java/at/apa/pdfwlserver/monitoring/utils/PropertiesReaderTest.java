@@ -30,6 +30,13 @@ public class PropertiesReaderTest {
 		String result = instance.getCheckedFileExtension();
 		assertEquals(expectedResult,result);
 	}
+	
+	@Test
+	public void testGetErrorFileExtension() {
+		String expectedResult = ".txt";
+		String result = instance.getErrorFileExtension();
+		assertEquals(expectedResult,result);
+	}
 
 	@Test
 	public void testGetRegularCheckRepeatPeriod() {
@@ -45,11 +52,27 @@ public class PropertiesReaderTest {
 		assertEquals(expectedResult,result);
 	}
 	
+	@Test
+	public void testGetWebServiceName() {
+		String expectedResult = "pdfWhitelabelServer-pdfWhitelabelServer";
+		String result = instance.getWebServiceName();
+		assertEquals(expectedResult,result);
+	}
+	
+	@Test
+	public void testGetWebServiceNamespace() {
+		String expectedResult = "http://pdfwlserver.apa.at";
+		String result = instance.getWebServiceNamespace();
+		assertEquals(expectedResult,result);
+	}
+	
 	@Test 
 	public void testGetStatusPageFilePath(){
 		String expectedResult = "statusPage.html";
 		String result = instance.getStatusPageFilePath();
 		assertEquals(expectedResult,result);
 	}
+	
+	
 
 }

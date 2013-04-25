@@ -12,12 +12,14 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.apa.pdfwlserver.monitoring.data.CheckSession;
 import at.apa.pdfwlserver.monitoring.data.IncomingSubDirResult;
 import at.apa.pdfwlserver.monitoring.data.MonitoringProfileCache;
 import at.apa.pdfwlserver.monitoring.data.MutationResult;
 import at.apa.pdfwlserver.monitoring.data.ReportResult;
 import at.apa.pdfwlserver.monitoring.data.SubDirChecker;
 import at.apa.pdfwlserver.monitoring.data.SubDirResult;
+import at.apa.pdfwlserver.monitoring.utils.DateUtils;
 import at.apa.pdfwlserver.monitoring.utils.FileUtils;
 
 /**
@@ -81,7 +83,11 @@ public class MonitoringProfileCheckJob implements Job {
 		SubDirResult dataDeliveryResult = checkDataDelivery();
 		
 		SubDirResult importResult = checkImport();
-		MutationResult mutationResult = checkMutation();
+		/*Razvan 25.04.2013
+		 * it makes sense to check for available mutation only if the import process was done
+		 * otherwise why should we even check for availableMutation?
+		 * */
+		MutationResult mutationResult = checkMutation(null);
 		return createReport(dataDeliveryResult, importResult,mutationResult);
 	}
 
@@ -103,7 +109,9 @@ public class MonitoringProfileCheckJob implements Job {
 	}
 	/**
 	 * it must return a result. It can not return null. If it returns null there's a
-	 * programming error
+	 * programming error.
+	 * Razvan 24.04.2013 - yes, it can return null if we have no files in any of the checked directories: import, success, error.
+	 * So it's ok to return null
 	 * @throws IOException 
 	 */
 	public SubDirResult checkImport()  {
@@ -140,8 +148,23 @@ public class MonitoringProfileCheckJob implements Job {
 	/**
 	 * it must return a result. It can not return null.
 	 */
-	public MutationResult checkMutation() {
+	public MutationResult checkMutation(Date now) {
 		MutationResult result = null;
+		
+		CheckSession checkSession = CheckSession.getMutationBeingCheckedRightNow(now);
+		if(null == checkSession){
+			//either the issues.csv is expired, or the monitoring profile is null
+			throw new IllegalArgumentException("CheckInterval for current time:"+now+" is null. " +
+					"Isses.csv is outdated, there are now issues to be checked, please update it");
+		}
+		Date fromDate = checkSession.getCurrentCheckedMutation().getDataEarliestDelivery();
+		Date issueDate = checkSession.getCurrentCheckedIssue().getIssuseDate();
+		//Check for available Mutations for the certain issue-date (from 00:00 to 23:59).
+		Date toDate = DateUtils.getEndOfDayTime(issueDate);
+		/*
+		 * I have to know Mutation being checked right now
+		 * and check whether it's available or not
+		 * */
 		return result;
 	}
 
