@@ -44,8 +44,7 @@
 		<dependency>
 			<groupId>jug.sibiu.ejb</groupId>
 			<artifactId>jug-stateless-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+			</dependency>
 	
 
 		<!-- Import the transaction spec API, we use runtime scope because we aren't 
