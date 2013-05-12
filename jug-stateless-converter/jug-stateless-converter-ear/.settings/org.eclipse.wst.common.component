@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="jug-stateless-converter-ear">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
+        <dependent-module archiveName="jug-stateless-converter-web.war" deploy-path="/" handle="module:/resource/jug-stateless-converter-web/jug-stateless-converter-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jug-stateless-converter-ejb.jar" deploy-path="/" handle="module:/resource/jug-stateless-converter-ejb/jug-stateless-converter-ejb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jug-stateless-api.jar" deploy-path="/lib" handle="module:/resource/jug-stateless-api/jug-stateless-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
