@@ -3,7 +3,6 @@ package jug.converter.ejb;
 import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 import jug.converter.api.CurrencyConverterRemote;
