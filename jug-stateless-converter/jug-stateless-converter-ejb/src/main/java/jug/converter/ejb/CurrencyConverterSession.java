@@ -5,13 +5,14 @@ import java.math.BigDecimal;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 
+
 import jug.converter.api.CurrencyConverterRemote;
-//import javax.ejb.Local;
 
 
 
 @Stateless
-public class CurrencyConverterSession implements CurrencyConverterRemote, CurrencyConverterLocal {
+public class CurrencyConverterSession implements CurrencyConverterRemote,
+		CurrencyConverterLocal {
 
 	private BigDecimal euroRate;
 	private BigDecimal ronRate;
@@ -27,8 +28,8 @@ public class CurrencyConverterSession implements CurrencyConverterRemote, Curren
 	 * </p>
 	 * <p>
 	 * When a session bean transitions from the “instantiation” state to the
-	 * “ready” state, it transitions through the @PostConstructphase. The @PostConstructphase
-	 * provides secondary, potentially complex bean initialization. To
+	 * “ready” state, it transitions through the @PostConstruct phase. The @PostConstruct
+	 * phase provides secondary, potentially complex bean initialization. To
 	 * facilitate this secondary initialization, the container will invoke a
 	 * method described with the @PostConstruct annotation. This @PostConstruct
 	 * method functions as a life cycle callback. The @PostConstruct life cycle
@@ -41,6 +42,7 @@ public class CurrencyConverterSession implements CurrencyConverterRemote, Curren
 	 * */
 	@PostConstruct
 	public void getRates() {
+		//initialize exchange rates
 		euroRate = new BigDecimal("0.23");
 		ronRate = new BigDecimal("4.33");
 	}
