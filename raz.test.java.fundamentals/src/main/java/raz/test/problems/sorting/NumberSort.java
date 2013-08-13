@@ -1,14 +1,18 @@
 package raz.test.problems.sorting;
 
+/**
+ * Problema: Sortarea unui sir de numere
+ * */
+
 public class NumberSort {
 
 	static int[] numbers = { 4, 3, 7, 8, 0, 9, 3, 7, 8, 2, 1, 5, 9, 6, 10, -2 };
 
 	public static void main(String[] args) {
-		System.out.println("Before sorting:"+numbers);
+		System.out.println("Before sorting:" + numbers);
 		printArray(numbers);
 		sort(numbers, true);
-		System.out.println("After sorting:"+numbers);
+		System.out.println("After sorting:" + numbers);
 		printArray(numbers);
 	}
 
@@ -21,7 +25,7 @@ public class NumberSort {
 
 			loopAgain = false;
 			// bubble sort
-			for (int i = 0; i <= (intArray.length - 1)-1; i++) {
+			for (int i = 0; i <= (intArray.length - 1) - 1; i++) {
 				if (intArray[i] > intArray[i + 1]) {
 					// swap them
 					int tmp = intArray[i];
@@ -37,17 +41,17 @@ public class NumberSort {
 		}
 
 	}
-	
-	public static void printArray(final int[] array ) {
-		if(null==array){
+
+	public static void printArray(final int[] array) {
+		if (null == array) {
 			System.out.println("Array is null");
-		} else if(array.length==0){
+		} else if (array.length == 0) {
 			System.out.println("Array is empty");
-		} else{
-			for(int currentNumber : array) {
+		} else {
+			for (int currentNumber : array) {
 				System.out.println(currentNumber);
 			}
-			
+
 		}
 	}
 
