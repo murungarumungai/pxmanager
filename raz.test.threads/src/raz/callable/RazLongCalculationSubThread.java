@@ -6,14 +6,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * single thread synchronous call - the caller waits until the called method returns
+ * The Long Computation is done (asynchronous) on another Thread, other thread than the Caller Thread.
+ * That is why the calling Thread is not blocked waiting for the result.
  * */
 public class RazLongCalculationSubThread {
 	
 	static long SECOND = 1000;
 	
 	public static void main(String[] args){
-		for (String word: args) {
+		String[] words = {"test"};
+		for (String word: words) {
 			doWorkUsingCallable(word);
 			//callAsyncButNoValidResult(word);
 			//callerWaitsForTaskToFinishToGetTheResult(word);
@@ -32,12 +34,17 @@ public class RazLongCalculationSubThread {
 		debugThreadInfo("Showing result computation:"+result);
 	}
 	
+	/**
+	 * In metoda asta the caller Thread waits for the sub-thread to finish.
+	 * Foloseste <code>java.lang.Thread.join() </code> 
+	 * pentru a astepta ca sub-Threadul sa termine executia
+	 * */
 	public static void callerWaitsForTaskToFinishToGetTheResult(String word){
 		debugThreadInfo("Calling long computation for:"+word);
 		StringComputation task = new StringComputation(word);//The long computation is done async, on another thread
 		
 		/*
-		 * If the other stuff that we need to do,
+		 * If the "other stuff" that we need to do,
 		 * depends on the result that is being
 		 * calculated async on the other thread, we need to wait for that thread to finish,
 		 * so we can be sure that we have a valid result

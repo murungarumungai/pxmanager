@@ -2,7 +2,8 @@ package raz.callable;
 
 /**
  * this is a computation that takes long time to complete
- * it return the length of a String
+ * it return the length of a String.
+ * The long running work in the <code>compute</code> method is done on another sub-tread
  * */
 class StringComputation implements Runnable{
 	private String word;
@@ -27,7 +28,7 @@ class StringComputation implements Runnable{
 	}
 	
 	/**
-	 * this method takes a lot of time to process
+	 * this method takes a lot of time(5 seconds) to process
 	 * */
 	private void compute(){
 		result =  Integer.valueOf(word.length());

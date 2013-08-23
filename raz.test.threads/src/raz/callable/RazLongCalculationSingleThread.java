@@ -38,7 +38,8 @@ public class RazLongCalculationSingleThread {
 	}
 	
 	public static void main(String[] args){
-		for (String word: args) {
+		String[] words = {"test","bla"};
+		for (String word: words) {
 			debugThreadInfo("Calling long computation for:"+word);
 			StringComputation task = new StringComputation(word);
 			task.compute();
