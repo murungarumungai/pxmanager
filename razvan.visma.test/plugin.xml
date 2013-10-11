@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="razvan.visma.test.ui.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Visma Perspective"
+            class="razvan.visma.test.ui.Perspective"
+            id="razvan.visma.test.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="razvan.visma.test.ui.views.PriceCalculationView"
+            id="razvan.visma.test.views.PriceCalculationView"
+            name="PriceCalculationView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="razvan.visma.test.application"
+            name="VismaTest">
+         <property
+               name="appName"
+               value="VismaTest">
+         </property>
+      </product>
+   </extension>
+
+</plugin>
