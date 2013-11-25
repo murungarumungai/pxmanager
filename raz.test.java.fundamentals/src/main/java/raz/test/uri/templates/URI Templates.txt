@@ -1,0 +1,121 @@
+Generate URIs and IRIs from Templates
+
+URI Templates - they can be used to automate the interpretation and generation of web service URIs
+
+URI Template Specification provides a mechanism that can be used to describe how to construct URIs
+URI Template syntax 
+how a template is expanded into a URI
+
+View an illustration of the use of two URI Template implementations Java™Script and Java language programs,
+
+There are times, however, when it becomes necessary for one application to allow other systems to construct the URIs that are to be consumed.
+E.g.:
+- a Web-based service  allowing clients to request the current weather conditions for any given longitude and latitude coordinate on Earth.
+- Each coordinate is specified by a URI like http://geoweather.example.org?long=36.330892&lat=-119.654846. 
+
+- Obviously, given the design, it would be impractical for the server to define every possible URI for this service. 
+- Instead, the service needs a way of describing the URI pattern so that client applications can construct the appropriate URL for the resources being accessed.
+
+The URI Template Specification proposes a syntax that can be used to describe how meaningful URIs can be constructed.
+
+##URI Templates
+
+- A URI Template is a string value that includes a mixture of literal character sequences and specialized tokens that, when processed with a set of input values, yields a URI.
+
+Sample URI Template
+http://{-append|.|host}example.org{-opt|/|segments}{-listjoin|/|segments}
+/page/{id=~home}{-opt|?|a,b,c}{-join|&|a,b,c}
+
+To process the template, split it into each of its component parts, delimited by characters "{" and "}".
+Literal values are copied directly into the produced URI.
+Tokens, on the other hand, must be processed in order to determine an appropriate replacement value.
+
+http://
+{-append|.|host}
+example.org
+{-opt|/|segments}
+{-listjoin|/|segments}
+/page/
+{id=~home}
+{-opt|?|a,b,c}
+{-join|&|a,b,c}
+
+###Tokens that appear in the sample URI Template
+{-append|.|host}
+{-opt|/|segments}
+{-listjoin|/|segments}
+{id=~home}
+{-opt|?|a,b,c}
+{-join|&|a,b,c}
+
+###The basic forms of URI Template tokens
+{variable}
+{variable=default}
+{-operation|arg|variable(s)}
+
+The leading and trailing curly brackets "{}" are used to distinguish the token from literal values in the template.
+
+Tokens using either the form {variable} or {variable=default} represent a simple replacement operation. That is, the token is to be replaced with a value associated with the name of the variable; or, if no value as been defined, with either the default value or an empty string.
+
+For example, if you have a template http://example.org/{foo=baz}, and your application has associated the value bar with the variable named foo, the {foo} token is replaced with bar resulting in an expanded result of http://example.org/bar.
+
+- http://example.org/{foo=baz}
+- value bar with the variable named foo, {foo} token is replaced with bar
+- http://example.org/bar
+
+
+Tokens usig the form {-operation|arg|variable(s)} are a bit more complicated.
+'-operation' identifies one of six distinct types of operations used to generate the replacement value for the token
+'arg' specifies a sequence of literal characters that will be inserted into the resulting URI depending on the semantics of the -operation
+The 'variable(s)' component is a listing of one or more named variables that serve as input for the -operation.
+
+The -operation must be one of either:
+
+    -append -- indicating that the value of arg is to be appended to the value of the variable, if defined.
+    -prefix -- indicating that the value of arg is to be prepended to the value of the variable, if defined.
+    -opt -- indicating that the value of arg is to be used as the token's replacement value only if a value for any of the named variables has been defined.
+    -neg -- indicating that the value of arg is to be used as the token's replacement value only if a value for any of the named variables has not been defined.
+    -listjoin -- indicating that the value of the named variable is a list, whose members are to be concatenated together using the value of arg.
+    -join -- indicating that multiple variable=value pairs, concatenated using the value of arg, are to be used as the token's replacement value.
+	
+
+###To better understand how these operations work, it helps to walk through the example given previously.
+http://
+{-append|.|host}
+example.org
+{-opt|/|segments}
+{-listjoin|/|segments}
+/page/
+{id=~home}
+{-opt|?|a,b,c}
+{-join|&|a,b,c}
+
+Variable			Value	
+host				www
+Token: {-append|.|host}
+insert the value 'www' and append the literal '.' => 'www.'
+
+Variable			Value	
+segments			["foo","bar","baz"]	
+{-opt|/|segments}
+because the a value for segments ahs been defined, insert the literal value '/'
+
+{-listjoin|/|segments}
+concatenate the values foo, bar, baz with the litera value '/' => 'foo/bar/baz'
+
+{id=~home} because no value has been specified for the variable id, Insert the default literal value ~home => '~home'
+
+{-opt|?|a,b,c} Because values for the variables a, b and c have been defined, insert the literal value ? => '?'
+
+{-join|&|a,b,c} Concatenate a=x, b=y and c=z with the literal value & => a=x&b=y&c=z
+
+The resulting URI:
+[http://] [www.] [example.org] [/] [foo/bar/baz] [/page/] [~home] [?] [a=x&b=y&c=z]
+
+http://www.example.org/foo/bar/baz/page/~home?a=x&b=y&c=z
+
+
+
+
+
+
