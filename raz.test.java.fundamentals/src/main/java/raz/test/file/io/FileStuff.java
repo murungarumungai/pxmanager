@@ -33,6 +33,9 @@ package raz.test.file.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import static java.lang.System.out;
 
 /**
@@ -74,5 +77,34 @@ public class FileStuff {
 			out.format("getParent(): %s%n", f.getParent());
 			out.format("toURI: %s%n", f.toURI());
 		}
+	}
+
+	/**
+	 * Gets all the children of this file If file is a File and not a dir we
+	 * return null
+	 * 
+	 * @param parent
+	 *            must be a valid File Path on the FileSystem
+	 * */
+	static List<File> getChildren(File parent) {
+		List<File> children = null;
+
+		if (parent.isDirectory()) {
+			children = Arrays.asList(parent.listFiles());
+			if (children == null || children.isEmpty()) {
+				// stop recursion
+			} else {
+				for (File oneFile : children) {
+					if (oneFile.exists()) {
+						return getChildren(oneFile);
+					}
+				}
+			}
+		} else {
+			// file is File, stop recursion
+			// add this
+		}
+
+		return children;
 	}
 }
