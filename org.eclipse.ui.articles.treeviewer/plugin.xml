@@ -22,27 +22,24 @@
             class="raz.test.filesystem.views.FileSystemExplorerView"
             id="raz.test.filesystem.FileSystemExplorerView">
       </view>
+       <view
+             class="raz.test.filesystem.views.FileExplorerView"
+             id="raz.test.filesystem.views.FileExplorerView"
+             name="FileExplorerView"
+             restorable="true">
+       </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
+      
+
       <perspectiveExtension
             targetID="*">
          <view
-               standalone="true"
+               id="raz.test.filesystem.views.FileExplorerView"
                minimized="false"
-               relative="org.eclipse.ui.editorss"
                relationship="left"
-               id="org.eclipse.ui.articles.treeviewer.view">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="*">
-         <view
-               standalone="true"
-               minimized="false"
-               relative="org.eclipse.ui.editorss"
-               relationship="right"
-               id="raz.test.filesystem.FileSystemExplorerView">
+               relative="org.eclipse.ui.editorss">
          </view>
       </perspectiveExtension>
    </extension>

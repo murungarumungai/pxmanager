@@ -110,7 +110,7 @@ public class FileSystemExplorerView extends ViewPart {
 
 			// Start Processing the FileSystem
 			System.out.println(root + " " + root.getAbsolutePath());
-			if (!root.getAbsolutePath().contains("C")) {
+			if (root.getAbsolutePath().contains("X")) {
 				oneRoot = new TreeRoot(root);
 				oneRoot.processChildren();
 				myComputer.getChildren().add(oneRoot);

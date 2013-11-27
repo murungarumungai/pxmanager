@@ -25,7 +25,7 @@ public class TreeFileLabelProvider extends LabelProvider {
 		}
 	}
 
-	private IllegalArgumentException unknownElement(Object element) {
+	public static IllegalArgumentException unknownElement(Object element) {
 		return new IllegalArgumentException(
 				"Unknown type of element in tree of type "
 						+ element.getClass().getName());

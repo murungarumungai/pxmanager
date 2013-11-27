@@ -9,7 +9,7 @@ import raz.test.filesystem.explorer.TreeDirectory;
 
 public class TreeFileContentProvider implements ITreeContentProvider {
 
-	private static Object[] EMPTY_ARRAY = new Object[0];
+	public static Object[] EMPTY_ARRAY = new Object[0];
 	protected TreeViewer viewer;
 
 	/**
