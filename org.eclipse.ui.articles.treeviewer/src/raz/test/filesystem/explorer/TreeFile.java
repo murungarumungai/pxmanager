@@ -1,4 +1,4 @@
-package model;
+package raz.test.filesystem.explorer;
 
 import java.io.File;
 

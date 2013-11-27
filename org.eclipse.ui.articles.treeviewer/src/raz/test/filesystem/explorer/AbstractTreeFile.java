@@ -1,4 +1,4 @@
-package model;
+package raz.test.filesystem.explorer;
 
 import java.io.File;
 
@@ -16,14 +16,15 @@ public abstract class AbstractTreeFile {
 
 	public AbstractTreeFile(File path, TreeDirectory parent) {
 
-		if (path.exists()) {
+		//if (path.exists()) {
 
 			this.path = path;
 			this.parent = parent;
-		} else {
+		//} 
+			/*else {
 			throw new IllegalArgumentException("File Path:" + path
 					+ "Does not Exist");
-		}
+		}*/
 	}
 
 	/**
