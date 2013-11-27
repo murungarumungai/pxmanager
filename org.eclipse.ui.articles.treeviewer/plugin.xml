@@ -3,18 +3,9 @@
 <plugin>
 
    <extension
-         id="application"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="org.eclipse.ui.articles.treeviewer.Application">
-         </run>
-      </application>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="Perspective"
+            name="TreeViewerPerspective"
             class="org.eclipse.ui.articles.treeviewer.Perspective"
             id="org.eclipse.ui.articles.treeviewer.perspective">
       </perspective>
@@ -25,6 +16,11 @@
             name="View"
             class="org.eclipse.ui.articles.treeviewer.View"
             id="org.eclipse.ui.articles.treeviewer.view">
+      </view>
+       <view
+            name="FileSystemExplorer View"
+            class="raz.test.filesystem.views.FileSystemExplorerView"
+            id="raz.test.filesystem.FileSystemExplorerView">
       </view>
    </extension>
    <extension
@@ -39,18 +35,16 @@
                id="org.eclipse.ui.articles.treeviewer.view">
          </view>
       </perspectiveExtension>
-   </extension>
-   <extension
-         id="product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.ui.articles.treeviewer.application"
-            name="TreeViewer deploy test">
-         <property
-               name="appName"
-               value="TreeViewer deploy test">
-         </property>
-      </product>
+      <perspectiveExtension
+            targetID="*">
+         <view
+               standalone="true"
+               minimized="false"
+               relative="org.eclipse.ui.editorss"
+               relationship="right"
+               id="raz.test.filesystem.FileSystemExplorerView">
+         </view>
+      </perspectiveExtension>
    </extension>
 
 </plugin>
