@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="raz.memo.reader.contribution1"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="raz.memo.reader.menu1"
+               label="MemoSubmenu"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               class="raz.memo.reader.popup.actions.MemoAction"
+               enablesFor="+"
+               helpContextId="Razvan Memo Action"
+               id="raz.memo.reader.newAction"
+               label="MemoAction"
+               menubarPath="raz.memo.reader.menu1/group1"
+               tooltip="Conver VNT Memos into text">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
