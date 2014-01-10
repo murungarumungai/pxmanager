@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- http://www.w3schools.com/js/js_obj_intro.asp -->
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <h1>JavaScript Objects</h1>
+        <h3>Almost "everything" in JavaScript can be objects. Strings,
+            Dates, Arrays, Functions....</h3>
+        <p>Objects are just data, with properties and methods.</p>
+        You create a JavaScript String object when you declare a string
+        variable like this:
+        <script>
+            var txt = new String("Hello World");
+            len = txt.length;//Property
+            alert(len);
+            indexOfWorld = txt.indexOf("World");//Method               
+        </script>
+        <h2>Creating JavaScript Objects</h2>
+        You can also create your own objects.
+        This example creates an object called "person", and adds four properties to it:
+        <script>
+            var person = new Object();
+            person.firstname = "John";
+            person.lastname = "Doe";
+            person.age = 50;
+            person.eyecolor = "blue";
+            document.write(person.firstname + " is " + person.age + " years old.");
+        </script>
+        <p>
+            There are many different ways to create new JavaScript objects, and you can also add new properties and methods to already existing objects.
+            This example uses the length property of the String object to find the length of a string:
+        </p>
+        <script>
+            var message = "Hello World!";
+            var x = message.length;
+            //This example uses the toUpperCase() method of the String object, to convert a text to uppercase:
+            x = message.toUpperCase();
+        </script>
+    </body>
+</html>
