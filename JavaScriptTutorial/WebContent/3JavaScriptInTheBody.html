@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- http://www.w3schools.com/js/js_howto.asp -->
+<html>
+<body>
+
+	<p>JavaScript can write directly into the HTML output stream:</p>
+	<p>In this example, JavaScript writes into the HTML &lt;body&gt;
+		while the page loads:</p>
+
+	<script>
+		document.write("<h1>This is a heading</h1>");
+		document.write("<p>This is a paragraph.</p>");
+	</script>
+
+	<p>
+		You can only use <strong>document.write</strong> in the HTML output.
+		If you use it after the document has loaded (e.g. in a function), the
+		whole document will be overwritten.
+	</p>
+
+	<b>JavaScript Functions and Events</b>
+	<p>The JavaScript statements, in the example above, are executed
+		while the page loads. More often, we want to execute code when an
+		event occurs, like when the user clicks a button. If we put JavaScript
+		code inside a function, we can call that function when an event
+		occurs. You will learn much more about JavaScript functions and events
+		in later chapters.</p>
+
+</body>
+</html>

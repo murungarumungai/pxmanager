@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>JavaScript Code Blocks</h2>
+	<p>JavaScript statements can be grouped together in blocks.</p>
+	<p>Blocks start with a left curly bracket, and end with a right
+		curly bracket.</p>
+	<p>The purpose of a block is to make the sequence of statements
+		execute together.</p>
+	<p>
+		A good example of statements grouped together in blocks, are
+		JavaScript <strong> functions</strong>.
+	</p>
+
+	<p id="myPar">I am a paragraph.</p>
+	<div id="myDiv">I am a div.</div>
+
+	<p>
+		<button type="button" onclick="myFunction()">Try it</button>
+	</p>
+
+	<script>
+		function myFunction() {
+			document.getElementById("myPar").innerHTML = "Hello Dolly";
+			document.getElementById("myDiv").innerHTML = "How are you?";
+		}
+	</script>
+
+	<p>When you click on "Try it", the two elements will change.</p>
+
+</body>
+</html>
