@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <h1>Adding Methods to JavaScript Objects</h1>
+        Methods are just functions attached to objects.
+        Defining methods to an object is done inside the constructor function:
+        <script>
+            function person(firstName, lastName, age, eyeColor) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.age = age;
+                this.eyeColor = eyeColor;
+
+                this.changeName = changeName;
+
+                function changeName(name) {
+                    this.lastName = name;
+                }
+            }
+
+            var myMother = new person("Sally", "Rally", 48, "green");
+
+            document.write(myMother.firstName + " is " + myMother.age + " years old.");
+
+            myMother.changeName("Doe");
+
+            document.write(myMother.lastName);
+        </script>
+        <h1>JavaScript for...in Loop</h1>
+        The JavaScript <code>for...in</code> statement loops through the properties of an object.
+        <p id="demo"></p>
+        <script>
+            var txt="";
+            for (x in myMother) {
+                txt += "["+ myMother[x] + "]";
+            }
+            document.getElementById("demo").innerHTML = txt;
+        </script>
+    </body>
+</html>

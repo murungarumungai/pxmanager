@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>JavaScript Objects</title>
+    </head>
+    <body>
+        <h1>JavaScript Objects</h1>
+        "Everything" in JavaScript is an Object.
+        In addition, JavaScript allows you to define your own objects.
+        <h2>Everything is an Object</h2>
+        <div>
+            In JavaScript almost everything is an object. Even primitive datatypes (except null and undefined) can be treated as objects.
+            <ul>
+                <li>Booleans can be objects or primitive data treated as objects</li>
+                <li>Numbers can be objects or primitive data treated as objects</li>
+                <li>Strings are also objects or primitive data treated as objects</li>
+                <li>Dates are always objects</li>
+                <li>Maths and Regular Expressions are always objects</li>
+                <li>Arrays are always objects</li>
+                <li>Even functions are always objects</li>
+            </ul>
+        </div>
+        <h3>Creating JavaScript Objects</h3>
+        With JavaScript you can define and create your own objects.<br>
+        There are 2 different ways to create a new object:
+        <ul>
+            <li> Define and create a direct instance of an object.</li>
+            <li>Use a function to define an object, then create new object instances.</li>
+        </ul>
+        <div>
+            <h4>Creating a Direct Instance</h4>
+            <script>
+                var person = new Object();
+                person.firstname = "John";
+                person.lastname = "Doe";
+                person.age = 50;
+                person.eyecolor = "blue";
+                document.write(person.firstname + " is " + person.age + " years old.");
+
+                dylan = {
+                    firstname: "Dylan",
+                    lastname: "Bruck",
+                    age: 20,
+                    eyecolor: "blue"
+                }
+                document.write(dylan.firstname + " is " + dylan.age + " years old.");
+            </script>
+        </div>
+        <div>
+            <h4>Using an Object Constructor</h4>
+            The following example uses a function to construct the object:
+            <script>
+                function persoana(firstname, lastname, age, eyecolor)
+                {
+                    this.firstname = firstname;
+                    this.lastname = lastname;
+                    this.age = age;
+                    this.eyecolor = eyecolor;
+                    /*
+                     * The reason for all the "this" stuff is that you're going to have more than one person at a time (which person you're dealing with must be clear). 
+                     * That's what "this" is: the instance of the object at hand. 
+                     */
+                }
+                myFather = new persoana("John", "Doe", 50, "blue");
+                document.write(myFather.firstname + " is " + myFather.age + " years old.");
+            </script> 
+            <h5>Creating JavaScript Object Instances</h5>
+            Once you have a object constructor, you can create new instances of the object, like this:
+            <script>
+                var myFather = new persoana("Vasile", "Gaston", 62, "green");
+                var myMother = new persona("Sally", "Rally", 48, "green");
+            </script>
+            <h5>Adding Properties to JavaScript Objects</h5>
+            You can add new properties to an existing object by simply giving it a value.
+            Assume that the person object already exists - you can then give it new properties:
+            <script>
+                person.nationality = "English";
+                x = person.nationality;
+                document.write("person nationality:"+x);
+            </script>
+        </div>
+    </body>
+</html>

@@ -20,5 +20,36 @@
         When you call a function, you can pass along some values to it, these values are called arguments or parameters.
         These arguments can be used inside the function.
         You can send as many arguments as you like, separated by commas (,)
+        <button onclick="myFunction('Harry Potter', 'Wizard')">Try it</button>
+        <script>
+            function myFunction(name, job) {
+                alert("Welcome name:" + name + " job:" + job);
+            }
+        </script>
+        <button onclick="myFunction('Bob', 'Builder')">Click for Bob</button>
+        <h4>Functions With a Return Value</h4>
+        Sometimes you want your function to return a value back to where the call was made.
+        This is possible by using the return statement.
+        When using the return statement, the function will stop executing, and return the specified value.
+        The function-call will be replaced with the return value:
+        <code>var myVar=myFunction();</code>
+        You can also use the return value without storing it as a variable:
+        <code>document.getElementById("demo").innerHTML=myFunction();</code>
+        <p id="demo"></p>
+        <script>
+            function myMultiply(a, b)
+            {
+                return a * b;
+            }
+
+            document.getElementById("demo").innerHTML = myMultiply(4, 3);
+
+            function declareGlobalVariable() {
+                //will declare the variable carname as a global variable , even if it is executed inside a function.
+                carname="Volvo";
+                var local = 1; "I'm a local variable";
+                local.toString();
+            }
+        </script>
     </body>
 </html>
