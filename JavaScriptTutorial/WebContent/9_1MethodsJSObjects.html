@@ -15,11 +15,18 @@
                 this.age = age;
                 this.eyeColor = eyeColor;
 
-                this.changeName = changeName;
+                /*this.changeName = changeName;
 
                 function changeName(name) {
                     this.lastName = name;
+                }*/
+                
+               //sau mai clar puteam sa fac asa:
+               
+               this.changeName = function changeName(name) {
+                    this.lastName = name;
                 }
+               
             }
 
             var myMother = new person("Sally", "Rally", 48, "green");
@@ -28,7 +35,7 @@
 
             myMother.changeName("Doe");
 
-            document.write(myMother.lastName);
+            document.write("New Name:"+myMother.lastName);
         </script>
         <h1>JavaScript for...in Loop</h1>
         The JavaScript <code>for...in</code> statement loops through the properties of an object.

@@ -42,9 +42,14 @@
                     firstname: "Dylan",
                     lastname: "Bruck",
                     age: 20,
-                    eyecolor: "blue"
+                    eyecolor: "blue",
+                    nameToUpperCase: function(){//am definit o proprietate care e o functie
+                    	this.firstname.toUpperCase();                    	
+                    }
                 }
-                document.write(dylan.firstname + " is " + dylan.age + " years old.");
+                document.write(" FirstName:"+dylan.firstname + " is " + dylan.age + " years old.");
+                dylan.nameToUpperCase();
+                document.write(" FirstName:"+dylan.firstname);
             </script>
         </div>
         <div>
@@ -69,7 +74,7 @@
             Once you have a object constructor, you can create new instances of the object, like this:
             <script>
                 var myFather = new persoana("Vasile", "Gaston", 62, "green");
-                var myMother = new persona("Sally", "Rally", 48, "green");
+                var myMother = new persoana("Sally", "Rally", 48, "green");
             </script>
             <h5>Adding Properties to JavaScript Objects</h5>
             You can add new properties to an existing object by simply giving it a value.
