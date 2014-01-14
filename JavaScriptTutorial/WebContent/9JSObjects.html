@@ -43,13 +43,13 @@
                     lastname: "Bruck",
                     age: 20,
                     eyecolor: "blue",
-                    nameToUpperCase: function(){//am definit o proprietate care e o functie
-                    	this.firstname.toUpperCase();                    	
+                    changeName: function(newName){//am definit o proprietate - changeName - care e o functie
+                    	this.firstname = newName;	                    	
                     }
                 }
                 document.write(" FirstName:"+dylan.firstname + " is " + dylan.age + " years old.");
-                dylan.nameToUpperCase();
-                document.write(" FirstName:"+dylan.firstname);
+                dylan.changeName("Razvan");
+                document.write("New FirstName:"+dylan.firstname);
             </script>
         </div>
         <div>
