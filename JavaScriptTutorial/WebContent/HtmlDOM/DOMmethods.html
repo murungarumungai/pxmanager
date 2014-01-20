@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <h2>Finding HTML Elements</h2>
+        <table class="reference notranslate">
+            <tbody>
+                <tr>
+                    <th style="width: 50%">Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>document.getElementById()</td>
+                    <td>Finding an element by element id</td>
+                </tr>
+                <tr>
+                    <td>document.getElementsByTagName()</td>
+                    <td>Finding elements by tag name</td>
+                </tr>
+                <tr>
+                    <td>document.getElementsByClassName()</td>
+                    <td>Finding elements by class name</td>
+                </tr>
+                <tr>
+                    <td>document.forms[]</td>
+                    <td>Finding elements by HTML element objects</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Finding HTML Elements by Tag Name</h2>
+        <div id="main">
+            <p>The DOM is very useful.</p>
+            <p>This example demonstrates the <b>getElementsByTagName</b> method</p>
+        </div>
+        <script>
+            var divNode = document.getElementById("main");
+            var elements = divNode.getElementsByTagName("p");
+
+            var txt = "";
+            var i;
+            for (i = 0; i < elements.length; i++) {
+                txt += "[" + i + "]" + elements[i].innerHTML;
+            }
+            document.write('elements of class "p" in "main" are:' + txt);
+        </script>
+        <h2>Finding HTML Elements by HTML Object Collections</h2>
+        <form id="frm1" action="form_action.asp">
+            First name: <input type="text" name="fname" value="Donald"><br>
+            Last name: <input type="text" name="lname" value="Duck"><br>
+            <input type="submit" value="Submit">
+        </form> 
+        <p>Click the "Try it" button to return the value of each element in the form.</p>
+
+        <p id="demo">here we'll place the values of each element in the form</p>
+
+        <button onclick="myFunction()">Try it</button>
+        <script>
+            function myFunction() {
+                //This example finds the form element with id="frm1", in the forms collection, and displays all element values:
+                var formElem = document.getElementById("frm1");
+                var txt = "";
+                for (var i = 0; i < formElem.length; i++) {
+                    txt = txt + formElem.elements[i].value + "<br>";
+                }
+                document.getElementById("demo").innerHTML = txt;
+            }
+        </script>
+        The following HTML object collections are accesible:
+
+        <ul>
+            <li>document.anchors</li>
+            <li>document.forms</li>
+            <li>document.images</li>
+            <li>document.links</li>
+        </ul>
+
+
+    </body>
+</html>

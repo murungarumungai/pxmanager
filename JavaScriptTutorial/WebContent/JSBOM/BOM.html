@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>The Browser Object Model</title>
+    </head>
+    <body>
+        The Browser Object Model (BOM) allows JavaScript to "talk to" the
+        browser.
+        <h2>The Browser Object Model (BOM)</h2>
+        <p>
+            There are no official standards for the <strong>B</strong>rowser <strong>O</strong>bject
+            <strong>M</strong>odel (BOM).
+        </p>
+        Since modern browsers have implemented (almost) the same methods and
+        properties for JavaScript interactivity, it is often referred to, as
+        methods and properties of the BOM.
+        <hr>
+        <h2>The Window Object</h2>
+        <p>
+            The <strong>window</strong> object is supported by all browsers. It
+            represent the browser's window.
+        </p>
+        <p>All global JavaScript objects, functions, and variables automatically become 
+            members of the window object.
+        </p>
+        <p>Global variables are properties of the window object.</p>
+        <p>Global functions are methods of the window object.</p>
+        <p>Even the document object (of the HTML DOM) is a property of the window object:</p>
+        <i>window.document.getElementById("header");</i>
+        is the same as:
+        <i>document.getElementById("header");</i>
+        
+        <p id="demo"></p>
+        <script>
+            //window.innerHeight - the inner height of the browser window
+            //window.innerWidth - the inner width of the browser window
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            x=document.getElementById("demo");
+            x.innerHTML = "Browser inner window width:"+width+" height:"+height;
+        </script>
+        <h3>Window Screen</h3>
+        <p>The <strong>window.screen</strong> object can be written without the window prefix.</p>
+        <script>
+            document.write("Avaiable Width:"+screen.availWidth);
+            window.document.write("Avaiable Hidth:"+screen.availHeight);
+        </script>
+    </body>
+</html>
