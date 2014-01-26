@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>JavaScript Popup Boxes</title>
+    </head>
+    <body>
+        JavaScript has three kind of popup boxes: Alert box, Confirm box, and Prompt box.
+
+        <h2>Alert Box</h2>
+
+        An alert box is often used if you want to make sure information comes through to the user.
+        When an alert box pops up, the user will have to click "OK" to proceed.
+
+        <h3>Syntax</h3>
+
+        <div>
+            window.alert("<i>sometext</i>");
+        </div>
+        <button onclick="alertBox('bla')">Try it</button>
+        <script>
+            function alertBox(txt) {
+                window.alert("I am an alert box! " + txt);
+            }
+        </script>
+        <h2>Confirm Box</h2>
+        A confirm box is often used if you want the user to verify or accept something.<br>
+        When a confirm box pops up, the user will have to click either "OK" or "Cancel" to proceed.<br>
+        If the user clicks "OK", the box returns true. If the user clicks "Cancel", the box returns false.<br>
+
+        <button onclick="myConfirm()"> Confirm box </button>
+        <p id="demo"></p>
+        <script>
+            function myConfirm() {
+
+                var x;
+
+                var r = confirm("Press a button!");
+
+                if (r == true) {
+                    x = "You pressed OK!";
+                } else {
+                    x = "You pressed Cancel!";
+                }
+                document.getElementById("demo").innerHTML = x;
+            }
+        </script>
+
+        <h2>Prompt Box</h2>
+        A prompt box is often used if you want the user to input a value before entering a page.<br>
+        When a prompt box pops up, the user will have to click either "OK" or "Cancel" to proceed after entering an input value.<br>
+        If the user clicks "OK" the box returns the input value. If the user clicks "Cancel" the box returns null.<br>
+        <p>The <strong>window.prompt()</strong> method can be written without the window prefix.</p>
+
+        <p>Click the button to demonstrate the prompt box.</p>
+
+        <button onclick="myFunction()">Try it</button>
+
+        <p id="demoPrompt"></p>
+
+        <script>
+            function myFunction(){
+                var x;
+                
+                var person = prompt("Please enter your name", "Harry Potter");
+                
+                if(person!=null){
+                    x = "Hello "+ person + "! How are you today?";
+                    document.getElementById("demoPrompt").innerHTML=x;
+                }
+            }
+        </script>
+
+    </body>
+</html>
