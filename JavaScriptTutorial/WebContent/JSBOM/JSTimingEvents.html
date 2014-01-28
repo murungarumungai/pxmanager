@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <h2>JavaScript Timing Events</h2>
+
+        With JavaScript, it is possible to execute some code at specified
+        time-intervals. This is called timing events. It's very easy to time
+        events in JavaScript. The two key methods that are used are:
+
+        <ul>
+            <li>setInterval() - executes a function, over and over again, at
+                specified time intervals</li>
+            <li>setTimeout() - executes a function, once, after waiting a
+                specified number of milliseconds</li>
+        </ul>
+
+        <p>
+            <b>Note:</b> The setInterval() and setTimeout() are both methods of
+            the HTML DOM Window object.
+        </p>
+
+        <h2>The setInterval() Method</h2>
+
+        The setInterval() method will wait a specified number of milliseconds,
+        and then execute a specified function, and it will continue to execute
+        the function, once at every given time-interval. The
+        window.setInterval() method can be written without the window prefix.
+        <br>
+
+        <p>The first parameter of setInterval() should be a function.</p>
+
+        <p>The second parameter indicates the length of the time-intervals
+            between each execution.</p>
+
+        <p>Note: There are 1000 milliseconds in one second.</p>
+
+        <script>
+
+            function showTime() {
+                dateNode = document.getElementById("clock");
+                var now = new Date();
+                var time = now.toLocaleTimeString();
+                dateNode.innerHTML = time;
+            }
+
+            function startClock() {
+                //To be able to use the clearInterval() method, you must use a global variable when creating the interval method
+                clockRunner = window.setInterval(function() {
+                    showTime()
+                }, 1000);
+            }
+        </script>
+
+        <button onclick="startClock()"> start Clock</button>
+
+        <div id="clock"></div>
+
+        <h2>How to Stop the Execution?</h2>
+
+        The clearInterval() method is used to stop further executions of the function specified in the setInterval() method.
+
+
+        <script>
+            function stopClock() {
+                clearInterval(clockRunner);
+            }
+        </script>
+
+        <button onclick="stopClock()">stopClock</button>
+
+        <h2>The setTimeout() Method</h2>
+
+        <p>The <strong>window.setTimeout()</strong> method can be written without the window prefix.</p>
+        The setTimeout() method will wait the specified number of milliseconds, and then execute the specified function.
+        The first parameter of setTimeout() should be a function.
+
+        The second parameter indicates how many milliseconds, from now, you want to execute the first parameter.
+
+    </body>
+</html>
