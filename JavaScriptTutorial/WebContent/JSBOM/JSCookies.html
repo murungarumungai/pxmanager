@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="ISO-8859-1">
+
         <title>Insert title here</title>
     </head>
     <body>
@@ -19,20 +19,46 @@
         <p>When a browser request a web page from a server, cookies belonging to the page is added to the request. This way the server 
             gets the necessary data to "remember" information about users.</p>
         <h2>Create a Cookie with JavaScript</h2>
-        JavaScript can create cookies, read cookies, and delete cookies with the property document.cookie.
-        
-        
+        JavaScript can create cookies, read cookies, and delete cookies with the property <b>document.cookie.</b>
+        <hr>
+        With JavaScript, a cookie can be created like this:<br>
+        <i>document.cookie="username=John Doe";</i>
+        <hr>
+        You can also add an expiry date (in UTC or GMT time). 
+        By default, the cookie is deleted when the browser is closed:<br>
+        <i>document.cookie="username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 GMT";</i>
+        <hr>
+        With a path parameter, you can tell the browser what path the cookie belongs to. By default, the cookie belongs to the current page.<br>
+        <i>document.cookie="username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";</i>
+        <hr>
+        <h2>Read a Cookie with JavaScript</h2>
+        With JavaScript, cookies can be read like this:<br>
+        <i>var x = document.cookie;</i>
+        <hr>
+        <b>Note:</b>document.cookie will return all cookies in one string much like: cookie1=value; cookie2=value; cookie3=value;
+        <hr>
+        <h2>Change a Cookie with JavaScript</h2>
+        With JavaScript, you can change a cookie the same way as you create it:<br>
+        <i>document.cookie="username=John Smith; expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";</i>
+        The old cookie is overwritten.
+        <hr>
+        <h2>Delete a Cookie with JavaScript</h2>
+        Deleting a cookie is very simple. Just set the expires parameter to a passed date:<br>
+        <i>document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT";</i><br>
+        Note that you don't have to specify a cookie value when you delete a cookie.
+        <hr>
+        <h2>JavaScript Cookie Example</h2>
         <script>
-            function getCookie(cname){
-                
-                
-                
+            function getCookie(cname) {
+
+
+
             }
-            
-            
-            function checkCookie(){
+
+
+            function checkCookie() {
                 var user = getCookie("username");
-                
+
             }
         </script>
 
