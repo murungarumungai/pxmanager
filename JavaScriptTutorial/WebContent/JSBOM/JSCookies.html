@@ -13,7 +13,28 @@
             <li>When a user visits a web page, his name can be stored in a cookie.</li>
             <li>Next time the user visits the page, the cookie "remembers" his name.</li>
         </ul>
-        When a browser request a web page from a server, cookies belonging to the page is added to the request. This way the server gets the necessary data to "remember" information about users
+        When a browser request a web page from a server, cookies belonging to the page is added to the request. This way the server gets the necessary data to "remember" information about users.
+        <p>Cookies are saved in name-value pairs like:</p>
+        <div>username=John Doe</div>
+        <p>When a browser request a web page from a server, cookies belonging to the page is added to the request. This way the server 
+            gets the necessary data to "remember" information about users.</p>
+        <h2>Create a Cookie with JavaScript</h2>
+        JavaScript can create cookies, read cookies, and delete cookies with the property document.cookie.
+        
+        
+        <script>
+            function getCookie(cname){
+                
+                
+                
+            }
+            
+            
+            function checkCookie(){
+                var user = getCookie("username");
+                
+            }
+        </script>
 
     </body>
 </html>
