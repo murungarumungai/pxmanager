@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Hello Dojo</title>
+        <meta charset="UTF-8">
+        <!-- Load dojo locally -->
+        <script src="../js/libs/dojo-release-1.6.2-src/dojo/dojo.js" ></script>
+        <script>
+		dojo.ready(function(){
+			dojo.byId("greeting").innerHTML += ", from " + dojo.version;
+		});
+	</script>
+    </head>
+    <body>
+        <h1 id="greeting">Hello</h1>
+    </body>
+</html>

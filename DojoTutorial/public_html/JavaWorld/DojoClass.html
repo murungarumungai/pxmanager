@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <!-- http://www.javaworld.com/article/2077972/scripting-jvm-languages/introduction-to-the-dojo-toolkit--part-1--setup--core--and-widgets.html?page=5-->
+        <title>Dojo Class</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <!-- Load dojo locally -->
+        <script src="../js/libs/dojo-release-1.6.2-src/dojo/dojo.js" ></script>
+    </head>
+    <body>
+        <script>
+            function init() {
+                //Dojo provides a dojo.declare() method that you should use to declare a new class. 
+                dojo.declare("custom.javaworld.Worker",
+                        null,
+                        {
+                            firstName: "",
+                            lastName: "",
+                            constructor: function(fName, lName) {
+                                console.debug("Constructor of com.javaworld.Worker called");
+                                this.firstName = fName;
+                                this.lastName = lName;
+                            },
+                            /*
+                             * work is the property's name and its value is a function. 
+                             * We thereby define a work() member function for the Worker class.
+                             */
+                            work: function() {
+                                console.log("Working");
+                            }
+                        }
+                );
+                var johnDoe = new custom.javaworld.Worker("John", "Doe");
+                console.log("First Name:" + johnDoe.firstName);
+                console.log("Last Name:" + johnDoe.lastName);
+            }
+            dojo.ready(init());
+        </script>
+
+
+        <div>TODO write content</div>
+    </body>
+</html>

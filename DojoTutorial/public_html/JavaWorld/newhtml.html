@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+         <!-- Load dojo locally -->
+        <script src="../js/libs/dojo-release-1.6.2-src/dojo/dojo.js" ></script>
+        <title>Hello World</title>
+        <meta charset="UTF-8">
+<!--        <style type="text/css">
+                @import "../js/libs/dojo-release-1.6.2-src/dijit/themes/tundra/tundra.css";
+                @import "../js/libs/dojo-release-1.6.2-src/dojo/resources/dojo.css";
+        </style>-->
+        <link rel="stylesheet" href="../js/libs/dojo-release-1.6.2-src/dojo/resources/dojo.css">
+        <link rel="stylesheet" href="../js/libs/dojo-release-1.6.2-src/dijit/themes/tundra/tundra.css">
+        <script>
+            dojo.require("dijit.form.Button");
+        </script>
+    </head>
+    <body class="tundra">
+        <button dojoType="dijit.form.Button" id="helloButton">
+                Hello World
+               <script type="dojo/method" event="onClick">
+                       alert("Hello Dojo.");
+               </script>
+        </button>
+    </body>
+</html>
