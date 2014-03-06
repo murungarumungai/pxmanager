@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <!-- http://www.javaworld.com/article/2077972/scripting-jvm-languages/introduction-to-the-dojo-toolkit--part-1--setup--core--and-widgets.html?page=5-->
+        <!-- http://www.javaworld.com/article/2077972/scripting-jvm-languages/introduction-to-the-dojo-toolkit--part-1--setup--core--and-widgets.html?page=5 -->
         <title>Dojo Class</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
@@ -19,27 +19,73 @@ and open the template in the editor.
                 //Dojo provides a dojo.declare() method that you should use to declare a new class. 
                 dojo.declare("custom.javaworld.Worker",
                         null,
-                        {
-                            firstName: "",
-                            lastName: "",
-                            constructor: function(fName, lName) {
-                                console.debug("Constructor of com.javaworld.Worker called");
-                                this.firstName = fName;
-                                this.lastName = lName;
-                            },
-                            /*
-                             * work is the property's name and its value is a function. 
-                             * We thereby define a work() member function for the Worker class.
-                             */
-                            work: function() {
-                                console.log("Working");
-                            }
-                        }
-                );
-                var johnDoe = new custom.javaworld.Worker("John", "Doe");
-                console.log("First Name:" + johnDoe.firstName);
-                console.log("Last Name:" + johnDoe.lastName);
-            }
+                        //The third argument is a hashmap, in which work is the property's name and its value is a function.
+                                {
+                                    firstName: "",
+                                    lastName: "",
+                                    constructor: function(fName, lName) {
+                                        console.debug("Constructor of com.javaworld.Worker called");
+                                        this.firstName = fName;
+                                        this.lastName = lName;
+                                    },
+                                    /*
+                                     * work is the property's name and its value is a function. 
+                                     * We thereby define a work() member function for the Worker class.
+                                     */
+                                    work: function() {
+                                        console.log("Working");
+                                    }
+                                }
+                        );
+                        var johnDoe = new custom.javaworld.Worker("John", "Doe");
+                        console.log("First Name:" + johnDoe.firstName);
+                        console.log("Last Name:" + johnDoe.lastName);
+                        //## Inheritance
+                        //creates a custom.javaworld.ITWorker class that extends custom.javaworld.Worker.
+                        dojo.declare("custom.javaworld.ITWorker",
+                                custom.javaworld.Worker,
+                                {
+                                    constructor: function(fName, lName) {
+                                        console.debug("Constructor of com.javaworld.ITWorker");
+                                    },
+                                    work: function() {
+                                        /*
+                                         * Suppose you need to invoke the overridden method of superclass first and then add some functionality in the child class method. 
+                                         * In that case then you can use the.inherited() construct to invoke an inherited method of the superclass.
+                                         * */
+                                        this.inherited(arguments);
+                                        console.log("Writing Code");
+                                    }
+                                }
+                        );
+                        /*Now when you create a new instance of ITWorker using the new operator, 
+                         * Dojo first invokes the constructor of Worker class.*/
+                        var johnDoe = new custom.javaworld.ITWorker("John", "Doe");
+                        johnDoe.work();
+                        //## Multiple inheritance
+                        //Dojo allows a class to inherit from multiple classes. Listing 5 creates a PartTimeMusician class that inherits from both ITWorker and Musician.
+                        dojo.declare("com.javaworld.Musician", null,
+                                {
+                                    constructor: function(fName, lName) {
+                                        console.debug("Constructor of com.javaworld.Musician");
+                                    },
+                                    playMusic: function() {
+                                        console.log("Playing Music");
+                                    }
+                                }
+                        );
+                        dojo.declare("com.javaworld.PartTimeMusician",
+                                [custom.javaworld.ITWorker, com.javaworld.Musician],
+                                {
+                                    constructor: function(fName, lName) {
+                                        console.debug("Constructor of com.javaworld.PartTimeMusician");
+                                    }
+                                }
+                        );
+                        var johnDoe = new com.javaworld.PartTimeMusician("John", "Doe");
+                        johnDoe.work();
+                        johnDoe.playMusic();
+                    }
             dojo.ready(init());
         </script>
 
