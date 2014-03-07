@@ -15,17 +15,17 @@ and open the template in the editor.
     </head>
     <body>
         <script>
-            dojo.require("javaworld.custom.Worker");
+            dojo.require("javaworld.custom.PartTimeMusician");
             function init() {
   
-                        var johnDoe = new javaworld.custom.Worker("John", "Doe");
-                        console.log("First Name:" + johnDoe.firstName);
-                        console.log("Last Name:" + johnDoe.lastName);
+//                        var johnDoe = new javaworld.custom.Worker("John", "Doe");
+//                        console.log("First Name:" + johnDoe.firstName);
+//                        console.log("Last Name:" + johnDoe.lastName);
   
                         /*Now when you create a new instance of ITWorker using the new operator, 
                          * Dojo first invokes the constructor of Worker class.*/
-                       var johnDoe = new javaworld.custom.ITWorker("John", "Doe");
-                       johnDoe.work();
+//                       var johnDoe = new javaworld.custom.ITWorker("John", "Doe");
+//                       johnDoe.work();
                         
                         var johnDoe = new javaworld.custom.PartTimeMusician("John", "Doe");
                         johnDoe.work();
