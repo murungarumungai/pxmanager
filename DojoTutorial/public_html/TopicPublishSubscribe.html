@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <!-- https://www.ibm.com/developerworks/library/wa-ground/ -->
+        <meta charset="UTF-8">      
+        <!-- Load dojo locally -->
+        <script src="js/libs/dojo-release-1.6.2-src/dojo/dojo.js" ></script>
+    </head>
+    <body>
+        <script>
+            function init() {
+                /* Let's say we are defining a topic named printName,
+                 * which expects a message object with a person's first name and last name.
+                 * You might have a component that subscribes to this topic, 
+                 * which will print the name to the console any time another component publishes to this topic with a person's name.
+                 * */
+                dojo.subscribe("printName",
+                        function(msg) {
+                            console.log("Person's Name:" + msg.firstName + " " + msg.lastName);
+                        });
+
+            }
+            dojo.ready(init());
+        </script>
+        <script>
+            function publish(){
+                var person = {
+                   firstName: "Razvan",
+                   lastName: "Gaston"
+                };
+                var persArray = [person];
+                dojo.publish("printName", persArray
+                /*[{
+                   firstName: "Razvan",
+                   lastName: "Gaston"
+                }]*/);
+            }
+        </script>
+        <button id="btn" onClick="publish()">publish Person Message</button>
+        
+        
+    </body>
+</html>
