@@ -10,27 +10,39 @@ and open the template in the editor.
         <title>Dojo Class</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
+<!--        <script>
+            dojoConfig = {
+                isDebug: true,
+                modulePaths: {
+                    "javaworld": "../../javaworld"
+                }
+            };
+        </script>-->
         <!-- Load dojo locally -->
         <script src="../js/libs/dojo-release-1.6.2-src/dojo/dojo.js" ></script>
     </head>
     <body>
         <script>
+            /* We want to register a module name of "javaworld"
+             * which is equal to the directory js/libs/javaworld
+             * */
+            dojo.registerModulePath("javaworld","../../javaworld");
             dojo.require("javaworld.custom.PartTimeMusician");
             function init() {
-  
+
 //                        var johnDoe = new javaworld.custom.Worker("John", "Doe");
 //                        console.log("First Name:" + johnDoe.firstName);
 //                        console.log("Last Name:" + johnDoe.lastName);
-  
-                        /*Now when you create a new instance of ITWorker using the new operator, 
-                         * Dojo first invokes the constructor of Worker class.*/
+
+                /*Now when you create a new instance of ITWorker using the new operator, 
+                 * Dojo first invokes the constructor of Worker class.*/
 //                       var johnDoe = new javaworld.custom.ITWorker("John", "Doe");
 //                       johnDoe.work();
-                        
-                        var johnDoe = new javaworld.custom.PartTimeMusician("John", "Doe");
-                        johnDoe.work();
-                        johnDoe.playMusic();
-                    }
+
+                var johnDoe = new javaworld.custom.PartTimeMusician("John", "Doe");
+                johnDoe.work();
+                johnDoe.playMusic();
+            }
             dojo.ready(init());
         </script>
 
