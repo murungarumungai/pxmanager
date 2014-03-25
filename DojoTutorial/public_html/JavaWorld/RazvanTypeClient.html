@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <!-- Load dojo locally -->
+        <script src="../js/libs/dojo-release-1.6.2-src/dojo/dojo.js" ></script>
+    </head>
+    <body>
+        <script>
+            /* 
+             * We want to register a module name of "javaworld"
+             * which is equal to the directory js/libs/javaworld
+             * */
+            dojo.registerModulePath("javaworld","../../javaworld");
+            dojo.require("javaworld.custom.RazvanType");           
+            function init(){
+                var params = {
+                    name : "razTest",
+                    isAssigned : true
+                };
+                
+                var razType = new javaworld.custom.RazvanType(params);             
+                razType.check();
+            }
+            dojo.ready(init());
+        </script>
+    </body>
+</html>
