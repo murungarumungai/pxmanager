@@ -1,0 +1,6 @@
+CREATE USER affbean IDENTIFIED BY 'affbean';
+create schema affbean;
+
+GRANT ALL ON affbean.* TO affbean IDENTIFIED BY 'affbean';
+
+UPDATE mysql.user SET Password = PASSWORD('admin') WHERE User = 'affbean';
