@@ -1,0 +1,1 @@
+INSERT INTO `category` (`name`) VALUES ('dairy'),('meats'),('bakery'),('fruit & veg');
