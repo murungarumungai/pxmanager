@@ -63,6 +63,10 @@ public class ControllerServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
         
+        String queryStr = request.getQueryString();
+        
+       //String reqUrl = request.getRequestURL().toString();
+        
         this.testCon();
 
         // if category page is requested
@@ -87,6 +91,9 @@ public class ControllerServlet extends HttpServlet {
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
+        if(queryStr!=null){
+        	url =url+"?"+queryStr;
+        }
 
         try {
             request.getRequestDispatcher(url).forward(request, response);
