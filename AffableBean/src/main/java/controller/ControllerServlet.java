@@ -12,12 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import session.CategoryFacade;
 
 /**
  *
@@ -25,28 +27,32 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = {"/category", "/addToCart", "/viewCart", "/updateCart", "/checkout", "/purchase", "/chooseLanguage"})
 public class ControllerServlet extends HttpServlet {
-	
-	
-	
-	@Resource(name = "jdbc/affableMySqlDS")
-	protected DataSource dataSource;
-	
-	private void testCon(){
-		try {
-			Connection con  = dataSource.getConnection();
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM category");
-			ResultSet result = stmt.executeQuery();
-			
-			System.out.println(">>"+result.getFetchSize());
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
+
+    @EJB
+    private CategoryFacade categoryFacade;
+
+    @Resource(name = "jdbc/affableMySqlDS")
+    protected DataSource dataSource;
+
+    @Override
+    public void init() throws ServletException {
+        // store category list in servlet context
+        getServletContext().setAttribute("categories", categoryFacade.findAll());
+    }
+
+    private void testCon() {
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM category");
+            ResultSet result = stmt.executeQuery();
+
+            System.out.println(">>" + result.getFetchSize());
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -62,11 +68,10 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String userPath = request.getServletPath();
-        
+
         String queryStr = request.getQueryString();
-        
-       //String reqUrl = request.getRequestURL().toString();
-        
+
+        //String reqUrl = request.getRequestURL().toString();
         this.testCon();
 
         // if category page is requested
@@ -91,8 +96,8 @@ public class ControllerServlet extends HttpServlet {
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
-        if(queryStr!=null){
-        	url =url+"?"+queryStr;
+        if (queryStr != null) {
+            url = url + "?" + queryStr;
         }
 
         try {
