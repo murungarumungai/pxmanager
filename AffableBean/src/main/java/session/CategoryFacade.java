@@ -6,9 +6,12 @@
 package session;
 
 import entity.Category;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 
 /**
  *
@@ -18,9 +21,18 @@ import javax.persistence.PersistenceContext;
 public class CategoryFacade extends AbstractFacade<Category> {
     @PersistenceContext(unitName = "AffableBeanPU")
     private EntityManager em;
+    
+	 
+	/* This works with WAS Liberty Profile and OPEN JPA */ 
+//    @PersistenceUnit(unitName = "AffableBeanPU")
+//    static EntityManagerFactory emf;
+    
+    
 
     protected EntityManager getEntityManager() {
-        return em;
+    	
+    	//return emf.createEntityManager();  	
+        return em;	 
     }
 
     public CategoryFacade() {

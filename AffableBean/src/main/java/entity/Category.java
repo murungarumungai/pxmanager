@@ -16,7 +16,7 @@ public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private byte id;
+	private short id;
 
 	private String name;
 
@@ -27,11 +27,11 @@ public class Category implements Serializable {
 	public Category() {
 	}
 
-	public byte getId() {
+	public short getId() {
 		return this.id;
 	}
 
-	public void setId(byte id) {
+	public void setId(short id) {
 		this.id = id;
 	}
 

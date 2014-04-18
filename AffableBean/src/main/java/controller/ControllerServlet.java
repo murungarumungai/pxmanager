@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.Category;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -76,8 +77,15 @@ public class ControllerServlet extends HttpServlet {
 
         // if category page is requested
         if (userPath.equals("/category")) {
-            // TODO: Implement category request
-
+            String categoryId = request.getQueryString();
+            if (categoryId != null) {
+                Category selectedCategory = categoryFacade.find(Short.parseShort(categoryId));
+                // place selected category in request scope
+                request.setAttribute("selectedCategory", selectedCategory);
+                
+                // get all products for selected category
+               categoryProducts = selectedCategory.getProductCollection();
+            }
             // if cart page is requested
         } else if (userPath.equals("/viewCart")) {
             // TODO: Implement cart page request
