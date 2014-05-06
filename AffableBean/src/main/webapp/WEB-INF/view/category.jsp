@@ -1,16 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 
-<sql:query var="categories" dataSource="jdbc/affableMySqlDS">
+<%--<sql:query var="categories" dataSource="jdbc/affableMySqlDS">
     SELECT *  FROM category
-</sql:query>
+</sql:query>--%>
 
-<sql:query var="selectedCategory" dataSource="jdbc/affableMySqlDS">
+<%--<sql:query var="selectedCategory" dataSource="jdbc/affableMySqlDS">
     SELECT name FROM category WHERE id = ?
     <sql:param value="${pageContext.request.queryString}"/>
-</sql:query>    
+</sql:query> 
 
-<c:set var="categoryName" value="${selectedCategory.rows[0].name}"></c:set>
+<c:set var="categoryName" value="${selectedCategory.rows[0].name}"></c:set> --%>  
 
 <sql:query var="categoryProducts" dataSource="jdbc/affableMySqlDS">
     SELECT * FROM product WHERE category_id = ?
@@ -18,7 +18,7 @@
 </sql:query>
 
 <div id="indexLeftColumn">
-    <c:forEach var="category" items="${categories.rows}">
+    <c:forEach var="category" items="${categories}">
         <%-- <c:out value="${category.id}"></c:out>
         <c:out value="${'aa'}"></c:out>
         <c:out value="${pageContext.request.queryString}"></c:out> --%>
@@ -42,7 +42,9 @@
     </c:forEach>
 </div>
 <div id="indexRightColumn">
-    <p id="categoryTitle">${categoryName}</p>
+    <p id="categoryTitle">
+        <span style="background-color: #f5eabe; padding: 7px;">${selectedCategory.name}</span>
+    </p>
     <table id="productTable">
         <c:forEach var="product" items="${categoryProducts.rows}" varStatus="iter">    
             <tr>
