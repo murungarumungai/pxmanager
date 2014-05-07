@@ -1,113 +1,171 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
 import java.math.BigDecimal;
-import java.util.List;
-
+import java.util.Collection;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the product database table.
- * 
+ *
+ * @author razvan
  */
 @Entity
-@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@Table(name = "product")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+    @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
+    @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
+    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
+    @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
+    @NamedQuery(name = "Product.findByLastUpdate", query = "SELECT p FROM Product p WHERE p.lastUpdate = :lastUpdate")})
 public class Product implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "name")
+    private String name;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "price")
+    private BigDecimal price;
+    @Size(max = 255)
+    @Column(name = "description")
+    private String description;
+    @Column(name = "last_update")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdate;
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Category categoryId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private Collection<OrderProduct> orderProductCollection;
 
-	@Id
-	private int id;
+    public Product() {
+    }
 
-	@Lob
-	private String description;
+    public Product(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
+    public Product(Integer id, String name, BigDecimal price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
 
-	private String name;
+    public Integer getId() {
+        return id;
+    }
 
-	private BigDecimal price;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	//bi-directional many-to-one association to OrderProduct
-	@OneToMany(mappedBy="product")
-	private List<OrderProduct> orderProducts;
+    public String getName() {
+        return name;
+    }
 
-	//bi-directional many-to-one association to Category
-	@ManyToOne
-	private Category category;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Product() {
-	}
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public Category getCategoryId() {
+        return categoryId;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public void setCategoryId(Category categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @XmlTransient
+    public Collection<OrderProduct> getOrderProductCollection() {
+        return orderProductCollection;
+    }
 
-	public BigDecimal getPrice() {
-		return this.price;
-	}
+    public void setOrderProductCollection(Collection<OrderProduct> orderProductCollection) {
+        this.orderProductCollection = orderProductCollection;
+    }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	public List<OrderProduct> getOrderProducts() {
-		return this.orderProducts;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Product)) {
+            return false;
+        }
+        Product other = (Product) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-	public void setOrderProducts(List<OrderProduct> orderProducts) {
-		this.orderProducts = orderProducts;
-	}
-
-	public OrderProduct addOrderProduct(OrderProduct orderProduct) {
-		getOrderProducts().add(orderProduct);
-		orderProduct.setProduct(this);
-
-		return orderProduct;
-	}
-
-	public OrderProduct removeOrderProduct(OrderProduct orderProduct) {
-		getOrderProducts().remove(orderProduct);
-		orderProduct.setProduct(null);
-
-		return orderProduct;
-	}
-
-	public Category getCategory() {
-		return this.category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
+    @Override
+    public String toString() {
+        return "com.mycompany.raztestdel.Product[ id=" + id + " ]";
+    }
+    
 }

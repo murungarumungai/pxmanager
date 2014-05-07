@@ -1,57 +1,83 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
- * The primary key class for the order_product database table.
- * 
+ *
+ * @author razvan
  */
 @Embeddable
 public class OrderProductPK implements Serializable {
-	//default serial version id, required for serializable classes.
-	private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "customer_order_id")
+    private int customerOrderId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "product_id")
+    private int productId;
 
-	@Column(name="customer_order_id", insertable=false, updatable=false)
-	private int customerOrderId;
+    public OrderProductPK() {
+    }
 
-	@Column(name="product_id", insertable=false, updatable=false)
-	private int productId;
+    public OrderProductPK(int customerOrderId, int productId) {
+        this.customerOrderId = customerOrderId;
+        this.productId = productId;
+    }
 
-	public OrderProductPK() {
-	}
-	public int getCustomerOrderId() {
-		return this.customerOrderId;
-	}
-	public void setCustomerOrderId(int customerOrderId) {
-		this.customerOrderId = customerOrderId;
-	}
-	public int getProductId() {
-		return this.productId;
-	}
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
+    public int getCustomerOrderId() {
+        return customerOrderId;
+    }
 
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof OrderProductPK)) {
-			return false;
-		}
-		OrderProductPK castOther = (OrderProductPK)other;
-		return 
-			(this.customerOrderId == castOther.customerOrderId)
-			&& (this.productId == castOther.productId);
-	}
+    public void setCustomerOrderId(int customerOrderId) {
+        this.customerOrderId = customerOrderId;
+    }
 
-	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.customerOrderId;
-		hash = hash * prime + this.productId;
-		
-		return hash;
-	}
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (int) customerOrderId;
+        hash += (int) productId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof OrderProductPK)) {
+            return false;
+        }
+        OrderProductPK other = (OrderProductPK) object;
+        if (this.customerOrderId != other.customerOrderId) {
+            return false;
+        }
+        if (this.productId != other.productId) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.mycompany.raztestdel.OrderProductPK[ customerOrderId=" + customerOrderId + ", productId=" + productId + " ]";
+    }
+    
 }
