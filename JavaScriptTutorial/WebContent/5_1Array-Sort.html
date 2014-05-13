@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Array Sort</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script>
+            var myArray = [7, 40, 300];
+            var str = "";
+            for (var i = 0; i < myArray.length; i++) {
+                str += "[" + i + "]" + myArray[i] + "<br />";
+            }
+            document.write(str);
+        </script>
+
+        <script>
+            function simpleSort() {
+                myArray.sort();
+                for (var i = 0; i < myArray.length; i++) {
+                    document.getElementById("simpleSort").innerHTML += "[" + i + "]" + myArray[i] + "<br />";
+                }
+            }
+            
+            function sort(){
+                myArray.sort(sortFunction);
+                for (var i = 0; i < myArray.length; i++) {
+                    document.getElementById("sort").innerHTML += "[" + i + "]" + myArray[i] + "<br />";
+                }
+            }
+            
+            function sortFunction(a, b){
+                //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+                //-1  deci daca a < b return -1 for asc
+                //0 daca a == b
+                //1, a > b
+                return a - b;
+            }
+        </script>
+    </head>
+    <body>
+        <div>Razvan: Array Sort</div>
+        <div id="simpleSort"></div>
+        <button onclick="simpleSort()">Simple Sort</button>
+        <button onclick="sort()">Sort</button>
+        <div id="sort"></div>
+
+    </body>
+</html>
