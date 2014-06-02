@@ -17,20 +17,20 @@
     <dependencies>
         
         <!-- This is required for WAS Liberty Profile -->
-        <dependency>
+<!--        <dependency>
             <groupId>org.apache.openjpa</groupId>
             <artifactId>openjpa-all</artifactId>
             <version>2.0.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
                 
     
-        <!--        <dependency>
+        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
             <version>2.5.0-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>-->
+        </dependency>
         
         <!--        <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -99,18 +99,18 @@
     </build>
     
     <repositories>
-        <!--        <repository>
+        <repository>
             <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
             <id>eclipselink</id>
             <layout>default</layout>
             <name>Repository for library EclipseLink (JPA 2.1)</name>
-        </repository>-->
+        </repository>
         
         
-        <repository>
+<!--        <repository>
             <id>apache.snapshots</id>
             <url>http://repository.apache.org/snapshots/</url>
-        </repository>
+        </repository>-->
         
     </repositories>
 

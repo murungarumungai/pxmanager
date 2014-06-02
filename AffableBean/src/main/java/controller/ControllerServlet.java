@@ -6,11 +6,13 @@
 package controller;
 
 import entity.Category;
+import entity.Product;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -32,7 +34,7 @@ public class ControllerServlet extends HttpServlet {
     @EJB
     private CategoryFacade categoryFacade;
 
-    @Resource(name = "jdbc/affableMySqlDS")
+    @Resource(name = "affableMySqlDS")
     protected DataSource dataSource;
 
     @Override
@@ -73,7 +75,7 @@ public class ControllerServlet extends HttpServlet {
         String queryStr = request.getQueryString();
 
         //String reqUrl = request.getRequestURL().toString();
-        this.testCon();
+        //this.testCon();
 
         // if category page is requested
         if (userPath.equals("/category")) {
@@ -82,9 +84,11 @@ public class ControllerServlet extends HttpServlet {
                 Category selectedCategory = categoryFacade.find(Short.parseShort(categoryId));
                 // place selected category in request scope
                 request.setAttribute("selectedCategory", selectedCategory);
-                
                 // get all products for selected category
-               categoryProducts = selectedCategory.getProductCollection();
+                Collection<Product> categoryProducts = selectedCategory.getProductCollection();
+                // place category products in request scope
+                request.setAttribute("categoryProducts", categoryProducts);
+
             }
             // if cart page is requested
         } else if (userPath.equals("/viewCart")) {

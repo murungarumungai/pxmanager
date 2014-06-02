@@ -12,10 +12,10 @@
 
 <c:set var="categoryName" value="${selectedCategory.rows[0].name}"></c:set> --%>  
 
-<sql:query var="categoryProducts" dataSource="jdbc/affableMySqlDS">
+<%--<sql:query var="categoryProducts" dataSource="jdbc/affableMySqlDS">
     SELECT * FROM product WHERE category_id = ?
     <sql:param value="${pageContext.request.queryString}"/>
-</sql:query>
+</sql:query>--%>
 
 <div id="indexLeftColumn">
     <c:forEach var="category" items="${categories}">
@@ -46,7 +46,7 @@
         <span style="background-color: #f5eabe; padding: 7px;">${selectedCategory.name}</span>
     </p>
     <table id="productTable">
-        <c:forEach var="product" items="${categoryProducts.rows}" varStatus="iter">    
+        <c:forEach var="product" items="${categoryProducts}" varStatus="iter">    
             <tr>
                 <td class="${((iter.index % 2) == 0) ? 'lightBlue' : 'white'}">
                     <img src="${initParam.productImagePath}${product.name}.png" alt="${product.name}">
