@@ -20,7 +20,28 @@ public class RegEx {
 	public static void main(String[] args) {
 		
 		//exercisesFromGooglePythonRegEx();
-		exerciseFromJavaTutorial();
+		//exerciseFromJavaTutorial();
+		
+		tryToParseAString();
+	}
+	
+	
+	 /*
+	  * "CVI_" + any String + either "_CCL" or "_CCLD"
+	  * */
+	public static void tryToParseAString(){
+		String input1 = "CVI blaf CVI_34  CVI_CAP0005_CCLD _CVI CVI_ CVI_TEST_CCL CVI_TEST CVI_CAP0005_CCLDDDD";
+		String input2 = " ";
+		
+		String regEx = "CVI_(\\w+)_CCL[D]{0,1}";
+		// CVI_ -> statrts with 'CVI_'
+		// \w+ -> one or more word characters
+		// _CCL -> '_CCL'
+		// [D]{0,1} -> Occurs between X and Y times, din setul '[D]'
+		
+		
+		simple(input1, regEx);
+		simplePrintSeparateGroups(input1, regEx);
 	}
 	
 	public static void exerciseFromJavaTutorial(){
