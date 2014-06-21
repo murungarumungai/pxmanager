@@ -8,7 +8,8 @@ public class EnumTest {
 		
 		String input = "never";
 		
-		NewIssuesActive inputEnm = NewIssuesActive.valueOf(input);
+		//NewIssuesActive inputEnm = NewIssuesActive.valueOf(input);
+		NewIssuesActive inputEnm = NewIssuesActive.fromValue(input);
 		
 		switch(inputEnm){
 			

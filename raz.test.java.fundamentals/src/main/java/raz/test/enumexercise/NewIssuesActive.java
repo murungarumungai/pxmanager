@@ -15,6 +15,14 @@ public enum NewIssuesActive {
 		return this.newIssuesActive;
 	}
 	
+	public static NewIssuesActive fromValue(String val){
+		for(NewIssuesActive item : NewIssuesActive.values()){
+			if(item.newIssuesActive.equals(val)){
+				return item;
+			}
+		}
+		throw new IllegalArgumentException(val);
+	}
 	 
 
 }
