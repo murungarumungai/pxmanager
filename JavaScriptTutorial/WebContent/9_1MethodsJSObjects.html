@@ -16,17 +16,17 @@
                 this.eyeColor = eyeColor;
 
                 /*this.changeName = changeName;
+                 
+                 function changeName(name) {
+                 this.lastName = name;
+                 }*/
 
-                function changeName(name) {
-                    this.lastName = name;
-                }*/
-                
-               //sau mai clar puteam sa fac asa:
-               
-               this.changeName = function(name) {
+                //sau mai clar puteam sa fac asa:
+
+                this.changeName = function(name) {
                     this.lastName = name;
                 }
-               
+
             }
 
             var myMother = new person("Sally", "Rally", 48, "green");
@@ -35,17 +35,64 @@
 
             myMother.changeName("Doe");
 
-            document.write("New Name:"+myMother.lastName);
+            document.write("New Name:" + myMother.lastName);
         </script>
         <h1>JavaScript for...in Loop</h1>
         The JavaScript <code>for...in</code> statement loops through the properties of an object.
         <p id="demo"></p>
         <script>
-            var txt="";
+            var txt = "";
             for (x in myMother) {
-                txt += "["+ myMother[x] + "]";
+                txt += "[" + myMother[x] + "]";
             }
             document.getElementById("demo").innerHTML = txt;
+        </script>
+        <hr>
+        <h2>More examples of the <em>for...in</em> Loop  </h2>
+        <script>
+            var roles = {
+                sysadmin: true,
+                ccl: ["CAP0001", "CAP0002"],
+                ccld: ["CAP0003"]
+            };
+
+            function parseObject(input) {
+                var rolesCaps = [];
+                for (var oneProperty in input) {
+                    if (input.sysadmin && input.sysadmin == true && oneProperty == "sysadmin") {
+                        var roleObj = {};
+                        console.debug("This is how you test if a proprty is defined in an object");
+                        roleObj.role = oneProperty;
+                        rolesCaps.push(roleObj);
+                    } else {
+                        var capabilitiesIDs = input[oneProperty];
+                        for (var i = 0; i < capabilitiesIDs.length; i++) {
+                            var roleObj = {};
+                            roleObj.role = oneProperty;
+                            roleObj.capability = capabilitiesIDs[i];
+                            rolesCaps.push(roleObj);
+                        }
+                    }
+                }
+                return rolesCaps;
+            }
+        </script>
+        <p id="parseObj"></p>
+        <button onclick="doStuff()">Click me</button>
+        <script>
+            function doStuff() {
+                var array = parseObject(roles);
+                var txt = "";
+                for (var index in array) {
+                    var item = array[index];
+                    if (item.role == "sysadmin") {
+                        txt += "[" + item.role + "]";
+                    } else {
+                        txt += "[" + item.role + "-" + item.capability + "]";
+                    }
+                }
+                document.getElementById("parseObj").innerHTML = txt;
+            }
         </script>
     </body>
 </html>
