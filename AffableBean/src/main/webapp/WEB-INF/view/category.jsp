@@ -17,13 +17,13 @@
     <sql:param value="${pageContext.request.queryString}"/>
 </sql:query>--%>
 
-<div id="indexLeftColumn">
+<div id="categoryLeftColumn">
     <c:forEach var="category" items="${categories}">
         <%-- <c:out value="${category.id}"></c:out>
         <c:out value="${'aa'}"></c:out>
         <c:out value="${pageContext.request.queryString}"></c:out> --%>
         <c:choose>
-            <c:when test="${category.id == pageContext.request.queryString}">
+            <c:when test="${category.name == selectedCategory.name}">
                 <div class="categoryButton" id="selectedCategory">
                     <span class="categoryText">
                         ${category.name}
@@ -40,29 +40,38 @@
         </c:choose>
 
     </c:forEach>
+
 </div>
-<div id="indexRightColumn">
-    <p id="categoryTitle">
-        <span style="background-color: #f5eabe; padding: 7px;">${selectedCategory.name}</span>
-    </p>
+
+<div id="categoryRightColumn">
+
+    <p id="categoryTitle">${selectedCategory.name}</p>
+
     <table id="productTable">
         <c:forEach var="product" items="${categoryProducts}" varStatus="iter">    
-            <tr>
-                <td class="${((iter.index % 2) == 0) ? 'lightBlue' : 'white'}">
-                    <img src="${initParam.productImagePath}${product.name}.png" alt="${product.name}">
+
+            <tr class="${((iter.index % 2) == 0) ? 'lightBlue' : 'white'}">
+                <td>
+                    <img src="${initParam.productImagePath}${product.name}.png"
+                         alt="${product.name}">
                 </td>
+
                 <td>
                     ${product.name}
                     <br>
                     <span class="smallText">${product.description}</span>
                 </td>
-                <td> &euro; ${product.price} / unit </td>
+
+                <td>&euro; ${product.price}</td>
+
                 <td>
                     <form action="addToCart" method="post">
                         <input type="hidden"
                                name="productId"
                                value="${product.id}">
-                        <input type="submit" value="add to cart">
+                        <input type="submit"
+                               name="submit"
+                               value="add to cart">
                     </form>
                 </td>
             </tr>
