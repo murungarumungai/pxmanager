@@ -47,7 +47,7 @@ public class SetTester {
 		
 		Set<String> difference = new HashSet<String>(setA);
 		difference.removeAll(setB);
-		System.out.println(difference);
+		System.out.println("difference>>"+difference);
 	}
 
 	/**
