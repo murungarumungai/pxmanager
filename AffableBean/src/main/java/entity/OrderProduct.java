@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,7 +36,7 @@ public class OrderProduct implements Serializable {
     @EmbeddedId
     protected OrderProductPK orderProductPK;
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Column(name = "quantity")
     private short quantity;
     @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)

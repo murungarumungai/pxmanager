@@ -6,6 +6,7 @@
 package session;
 
 import entity.OrderProduct;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,4 +28,8 @@ public class OrderedProductFacade extends AbstractFacade<OrderProduct> {
         super(OrderProduct.class);
     }
 
+        // manually created
+    public List<OrderProduct> findByOrderId(Object id) {
+        return em.createNamedQuery("OrderProduct.findByCustomerOrderId").setParameter("customerOrderId", id).getResultList();
+    }
 }

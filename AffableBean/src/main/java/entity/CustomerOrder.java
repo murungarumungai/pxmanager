@@ -25,7 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -52,18 +52,18 @@ public class CustomerOrder implements Serializable {
     private Integer id;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Column(name = "amount")
     private BigDecimal amount;
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Column(name = "confirmation_number")
     private Integer confirmationNumber;
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Column(name = "customer_ordercol")
     private int customerOrdercol;
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
