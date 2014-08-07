@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import session.CategoryFacade;
+import session.OrderManager;
 import session.ProductFacade;
 
 /**
@@ -48,6 +49,8 @@ public class ControllerServlet extends HttpServlet {
     private CategoryFacade categoryFacade;
     @EJB
     private ProductFacade productFacade;
+    @EJB
+    private OrderManager orderManager;
 
     @Resource(name = "affableMySqlDS")
     protected DataSource dataSource;
@@ -201,8 +204,17 @@ public class ControllerServlet extends HttpServlet {
 
             // if purchase action is called
         } else if (userPath.equals("/purchase")) {
-            // TODO: Implement purchase action
-
+            if (cart != null) {
+                // extract user data from request
+                String name = request.getParameter("name");
+                String email = request.getParameter("email");
+                String phone = request.getParameter("phone");
+                String address = request.getParameter("address");
+                String cityRegion = request.getParameter("cityRegion");
+                String ccNumber = request.getParameter("creditcard");
+                
+                int orderId = orderManager.placeOrder(name, email, phone, address, cityRegion, ccNumber, cart);
+            }
             userPath = "/confirmation";
         }
 
