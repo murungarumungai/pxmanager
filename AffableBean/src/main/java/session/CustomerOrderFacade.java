@@ -26,5 +26,12 @@ public class CustomerOrderFacade extends AbstractFacade<CustomerOrder> {
     public CustomerOrderFacade() {
         super(CustomerOrder.class);
     }
+    
+        // manually created
+    // in this implementation, there is only one order per customer
+    // the data model however allows for multiple orders per customer
+    public CustomerOrder findByCustomer(Object customer) {
+        return (CustomerOrder) em.createNamedQuery("CustomerOrder.findByCustomer").setParameter("customer", customer).getSingleResult();
+    }
 
 }
