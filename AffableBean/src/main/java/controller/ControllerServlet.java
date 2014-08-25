@@ -7,13 +7,17 @@ package controller;
 
 import cart.ShoppingCart;
 import entity.Category;
+import entity.Customer;
+import entity.CustomerOrder;
 import entity.Product;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -26,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import session.CategoryFacade;
+import session.CustomerFacade;
+import session.CustomerOrderFacade;
 import session.OrderManager;
 import session.ProductFacade;
 
@@ -40,7 +46,8 @@ import session.ProductFacade;
     "/updateCart",
     "/checkout",
     "/purchase",
-    "/chooseLanguage"})
+    "/chooseLanguage",
+    "/testAccess"})
 public class ControllerServlet extends HttpServlet {
 
     private String surcharge;
@@ -51,6 +58,13 @@ public class ControllerServlet extends HttpServlet {
     private ProductFacade productFacade;
     @EJB
     private OrderManager orderManager;
+    
+    
+    @EJB
+    private CustomerOrderFacade customerOrder;
+    
+    @EJB
+    private CustomerFacade customerFacade;
 
     @Resource(name = "affableMySqlDS")
     protected DataSource dataSource;
@@ -143,6 +157,20 @@ public class ControllerServlet extends HttpServlet {
         } else if (userPath.equals("/chooseLanguage")) {
             // TODO: Implement language request
 
+        } else if(userPath.equals("/testAccess")) {
+            List<Customer> customerList = customerFacade.findAll();
+            if(customerList!=null && !customerList.isEmpty()){
+                CustomerOrder order = customerOrder.findByCustomer(customerList.get(0));
+                request.setAttribute("order", order);
+                PrintWriter out = response.getWriter();
+                out.println("<HTML><BODY>");
+                out.println("CustomerOrder[0]->"+order.getCustomerId());
+                out.println("</BODY></HTML>");
+                return;
+            } else{
+                request.setAttribute("order", null);
+            }
+            
         }
 
         // use RequestDispatcher to forward request internally

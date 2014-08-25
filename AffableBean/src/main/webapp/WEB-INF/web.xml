@@ -35,7 +35,15 @@
             <include-coda>/admin/jspf/footer.jspf</include-coda>
         </jsp-property-group>
     </jsp-config>
-    <security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>file</realm-name>
+        <form-login-config>
+            <form-login-page>/admin/login.jsp</form-login-page>
+            <form-error-page>/admin/error.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+<!--    <security-constraint>
         <display-name>Admin</display-name>
         <web-resource-collection>
             <web-resource-name>Affable Bean Administration</web-resource-name>
@@ -47,16 +55,8 @@
             <role-name>affableBeanAdmin</role-name>
         </auth-constraint>
     </security-constraint>
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>file</realm-name>
-        <form-login-config>
-            <form-login-page>/admin/login.jsp</form-login-page>
-            <form-error-page>/admin/error.jsp</form-error-page>
-        </form-login-config>
-    </login-config>
     <security-role>
         <description/>
         <role-name>affableBeanAdmin</role-name>
-    </security-role>
+    </security-role>-->
 </web-app>
