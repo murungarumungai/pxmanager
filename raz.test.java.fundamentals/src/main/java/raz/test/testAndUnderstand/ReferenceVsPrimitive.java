@@ -16,7 +16,8 @@ public class ReferenceVsPrimitive {
 			e.printStackTrace();
 		}*/
 		
-		referenceTypeArray();
+		//referenceTypeArray();
+		referenceType_StringBuffer();
 	}
 
 	static void primitiveInt() {
@@ -74,6 +75,21 @@ public class ReferenceVsPrimitive {
 		 * by the language, you'll probably tend to think of it as such.
 		 * */
 		
+	}
+	
+	static void referenceType_StringBuffer(){
+		StringBuffer y = new StringBuffer("abc");
+		System.out.println(y.hashCode()+"y:" + y);
+		
+		StringBuffer x = y;//declare a variable x which is a reference to the same object referenced by y
+		System.out.println(x.hashCode()+"x:" + x);
+		
+		//change x
+		x.reverse();
+		
+		System.out.println(y.hashCode()+"y:" + y);
+
+		System.out.println(x.hashCode()+"x:" + x);
 	}
 	
 	static void referenceType(){
