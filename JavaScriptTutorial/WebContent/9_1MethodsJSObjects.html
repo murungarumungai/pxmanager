@@ -94,5 +94,41 @@
                 document.getElementById("parseObj").innerHTML = txt;
             }
         </script>
+        <hr>
+        Check for null or empty
+        <button onclick="runChecks()">Check for null and Empty</button>
+        <script>
+            function runChecks(){
+                
+                var input = {
+                    "status": "OK",
+                    "packages": {
+                        "/capabilityWorkflow/Y9B4AG826/REQ11221149": {
+                            "reviewers": [],
+                            "recorder": [{
+                                "role": "RECORDER",
+                                "cnum": "Y9BAXG826",
+                                "name": "Gaston, Razvan *CONTRACTOR*",
+                                "delegateCnum": "O93344826",
+                                "delegateName": "BIRLEA, NICOLAE"
+                                }
+                            ],
+                            "reviewStepId": 0
+                        }
+                    }
+                };
+                
+                if(input.packages && input.packages["/capabilityWorkflow/Y9B4AG826/REQ11221149"]){
+                    var p = input.packages["/capabilityWorkflow/Y9B4AG826/REQ11221149"];
+                    if(p.reviewers && p.reviewers.length==0){
+                        console.debug("Empty Array");
+                    }
+                    if(p.recorder && p.recorder.length>0){//Check for null and NonEmpty Array
+                        console.debug(p.recorder[0].cnum); 
+                    }
+                }
+                
+            }
+        </script>
     </body>
 </html>
