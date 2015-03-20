@@ -20,9 +20,9 @@ public class RegEx {
 	public static void main(String[] args) {
 		
 		//exercisesFromGooglePythonRegEx();
-		//exerciseFromJavaTutorial();
+		exerciseFromJavaTutorial();
 		
-		tryToParseAString();
+		//tryToParseAString();
 	}
 	
 	

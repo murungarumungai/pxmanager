@@ -17,7 +17,9 @@ public class ReferenceVsPrimitive {
 		}*/
 		
 		//referenceTypeArray();
-		referenceType_StringBuffer();
+		//referenceType_StringBuffer();
+		
+		understandVariables();
 	}
 
 	static void primitiveInt() {
@@ -147,6 +149,43 @@ public class ReferenceVsPrimitive {
 		System.out.print(x.hashCode()+"x:"); printArray(x);
 	}
 	
+	static void understandVariables() {
+		//https://docs.oracle.com/javase/specs/jls/se5.0/html/typesValues.html#111011
+		/**
+		 * The types of the Java programming language are divided into two categories: primitive types and reference types. 
+		 * The primitive types contain primitive values
+		 * Primitive values do not share state with other primitive values. A variable whose type is a primitive type always holds a primitive value of that same type.
+		 * The value of a variable of primitive type can be changed only by assignment operations on that variable
+		 * 
+		 * The reference types are class types, interface types, and array types.
+		 * The values of a reference type are references to objects.
+		 * The reference values (often just references) are pointers to these objects, and a special null reference, which refers to no object.
+		 * */
+		
+		
+		int integerA = 1; //Declare a primitive variable 'integerA' which is intialized with Value 1
+		int integerB = integerA;//Declare a primitive variable 'integerB' which is assigned the value of 'integerA'
+		
+		System.out.println("integerA:"+integerA);
+		System.out.println("integerB:"+integerB);
+		
+		integerB = 4;//'integerB' is assigned a new value
+		
+		System.out.println("integerA:"+integerA);
+		System.out.println("integerB:"+integerB);
+		
+		Value a = new Value();// 'a' is a reference variable whose value is a reference(a pointer) to a newly Value object created on the heap
+		a.val = 5;
+		Value b = a;//Declare variable 'b' and assign the value of 'a'(the value of 'a' is a reference(a pointer) to the same Value object)
+		System.out.println("a"+"["+System.identityHashCode(a)+"]:"+a.val);
+		System.out.println("b"+"["+System.identityHashCode(b)+"]:"+b.val);
+		
+		/** The reference values (often just references) are pointers to these objects, and a special null reference, which refers to no object. */
+		b = null;//'b' is assigned the value null reference
+		System.out.println("a"+"["+System.identityHashCode(a)+"]:"+a.val);
+		System.out.println("b"+"["+System.identityHashCode(b)+"]:"+b);
+	}
+	
 	static void printArray(char[] arr){
 		for(char ch : arr){
 			System.out.println(ch);
@@ -154,3 +193,7 @@ public class ReferenceVsPrimitive {
 	}
 
 }
+
+class Value { int val; }
+
+

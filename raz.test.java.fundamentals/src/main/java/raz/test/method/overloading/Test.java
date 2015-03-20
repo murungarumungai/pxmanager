@@ -17,6 +17,8 @@ public class Test {
 		testType(i);
 		
 		testEquality();
+		
+		testEqualityDouble();
 	}
 	
 	public static void testEquality(){
@@ -35,5 +37,19 @@ public class Test {
 		System.out.println(i3 == i4);
 		System.out.println(System.identityHashCode(i3));
 		System.out.println(System.identityHashCode(i4));
+	}
+	
+	public static void testEqualityDouble(){
+		double x = 0.1;
+		double y = 0.1;
+		Double a = 0.1;
+		Double b = 0.1;
+		
+		
+		System.out.println(x==y);
+		System.out.println(a==b);
+		
+		
+		
 	}
 }
