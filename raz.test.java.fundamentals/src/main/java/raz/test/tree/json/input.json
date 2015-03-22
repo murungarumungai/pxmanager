@@ -3,8 +3,8 @@
 		"node": {
 			"id": "Europe",
 			"childrenId": ["Benelux",
-			"Nordics"],
-			"parent": "world"
+			"CEE IMT"],
+			"parentId": "world"
 		}
 	},
 	{
@@ -12,21 +12,35 @@
 			"id": "Benelux",
 			"childrenId": ["Luxemburg",
 			"Belgium"],
-			"parent": "Europe"
+			"parentId": "Europe"
+		}
+	},
+	{
+		"node": {
+			"id": "CEE IMT",
+			"childrenId": ["Romania"],
+			"parentId": "Europe"
 		}
 	},
 	{
 		"node": {
 			"id": "Belgium",
 			"childrenId": "",
-			"parent": "Benelux"
+			"parentId": "Benelux"
+		}
+	},
+	{
+		"node": {
+			"id": "Romania",
+			"childrenId": "",
+			"parentId": "CEE IMT"
 		}
 	},
 	{
 		"node": {
 			"id": "Luxemburg",
 			"childrenId": "",
-			"parent": "Benelux"
+			"parentId": "Benelux"
 		}
 	},
 	{
@@ -34,7 +48,7 @@
 			"id": "World",
 			"childrenId": ["Europe",
 			"Asia"],
-			"parent": ""
+			"parentId": ""
 		}
 	}]
 }
